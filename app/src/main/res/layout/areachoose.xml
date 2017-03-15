@@ -4,6 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0063B1">
+   <!-- android:background="#0063B1"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+        <EditText
+            android:id="@+id/searchEd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:background="@null"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:hint="输入城市名......" />
+        <Button
+            android:id="@+id/searchBu"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_search" />
+    </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -26,6 +51,7 @@
     </RelativeLayout>
     <ListView
         android:id="@+id/areaList"
+        android:background="#fff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>
