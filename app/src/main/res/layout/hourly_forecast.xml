@@ -8,7 +8,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#0063B1"/>
+        android:background="@color/colorLine"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,155 +16,15 @@
         android:textColor="@color/colorFont"
         android:text="逐时预报"/>
     <LinearLayout
+        android:id="@+id/hourly_item_layout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:id="@+id/h01"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="end"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/hour_tmpTx1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:text="20℃"/>
-            <ImageView
-                android:id="@+id/hour_imageTx1"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/qing"/>
-            <TextView
-                android:id="@+id/hour_time1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:textSize="10sp"
-                android:text="13:00"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/h02"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="end"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/hour_tmpTx2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:text="20℃"/>
-            <ImageView
-                android:id="@+id/hour_imageTx2"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/qing"/>
-            <TextView
-                android:id="@+id/hour_time2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:textSize="10sp"
-                android:text="13:00"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/h03"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="end"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/hour_tmpTx3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:text="20℃"/>
-            <ImageView
-                android:id="@+id/hour_imageTx3"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/qing"/>
-            <TextView
-                android:id="@+id/hour_time3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:textSize="10sp"
-                android:text="13:00"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/h04"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="end"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/hour_tmpTx4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:text="20℃"/>
-            <ImageView
-                android:id="@+id/hour_imageTx4"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/qing"/>
-            <TextView
-                android:id="@+id/hour_time4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:textSize="10sp"
-                android:text="13:00"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/h05"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="end"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/hour_tmpTx5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:text="20℃"/>
-            <ImageView
-                android:id="@+id/hour_imageTx5"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/qing"/>
-            <TextView
-                android:id="@+id/hour_time5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/colorFont"
-                android:textSize="10sp"
-                android:text="13:00"/>
-        </LinearLayout>
+        android:layout_height="wrap_content">
+        <include layout="@layout/hourly_item"/>
+        <include layout="@layout/hourly_item"/>
+        <include layout="@layout/hourly_item"/>
+        <include layout="@layout/hourly_item"/>
+        <include layout="@layout/hourly_item"/>
+
     </LinearLayout>
-
-
 </LinearLayout>

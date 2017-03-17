@@ -2,11 +2,11 @@ package com.example.npc.myweather2.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -130,6 +130,9 @@ public class AreaChooseFragment extends Fragment {
                 searchEditText.setText("");
                 InputMethodManager inManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inManager.hideSoftInputFromWindow(searchEditText.getWindowToken(),0);
+                Intent intent =new Intent(getContext(),Main2Activity.class);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
     }

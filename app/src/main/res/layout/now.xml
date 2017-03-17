@@ -12,6 +12,7 @@
             android:id="@+id/condTx"
             android:gravity="end"
             android:textSize="45sp"
+            android:layout_marginLeft="15dp"
             android:textColor="@color/colorFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
         <TextView
             android:id="@+id/aqiTx"
             android:gravity="end"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
             android:textSize="12sp"
             android:textColor="@color/colorFont"
@@ -29,7 +30,7 @@
         <TextView
             android:id="@+id/windTx"
             android:gravity="end"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
             android:textSize="12sp"
             android:textColor="@color/colorFont"

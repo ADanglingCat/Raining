@@ -8,7 +8,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#0063B1"/>
+        android:background="@color/colorLine"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,6 +70,13 @@
                 android:textColor="@color/colorFont"
                 android:text="降水概率"/>
         </LinearLayout>
+        <include layout="@layout/daily_item"/>
+        <include layout="@layout/daily_item"/>
+        <include layout="@layout/daily_item"/>
+        <include layout="@layout/daily_item"/>
+        <include layout="@layout/daily_item"/>
+        <include layout="@layout/daily_item"/>
+        <include layout="@layout/daily_item"/>
         <include layout="@layout/daily_item"/>
         <include layout="@layout/daily_item"/>
         <include layout="@layout/daily_item"/>

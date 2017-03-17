@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:checkableBehavior="single">
+    <item
+        android:id="@+id/cityMe"
+        android:title="城市管理"
+        android:icon="@drawable/ic_city" />
+    <item
+        android:id="@+id/settingMe"
+        android:title="应用设置"
+        android:icon="@drawable/ic_setting"/>
+    <item
+        android:id="@+id/updateMe"
+        android:title="检查更新"
+        android:icon="@drawable/ic_update"/>
+
+    <item
+        android:id="@+id/aboutMe"
+        android:title="关于我们"
+        android:icon="@drawable/ic_about"/>
+</group>
+</menu>
