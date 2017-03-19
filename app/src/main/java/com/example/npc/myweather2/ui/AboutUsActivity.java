@@ -37,6 +37,9 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         }
         setContentView(R.layout.activity_about_us);
         init();
+        String log;
+        log="1.新增城市切换功能\n2.优化启动速度\n3.新增定时提醒功能";
+        update_log.setText(log);
         backBu_about.setOnClickListener(this);
         title_licenseTx.setOnClickListener(this);
         contactEmail.setOnClickListener(this);

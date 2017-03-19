@@ -96,8 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textSize="13sp"
-            android:layout_marginLeft="30dp"
-            android:text="1.新增城市切换功能\n2.优化启动速度"/>
+            android:layout_marginLeft="30dp"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

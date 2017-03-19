@@ -50,8 +50,11 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 switch(item.getItemId()){
                     case R.id.cityMe:
+                        intent=new Intent(Main2Activity.this,AreaManagerActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.settingMe:
                         break;
@@ -59,7 +62,7 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
                         MyUtil.showToast(Main2Activity.this,"没有新版本");
                         break;
                     case R.id.aboutMe:
-                        Intent intent=new Intent(Main2Activity.this,AboutUsActivity.class);
+                        intent=new Intent(Main2Activity.this,AboutUsActivity.class);
                         startActivity(intent);
                         break;
                     default:
@@ -104,10 +107,10 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         if(e1!=null&&e2!=null){
-            if(e1.getX()-e2.getX()>150&&Math.abs(e1.getY()-e2.getY())<50){
+            if(e1.getX()-e2.getX()>200&&Math.abs(e1.getY()-e2.getY())<50){
                 cityTx.setText("深圳");
                 return true;
-            }else if(e2.getX()-e1.getX()>=150&&Math.abs(e1.getY()-e2.getY())<50){
+            }else if(e2.getX()-e1.getX()>=200&&Math.abs(e1.getY()-e2.getY())<50){
                 cityTx.setText("项城");
                 return true;
             }
@@ -116,6 +119,7 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev){
+        //drawerLayout.onTouchEvent(ev);
         //让GestureDetector响应触碰事件
         gestureDetector.onTouchEvent(ev);
         //让Activity响应触碰事件
@@ -126,5 +130,4 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
     public boolean onTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event);
     }
-
 }

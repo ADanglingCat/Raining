@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 
 import com.example.npc.myweather2.R;
 
@@ -21,14 +20,7 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main);
-        Button searchBu=(Button)findViewById(R.id.searchBu);
-//        searchBu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent =new Intent(MainActivity.this,Main2Activity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+        //Intent intent=new Intent(this,AreaChooseActivity.class);
+        //startActivity(intent);
     }
 }

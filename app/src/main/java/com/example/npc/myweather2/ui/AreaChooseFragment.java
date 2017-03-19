@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +24,6 @@ import com.example.npc.myweather2.db.County;
 import com.example.npc.myweather2.db.Province;
 import com.example.npc.myweather2.util.HandleResponse;
 import com.example.npc.myweather2.util.HttpUtil;
-import com.example.npc.myweather2.util.MyUtil;
 
 import org.litepal.crud.DataSupport;
 
@@ -44,9 +43,8 @@ public class AreaChooseFragment extends Fragment {
     public static final int LEVEL_PROVINCE=0;//省级
     public static final int LEVEL_CITY=1;    //市级
     public static final int LEVEL_COUNTY=2;  //县级
+    private SearchView searchView;
     private TextView titleText;
-    private Button searchButton;
-    private EditText searchEditText;
     private Button backButton;
     private ListView areaList;
     private List<Province> provinceList;//省列表
@@ -62,15 +60,15 @@ public class AreaChooseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.areachoose,container,false);
+        View view=inflater.inflate(R.layout.fragment_area_choose,container,false);
         titleText=(TextView) view.findViewById(R.id.titleTx);
         backButton=(Button)view.findViewById(R.id.backBu);
         areaList=(ListView)view.findViewById(R.id.areaList);
-
-        searchButton=(Button)view.findViewById(R.id.searchBu);
-        searchEditText=(EditText)view.findViewById(R.id.searchEd);
         adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dataList);
         areaList.setAdapter(adapter);
+        searchView=(SearchView)view.findViewById(R.id.searchView);
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setIconifiedByDefault(false);
         return view;
     }
 
@@ -88,8 +86,45 @@ public class AreaChooseFragment extends Fragment {
                     queryCounties();
                 }else if(selectedLevel==LEVEL_COUNTY){
                     selectedCounty=countyList.get(position);
-                    MyUtil.showToast(getContext(), selectedCounty.getCountyName());
+                    Intent intent;
+                    if(getActivity()instanceof MainActivity){
+                        intent=new Intent(getContext(),Main2Activity.class);
+                    }else{
+                        intent=new Intent(getContext(),AreaManagerActivity.class);
+                    }
+                    startActivity(intent);
+                    getActivity().finish();
+//                    MyUtil.showToast(getContext(), selectedCounty.getCountyName());
                 }
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                InputMethodManager inManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inManager.hideSoftInputFromWindow(searchView.getWindowToken(),0);
+                selectedProvince=new Province();
+                selectedProvince.setProvinceName(query);
+                queryCities();
+               // if(!flag){
+                    selectedCity=new City();
+                    selectedCity.setCityName(query);
+                    //queryCounties();
+                //};
+                Intent intent;
+                if(getActivity()instanceof MainActivity){
+                    intent=new Intent(getContext(),Main2Activity.class);
+                }else{
+                    intent=new Intent(getContext(),AreaManagerActivity.class);
+                }
+                startActivity(intent);
+                getActivity().finish();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -103,38 +138,6 @@ public class AreaChooseFragment extends Fragment {
             }
         });
         queryProvinces();
-//        searchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if(hasFocus){
-//                    //areaList.setVisibility(View.GONE);
-//                }else{
-//                    areaList.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
-//        searchEditText.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                areaList.setVisibility(View.GONE);
-//                return true;
-//            }
-//        });
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text="";
-                text=searchEditText.getText().toString();
-                MyUtil.showToast(getContext(), text);
-                //Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-                searchEditText.setText("");
-                InputMethodManager inManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inManager.hideSoftInputFromWindow(searchEditText.getWindowToken(),0);
-                Intent intent =new Intent(getContext(),Main2Activity.class);
-                startActivity(intent);
-                getActivity().finish();
-            }
-        });
     }
     //查询省
     private void queryProvinces(){
