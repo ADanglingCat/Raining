@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="通知管理">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:disableDependentsState="false"
+            android:title="通知总开关"
+            android:key="Notify"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off" />
+        <SwitchPreference
+            android:dependency="Notify"
+            android:defaultValue="true"
+            android:title="天气预警通知"
+            android:key="alarmNotify"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off" />
+        <SwitchPreference
+            android:dependency="Notify"
+            android:defaultValue="false"
+            android:title="定时天气提醒"
+            android:key="morningNotify"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off" />
+        <com.example.npc.myweather2.ui.MyTimePreference
+            android:title="提醒时间"
+            android:defaultValue="0"
+            android:dependency="morningNotify"
+            android:key="notifyTime"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="天气更新">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:title="后台自动更新"
+            android:key="autoUpdate"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off"/>
+        <SwitchPreference
+            android:dependency="autoUpdate"
+            android:defaultValue="true"
+            android:title="更新模式"
+            android:key="updateMode"
+            android:summaryOn="当前城市"
+            android:summaryOff="所有城市"/>
+        <ListPreference android:title="更新频率"
+            android:dependency="autoUpdate"
+            android:defaultValue="180"
+            android:key="updateFre"
+            android:entries="@array/pref_sync_frequency_titles"
+            android:entryValues="@array/pref_sync_frequency_values"/>
+        <SwitchPreference
+            android:dependency="autoUpdate"
+            android:defaultValue="true"
+            android:title="夜间停止更新"
+            android:key="nightUpdate"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="个性化">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:title="自定义背景"
+            android:key="diy"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off" />
+        <Preference android:title="选取图片"
+            android:dependency="diy">
+            <intent android:action="com.example.myweather.Choose" />
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="其他">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:title="自动定位"
+            android:key="autoLocate"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off" />
+    </PreferenceCategory>
+</PreferenceScreen>

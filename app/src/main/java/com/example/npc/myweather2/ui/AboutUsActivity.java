@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -97,6 +98,7 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         vision=(TextView)findViewById(R.id.vision);
         update_log=(TextView)findViewById(R.id.update_log);
         contactEmail=(TextView)findViewById(R.id.contactEmail);
+        Resources rs=getResources();
         contactQQ=(TextView)findViewById(R.id.contactQQ);
         contactWeibo=(TextView)findViewById(R.id.contactWeibo);
         title_licenseTx=(TextView)findViewById(R.id.title_licenseTx);

@@ -40,6 +40,20 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
         }
         setContentView(R.layout.activity_main2);
         initVar();
+//        Intent intent=getIntent();
+//        MyApplication myApplication=(MyApplication)getApplication();
+//        Bitmap bitmap;
+//        BitmapDrawable drawable=null;
+//        boolean flag=intent.getBooleanExtra("flag",false);
+//        if((bitmap=myApplication.getMyBitmap())!=null){
+//            flag=true;
+//            drawable=new BitmapDrawable(getResources(),bitmap);
+//        }
+//        if(flag){
+//            drawerLayout.setBackground(drawable);
+//        }else{
+            drawerLayout.setBackgroundResource(R.drawable.ic_background);
+//        }
         menuBu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +71,8 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
                         startActivity(intent);
                         break;
                     case R.id.settingMe:
+                        intent=new Intent(Main2Activity.this,SettingActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.updateMe:
                         MyUtil.showToast(Main2Activity.this,"没有新版本");

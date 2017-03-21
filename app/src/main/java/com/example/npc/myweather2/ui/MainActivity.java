@@ -20,7 +20,5 @@ public class MainActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main);
-        //Intent intent=new Intent(this,AreaChooseActivity.class);
-        //startActivity(intent);
     }
 }

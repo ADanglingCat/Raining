@@ -23,7 +23,7 @@ import com.example.npc.myweather2.db.City;
 import com.example.npc.myweather2.db.County;
 import com.example.npc.myweather2.db.Province;
 import com.example.npc.myweather2.util.HandleResponse;
-import com.example.npc.myweather2.util.HttpUtil;
+import com.example.npc.myweather2.util.MyUtil;
 
 import org.litepal.crud.DataSupport;
 
@@ -199,7 +199,7 @@ public class AreaChooseFragment extends Fragment {
     //从服务器查询地区数据
     private void queryFromServer(String address, final int type){
         showProgressDialog();
-        HttpUtil.sendRequest(address, new Callback() {
+        MyUtil.sendRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
