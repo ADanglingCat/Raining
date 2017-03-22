@@ -22,7 +22,6 @@ import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.db.City;
 import com.example.npc.myweather2.db.County;
 import com.example.npc.myweather2.db.Province;
-import com.example.npc.myweather2.util.HandleResponse;
 import com.example.npc.myweather2.util.MyUtil;
 
 import org.litepal.crud.DataSupport;
@@ -92,6 +91,7 @@ public class AreaChooseFragment extends Fragment {
                     }else{
                         intent=new Intent(getContext(),AreaManagerActivity.class);
                     }
+                    intent.putExtra("weatherId",selectedCounty.getWeatherId());
                     startActivity(intent);
                     getActivity().finish();
 //                    MyUtil.showToast(getContext(), selectedCounty.getCountyName());
@@ -216,11 +216,11 @@ public class AreaChooseFragment extends Fragment {
                 String responseText=response.body().string();
                 boolean result=false;
                 if (type==LEVEL_PROVINCE){
-                    result= HandleResponse.handleProvinceResponse(responseText);
+                    result= MyUtil.handleProvinceResponse(responseText);
                 }else if(type==LEVEL_CITY){
-                    result=HandleResponse.handleCityResponse(responseText,selectedProvince.getId());
+                    result=MyUtil.handleCityResponse(responseText,selectedProvince.getId());
                 }else{
-                    result=HandleResponse.handleCountyResponse(responseText,selectedCity.getId());
+                    result=MyUtil.handleCountyResponse(responseText,selectedCity.getId());
                 }
                 if (result){
                     getActivity().runOnUiThread(new Runnable() {

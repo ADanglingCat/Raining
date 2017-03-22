@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/daily_layout"
     android:orientation="vertical"
     android:layout_marginTop="15dp"
     android:layout_width="match_parent"
@@ -15,11 +14,6 @@
         android:gravity="center_horizontal"
         android:textColor="@color/colorFont"
         android:text="天气预报"/>
-    <LinearLayout
-        android:id="@+id/daily_item_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -70,15 +64,11 @@
                 android:textColor="@color/colorFont"
                 android:text="降水概率"/>
         </LinearLayout>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
-        <include layout="@layout/daily_item"/>
+    <LinearLayout
+        android:id="@+id/forecast_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/h01"
+    android:id="@+id/hourly_item_layout"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
@@ -12,13 +12,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/colorFont"
-        android:text="20℃"/>
+        android:text="@string/unknown"/>
     <ImageView
         android:id="@+id/hour_imageTx"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/qing"/>
+        style="@style/WeatherIcon"
+        android:src="@drawable/ic_100"/>
     <TextView
         android:id="@+id/hour_time"
         android:layout_width="wrap_content"
@@ -26,5 +24,5 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/colorFont"
         android:textSize="13sp"
-        android:text="13:00"/>
+        android:text="@string/unknown"/>
     </LinearLayout>

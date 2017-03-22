@@ -11,13 +11,13 @@
         android:layout_centerVertical="true"
         android:background="@drawable/ic_menu"/>
     <TextView
-        android:id="@+id/cityTx"
+        android:id="@+id/titleCity"
         android:textSize="25sp"
         android:textColor="@color/colorFont"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="哈尔滨"/>
+        android:text="@string/unknown"/>
     <TextView
         android:id="@+id/timeTx"
         android:textColor="@color/colorFont"
@@ -27,5 +27,5 @@
         android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="08:55更新"/>
+        android:text="@string/unknown"/>
 </RelativeLayout>

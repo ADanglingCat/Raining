@@ -14,6 +14,7 @@
                 android:id="@+id/sv_weather_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:scrollbars="none"
                 android:overScrollMode="never">
                 <LinearLayout
@@ -27,6 +28,7 @@
                     <include layout="@layout/now"/>
                     <include layout="@layout/hourly_forecast"/>
                     <include layout="@layout/daily_forecast"/>
+                    <include layout="@layout/suggestion"/>
                 </LinearLayout>
             </ScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>

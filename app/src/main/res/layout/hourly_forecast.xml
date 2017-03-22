@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/hourly_layout"
+
     android:orientation="vertical"
     android:layout_marginTop="50dp"
     android:layout_width="match_parent"
@@ -16,15 +16,9 @@
         android:textColor="@color/colorFont"
         android:text="逐时预报"/>
     <LinearLayout
-        android:id="@+id/hourly_item_layout"
+        android:id="@+id/hourly_layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <include layout="@layout/hourly_item"/>
-        <include layout="@layout/hourly_item"/>
-        <include layout="@layout/hourly_item"/>
-        <include layout="@layout/hourly_item"/>
-        <include layout="@layout/hourly_item"/>
-
     </LinearLayout>
 </LinearLayout>

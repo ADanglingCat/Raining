@@ -6,14 +6,14 @@ package com.example.npc.myweather2.gson;
 
 public class Aqi {
     public City city;
-    class City{
+    public class City{
         public String aqi;
-        public String co;
-        public String no2;
-        public String o3;
-        public String pm10;
-        public String pm25;
+//        public String co;
+//        public String no2;
+//        public String o3;
+//        public String pm10;
+//        public String pm25;
         public String qlty;//空气质量评价
-        public String so2;
+//        public String so2;
     }
 }

@@ -10,8 +10,9 @@ public class HourlyForecast {
     public String date;//时间
     //public String pop;//降水概率
     public String tmp;//温度
-    class Cond{
-        public String txt;//天气情况
+    public class Cond{
+        public String code;//天气代码
+        //public String txt;//天气情况
     }
 //    class Wind{
 //        public String dir;//风向

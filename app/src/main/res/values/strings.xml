@@ -77,4 +77,14 @@
     <string name="summary_off">关闭</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
+    <string name="unknown">未知</string>
+    <string name="cw">洗车指数</string>
+    <string name="drsg">穿衣指数</string>
+    <string name="comf">舒适度指数</string>
+    <string name="uv">紫外线指数</string>
+    <string name="flu">感冒指数</string>
+    <string name="trav">旅行指数</string>
+    <string name="sport">运动指数</string>
+    <string name="air">污染指数</string>
+    <string name="suggestion">生活建议</string>
 </resources>

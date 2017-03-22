@@ -1,7 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="title">
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@color/colorFont</item>
         <item name="android:textSize">18sp</item>
+    </style>
+    <style name="WeatherIcon">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+    <style name="suggestion">
+    <item name="android:textColor">@color/colorFont</item>
+    <item name="android:textSize">13sp</item>
+    </style>
+    <style name="suggestion_horizontal_layout" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">10dp</item>
+    </style>
+    <style name="suggestion_image_big" >
+        <item name="android:layout_width">45dp</item>
+        <item name="android:layout_height">45dp</item>
+    </style>
+    <style name="suggestion_vertical_layout" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="suggestion_text_view_big" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorFont</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">1dp</item>
+    </style>
+    <style name="suggestion_text_view_small" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorFont</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:padding">1dp</item>
     </style>
 </resources>

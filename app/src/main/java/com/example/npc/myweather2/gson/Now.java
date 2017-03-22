@@ -5,12 +5,12 @@ package com.example.npc.myweather2.gson;
  */
 
 public class Now {
-    class Cond{
+    public class Cond{
         public String txt;
     }
-    class Wind{
-        String dir;//风向
-        String sc;//风力等级
+    public class Wind{
+        public String dir;//风向
+        public String sc;//风力等级
     }
     public Cond cond;
     public Wind wind;

@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.Main2Activity" />
+        <activity android:name=".ui.Main2Activity"
+            android:launchMode="singleTask"/>
         <activity android:name=".ui.AboutUsActivity" />
         <activity android:name=".ui.LicenseActivity" />
         <activity

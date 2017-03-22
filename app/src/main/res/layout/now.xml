@@ -16,7 +16,7 @@
             android:textColor="@color/colorFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="多云"/>
+            android:text="@string/unknown"/>
         <TextView
             android:id="@+id/aqiTx"
             android:gravity="end"
@@ -26,7 +26,7 @@
             android:textColor="@color/colorFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="空气质量:优/39"/>
+            android:text="@string/unknown"/>
         <TextView
             android:id="@+id/windTx"
             android:gravity="end"
@@ -36,12 +36,13 @@
             android:textColor="@color/colorFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="风向/风力:东北风/3-4"/>
+            android:text="@string/unknown"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tmpTx"
@@ -50,7 +51,7 @@
             android:textColor="@color/colorFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="22℃"/>
+            android:text="@string/unknown"/>
         <TextView
             android:id="@+id/flTx"
             android:gravity="end"
@@ -59,7 +60,7 @@
             android:textColor="@color/colorFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="体感温度:20℃"/>
+            android:text="@string/unknown"/>
         <TextView
             android:id="@+id/astroTx"
             android:gravity="end"
@@ -68,7 +69,7 @@
             android:textColor="@color/colorFont"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="日出/日落:06:47/18:49"/>
+            android:text="@string/unknown"/>
     </LinearLayout>
 
 </RelativeLayout>
