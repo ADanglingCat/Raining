@@ -2,11 +2,13 @@ package com.example.npc.myweather2.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
 import com.example.npc.myweather2.R;
-public class AreaManagerActivity extends AppCompatActivity implements View.OnClickListener{
+import com.example.npc.myweather2.util.BaseActivity;
+
+public class AreaManagerActivity extends BaseActivity implements View.OnClickListener{
     Button backBu;
     FloatingActionButton addCityBu;
     @Override

@@ -3,10 +3,11 @@
     package="com.example.npc.myweather2">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        android:name="com.example.npc.myweather2.util.MyApplication"
+        android:name=".util.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,8 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.Main2Activity"
-            android:launchMode="singleTask"/>
+        <activity android:name=".ui.Main2Activity" />
         <activity android:name=".ui.AboutUsActivity" />
         <activity android:name=".ui.LicenseActivity" />
         <activity
@@ -30,13 +30,16 @@
             android:launchMode="singleTask" />
         <activity android:name=".ui.AreaChooseActivity" />
         <activity android:name=".ui.SettingActivity" />
-        <activity android:name=".ui.ChoosePictureActivity"
+        <activity
+            android:name=".ui.ChoosePictureActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
             <intent-filter>
-                <action android:name="com.example.myweather.Choose"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.example.myweather.Choose" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".util.BaseActivity"></activity>
     </application>
 
 </manifest>

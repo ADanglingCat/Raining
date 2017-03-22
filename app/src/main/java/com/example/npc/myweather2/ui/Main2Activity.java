@@ -3,6 +3,8 @@ package com.example.npc.myweather2.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,7 +14,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,6 +29,8 @@ import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.gson.DailyForecast;
 import com.example.npc.myweather2.gson.HourlyForecast;
 import com.example.npc.myweather2.gson.Weather;
+import com.example.npc.myweather2.util.ActivityCollector;
+import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
 import junit.framework.Assert;
@@ -40,7 +43,7 @@ import okhttp3.Response;
 
 import static com.example.npc.myweather2.R.id.daily_dateTx;
 
-public class Main2Activity extends AppCompatActivity implements GestureDetector.OnGestureListener{
+public class Main2Activity extends BaseActivity implements GestureDetector.OnGestureListener{
     public DrawerLayout drawerLayout;
     private Button menuBu;
     public GestureDetector gestureDetector;
@@ -73,7 +76,7 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
     private TextView title_fluText;
     private TextView title_airText;
     private TextView title_designText;
-   // private ImageView bingPicImg;
+    private ImageView backgroundImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,31 +89,38 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
         }
         setContentView(R.layout.activity_main2);
         initVar();
-//        Intent intent=getIntent();
-//        MyApplication myApplication=(MyApplication)getApplication();
-//        Bitmap bitmap;
-//        BitmapDrawable drawable=null;
-//        boolean flag=intent.getBooleanExtra("flag",false);
-//        if((bitmap=myApplication.getMyBitmap())!=null){
-//            flag=true;
-//            drawable=new BitmapDrawable(getResources(),bitmap);
-//        }
-//        if(flag){
-//            drawerLayout.setBackground(drawable);
-//        }else{
-            drawerLayout.setBackgroundResource(R.drawable.ic_background);
-//        }
+        String imagePath;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(prefs.getString("imagePath",null)!=null){
+            imagePath=prefs.getString("imagePath", null);
+            Bitmap bitmap= BitmapFactory.decodeFile(imagePath);
+            backgroundImg.setImageBitmap(bitmap);
+        }else{
+            backgroundImg.setImageResource(R.drawable.ic_background);
+        }
+//        Intent intent=getIntent();
+//        imagePath=intent.getStringExtra("imagePath");
+//        if(imagePath!=null){
+//            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(Main2Activity.this).edit();
+//            editor.putString("imagePath", imagePath);
+//            editor.apply();
+//            Bitmap bitmap= BitmapFactory.decodeFile(imagePath);
+//            backgroundImg.setImageBitmap(bitmap);
+//        }else{
+//            backgroundImg.setImageResource(R.drawable.ic_background);
+//        }
         String weatherString = prefs.getString("weather", null);
         final String weatherId;
         if (weatherString != null) {
             // 有缓存时直接解析天气数据
             Weather weather = MyUtil.handleWeatherResponse(weatherString);
             weatherId = weather.basic.weatherId;
+           // Log.d("TAG", "onCreate: 1111"+weatherId);
             showWeatherInfo(weather);
         } else {
             // 无缓存时去服务器查询天气
             weatherId = getIntent().getStringExtra("weatherId");
+           // Log.d("TAG", "onCreate: "+weatherId);
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
         }
@@ -159,7 +169,7 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
      * 根据天气id请求城市天气信息。
      */
     public void requestWeather(final String weatherId) {
-        String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" + "shenzhen" + "&key=d1169cf0b6fa4bc9a43253890b582a5b";
+        String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" + weatherId + "&key=d1169cf0b6fa4bc9a43253890b582a5b";
         MyUtil.sendRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -301,7 +311,7 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
         drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
         menuBu=(Button)findViewById(R.id.menuBu);
         gestureDetector=new GestureDetector(this, this);
-//        bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
+        backgroundImg = (ImageView) findViewById(R.id.backgroundIm);
         weatherLayout = (ScrollView) findViewById(R.id.sv_weather_layout);
         titleCity = (TextView) findViewById(R.id.titleCity);
         titleUpdateTime = (TextView) findViewById(R.id.timeTx);
@@ -383,5 +393,9 @@ public class Main2Activity extends AppCompatActivity implements GestureDetector.
     public boolean onTouchEvent(MotionEvent event) {
 
         return gestureDetector.onTouchEvent(event);
+    }
+    public void onBackPressed(){
+        ActivityCollector.removeAll();
+        //android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

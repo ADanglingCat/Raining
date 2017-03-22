@@ -2,12 +2,12 @@ package com.example.npc.myweather2.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.example.npc.myweather2.R;
+import com.example.npc.myweather2.util.BaseActivity;
 
-public class AreaChooseActivity extends AppCompatActivity {
+public class AreaChooseActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

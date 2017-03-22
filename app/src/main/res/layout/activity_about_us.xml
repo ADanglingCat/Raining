@@ -29,8 +29,6 @@
             style="@style/title"
             android:text="关于我们"
             android:layout_gravity="center"/>
-
-
     </LinearLayout>
     <View
         android:layout_width="match_parent"

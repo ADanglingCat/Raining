@@ -9,15 +9,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
+import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
-public class AboutUsActivity extends AppCompatActivity implements View.OnClickListener{
+public class AboutUsActivity extends BaseActivity implements View.OnClickListener{
     TextView vision;
     TextView update_log;
     TextView contactEmail;
