@@ -59,7 +59,24 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-
+    <string-array name="list_preference_alpha_titles">
+        <item>0</item>
+        <item>20%</item>
+        <item>40%</item>
+        <item>60%</item>
+        <item>80%</item>
+        <item>90%</item>
+        <item>100%</item>
+    </string-array>
+    <string-array name="list_preference_alpha_values">
+        <item>1</item>
+        <item>0.8</item>
+        <item>0.6</item>
+        <item>0.4</item>
+        <item>0.2</item>
+        <item>0.1</item>
+        <item>0</item>
+    </string-array>
     <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>

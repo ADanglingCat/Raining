@@ -26,8 +26,7 @@
         <activity android:name=".ui.AboutUsActivity" />
         <activity android:name=".ui.LicenseActivity" />
         <activity
-            android:name=".ui.AreaManagerActivity"
-            android:launchMode="singleTask" />
+            android:name=".ui.AreaManagerActivity" />
         <activity android:name=".ui.AreaChooseActivity" />
         <activity android:name=".ui.SettingActivity" />
         <activity

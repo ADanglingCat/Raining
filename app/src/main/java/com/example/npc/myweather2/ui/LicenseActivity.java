@@ -31,13 +31,12 @@ public class LicenseActivity extends BaseActivity {
                 "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
                 "See the License for the specific language governing permissions and\n" +
                 "limitations under the License.\n" +
+                "BingWeather\n" +
                 "\n" +
-                "PureWeather\n" +
+                "Author: KXwonderful\n" +
+                "Link:https://github.com/KXwonderful/BingWeather\n" +
                 "\n" +
-                "Author: HanJie\n" +
-                "Link: https://github.com/haruue/HaruueUtils\n" +
-                "\n" +
-                "Copyright 2016 HanJie\n" +
+                "Copyright 2017 KXwonderful\n" +
                 "\n" +
                 "Licensed under the Apache License, Version 2.0 (the \"License\");\n" +
                 "you may not use this file except in compliance with the License.\n" +
@@ -50,11 +49,6 @@ public class LicenseActivity extends BaseActivity {
                 "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
                 "See the License for the specific language governing permissions and\n" +
                 "limitations under the License.\n" +
-                "\n" +
-                "libsuperuser\n" +
-                "\n" +
-                "Author: Chainfire\n" +
-                "Link: https://github.com/Chainfire/libsuperuser\n" +
                 "\n" +
                 "Apache License\n" +
                 "Version 2.0, January 2004\n" +

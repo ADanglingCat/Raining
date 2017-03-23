@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.db.City;
 import com.example.npc.myweather2.db.County;
+import com.example.npc.myweather2.db.CountyList;
 import com.example.npc.myweather2.db.Province;
 import com.example.npc.myweather2.util.MyUtil;
 
@@ -85,6 +86,7 @@ public class AreaChooseFragment extends Fragment {
                     queryCounties();
                 }else if(selectedLevel==LEVEL_COUNTY){
                     selectedCounty=countyList.get(position);
+                    saveCounty();
                     Intent intent;
                     if(getActivity()instanceof MainActivity){
                         intent=new Intent(getContext(),Main2Activity.class);
@@ -138,6 +140,14 @@ public class AreaChooseFragment extends Fragment {
             }
         });
         queryProvinces();
+    }
+    //储存选中城市
+    public void saveCounty(){
+        List<CountyList>countyLists=DataSupport.where("countyId=?",selectedCounty.getId()+"").find(CountyList.class);
+        if(countyLists.size()<=0){
+            CountyList countyList=new CountyList(selectedCounty.getId());
+            countyList.save();
+        }
     }
     //查询省
     private void queryProvinces(){

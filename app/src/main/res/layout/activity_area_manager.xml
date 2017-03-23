@@ -1,67 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_city_manage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#fff">
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="5dp"-->
-        <!--android:background="@color/colorLine"/>-->
+    android:background="#fff"
+    android:orientation="vertical">
+
     <LinearLayout
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal"
-        android:background="@color/colorLine">
+        android:background="@color/colorLine"
+        android:fitsSystemWindows="true"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/backBu_citymanage"
             android:layout_width="30dp"
             android:layout_height="25dp"
+            android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_back"
-            android:layout_gravity="center"/>
+            android:background="@drawable/ic_back" />
+
         <TextView
+            style="@style/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            style="@style/title"
-            android:text="城市管理"
-            android:layout_gravity="center"/>
+            android:text="城市管理" />
     </LinearLayout>
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="5dp"-->
-        <!--android:background="@color/colorLine"/>-->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:scrollbars="none">
+
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/area_manage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <include layout="@layout/area_manager_item"/>
-                <include layout="@layout/area_manager_item"/>
-                <include layout="@layout/area_manager_item"/>
-            </LinearLayout>
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/addCityBu"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="end|bottom"
-                android:src="@drawable/ic_add_white_48dp"
-                android:background="@drawable/shape_city"
-                android:layout_marginTop="100dp"
-                android:layout_marginRight="30dp"
-                android:elevation="10dp"/>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addCityBu"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="100dp"
+        android:layout_marginRight="45dp"
+        android:background="@drawable/shape_city"
+        android:elevation="10dp"
+        android:src="@drawable/ic_add_white_48dp" />
+
+</FrameLayout>

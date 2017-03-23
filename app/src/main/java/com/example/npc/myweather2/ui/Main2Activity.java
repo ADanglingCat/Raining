@@ -98,17 +98,6 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
         }else{
             backgroundImg.setImageResource(R.drawable.ic_background);
         }
-//        Intent intent=getIntent();
-//        imagePath=intent.getStringExtra("imagePath");
-//        if(imagePath!=null){
-//            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(Main2Activity.this).edit();
-//            editor.putString("imagePath", imagePath);
-//            editor.apply();
-//            Bitmap bitmap= BitmapFactory.decodeFile(imagePath);
-//            backgroundImg.setImageBitmap(bitmap);
-//        }else{
-//            backgroundImg.setImageResource(R.drawable.ic_background);
-//        }
         String weatherString = prefs.getString("weather", null);
         final String weatherId;
         if (weatherString != null) {

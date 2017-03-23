@@ -68,6 +68,12 @@
             android:dependency="diy">
             <intent android:action="com.example.myweather.Choose" />
         </Preference>
+        <ListPreference android:title="背景透明度"
+            android:dependency="diy"
+            android:defaultValue="1"
+            android:key="alpha"
+            android:entries="@array/list_preference_alpha_titles"
+            android:entryValues="@array/list_preference_alpha_values"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="其他">
         <SwitchPreference
