@@ -280,6 +280,11 @@ public class AreaChooseFragment extends Fragment {
                     }else if(selectedLevel==LEVEL_CITY){
                         queryProvinces();
                         return true;
+                    }else if(selectedLevel==LEVEL_PROVINCE){
+                        Intent intent=new Intent(getContext(),AreaManagerActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                        return true;
                     }
                 }
                 return false;

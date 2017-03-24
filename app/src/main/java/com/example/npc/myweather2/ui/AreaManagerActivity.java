@@ -1,5 +1,8 @@
 package com.example.npc.myweather2.ui;
 
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -31,17 +34,43 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
         backBu.setOnClickListener(this);
         addCityBu.setOnClickListener(this);
         countyCollect= DataSupport.findAll(CountyList.class);
-        AreaManageAdapter adapter=new AreaManageAdapter(this,R.layout.area_manager_item,countyCollect);
+        final AreaManageAdapter adapter=new AreaManageAdapter(this,R.layout.area_manager_item,countyCollect);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CountyList countyList=countyCollect.get(position);
-                List<County> counties= DataSupport.where("id=?",countyList.getCountyId()+"").find(County.class);
-                Intent intent=new Intent(AreaManagerActivity.this,Main2Activity.class);
-                intent.putExtra("weatherId",counties.get(0).getWeatherId());
-                startActivity(intent);
-                finish();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final CountyList countyList=countyCollect.get(position);
+                final List<County> counties= DataSupport.where("id=?",countyList.getCountyId()+"").find(County.class);
+                AlertDialog.Builder builder=new AlertDialog.Builder(AreaManagerActivity.this)
+                        .setItems(R.array.area_manage_select_list, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which){
+                                    case 0:
+                                       countyList.delete();
+                                        countyCollect.remove(position);
+                                        adapter.notifyDataSetChanged();
+                                       // listView.setSelection(0);
+                                        break;
+                                    case 1:
+                                        ContentValues values=new ContentValues();
+                                        values.put("mainCity",false);
+                                        DataSupport.updateAll(CountyList.class,values,"mainCity=?","true");
+                                        countyList.setMainCity(true);
+                                        countyList.save();
+                                        break;
+                                    case 2:
+                                        Intent intent=new Intent(AreaManagerActivity.this,Main2Activity.class);
+                                        intent.putExtra("weatherId",counties.get(0).getWeatherId());
+                                        startActivity(intent);
+                                        finish();
+                                        break;
+                                }
+                            }
+                        });
+                builder.create().show();
+
+
             }
         });
         listView.setOnLongClickListener(new View.OnLongClickListener() {

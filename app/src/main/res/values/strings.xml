@@ -78,7 +78,11 @@
         <item>0</item>
     </string-array>
     <string-array name="multi_select_list_preference_default_value" />
-
+    <string-array name="area_manage_select_list">
+        <item>删除城市</item>
+        <item>设为默认</item>
+        <item>查看天气</item>
+    </string-array>
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->

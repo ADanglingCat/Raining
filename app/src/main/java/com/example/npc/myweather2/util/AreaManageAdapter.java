@@ -31,8 +31,8 @@ public class AreaManageAdapter extends ArrayAdapter<CountyList> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        List<CountyList> countyLists=DataSupport.findAll(CountyList.class);
-        CountyList countyList=countyLists.get(position);
+        //List<CountyList> countyLists=DataSupport.findAll(CountyList.class);
+        CountyList countyList=getItem(position);
 
         View view;
         ViewHolder viewHolder;
