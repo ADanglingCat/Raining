@@ -104,4 +104,6 @@
     <string name="sport">运动指数</string>
     <string name="air">污染指数</string>
     <string name="suggestion">生活建议</string>
+    <string name="weatherAddress">https://free-api.heweather.com/v5/weather?city=</string>
+    <string name="weatherKey">key=d1169cf0b6fa4bc9a43253890b582a5b</string>
 </resources>

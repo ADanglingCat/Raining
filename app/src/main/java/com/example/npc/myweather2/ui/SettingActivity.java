@@ -26,7 +26,4 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         startActivity(intent);
         finish();
     }
-    public void onBackPressed(){
-        onClick(backBu_setting);
-    }
 }

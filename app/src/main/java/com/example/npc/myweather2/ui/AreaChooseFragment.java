@@ -1,16 +1,15 @@
 package com.example.npc.myweather2.ui;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,10 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.npc.myweather2.R;
-import com.example.npc.myweather2.db.City;
-import com.example.npc.myweather2.db.County;
-import com.example.npc.myweather2.db.CountyList;
-import com.example.npc.myweather2.db.Province;
+import com.example.npc.myweather2.model.City;
+import com.example.npc.myweather2.model.County;
+import com.example.npc.myweather2.model.CountyList;
+import com.example.npc.myweather2.model.Province;
 import com.example.npc.myweather2.util.MyUtil;
 
 import org.litepal.crud.DataSupport;
@@ -67,8 +66,9 @@ public class AreaChooseFragment extends Fragment {
         adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dataList);
         areaList.setAdapter(adapter);
         searchView=(SearchView)view.findViewById(R.id.searchView);
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setIconifiedByDefault(false);
+       // searchView.setSubmitButtonEnabled(true);
+        //searchView.setIconifiedByDefault(false);
+
         return view;
     }
 
@@ -90,45 +90,44 @@ public class AreaChooseFragment extends Fragment {
                     Intent intent;
                     if(getActivity()instanceof MainActivity){
                         intent=new Intent(getContext(),Main2Activity.class);
+                        intent.putExtra("weatherId",selectedCounty.getWeatherId());
                     }else{
                         intent=new Intent(getContext(),AreaManagerActivity.class);
                     }
-                    intent.putExtra("weatherId",selectedCounty.getWeatherId());
                     startActivity(intent);
                     getActivity().finish();
-//                    MyUtil.showToast(getContext(), selectedCounty.getCountyName());
                 }
             }
         });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                InputMethodManager inManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                inManager.hideSoftInputFromWindow(searchView.getWindowToken(),0);
-                selectedProvince=new Province();
-                selectedProvince.setProvinceName(query);
-                queryCities();
-               // if(!flag){
-                    selectedCity=new City();
-                    selectedCity.setCityName(query);
-                    //queryCounties();
-                //};
-                Intent intent;
-                if(getActivity()instanceof MainActivity){
-                    intent=new Intent(getContext(),Main2Activity.class);
-                }else{
-                    intent=new Intent(getContext(),AreaManagerActivity.class);
-                }
-                startActivity(intent);
-                getActivity().finish();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                InputMethodManager inManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inManager.hideSoftInputFromWindow(searchView.getWindowToken(),0);
+//                selectedProvince=new Province();
+//                selectedProvince.setProvinceName(query);
+//                queryCities();
+//               // if(!flag){
+//                    selectedCity=new City();
+//                    selectedCity.setCityName(query);
+//                    //queryCounties();
+//                //};
+//                Intent intent;
+//                if(getActivity()instanceof MainActivity){
+//                    intent=new Intent(getContext(),Main2Activity.class);
+//                }else{
+//                    intent=new Intent(getContext(),AreaManagerActivity.class);
+//                }
+//                startActivity(intent);
+//                getActivity().finish();
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,4 +263,28 @@ public class AreaChooseFragment extends Fragment {
             progressDialog.dismiss();
         }
     }
+    public void onResume(){
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        //得到Fragment的根布局并且使其获得焦点
+        getView().requestFocus();
+        //对该根布局View注册KeyListener的监听
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+                    if(selectedLevel==LEVEL_COUNTY){
+                        queryCities();
+                        return true;
+                    }else if(selectedLevel==LEVEL_CITY){
+                        queryProvinces();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
 }

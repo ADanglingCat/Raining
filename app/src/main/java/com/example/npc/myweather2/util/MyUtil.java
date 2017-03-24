@@ -4,10 +4,10 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.example.npc.myweather2.db.City;
-import com.example.npc.myweather2.db.County;
-import com.example.npc.myweather2.db.Province;
 import com.example.npc.myweather2.gson.Weather;
+import com.example.npc.myweather2.model.City;
+import com.example.npc.myweather2.model.County;
+import com.example.npc.myweather2.model.Province;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;

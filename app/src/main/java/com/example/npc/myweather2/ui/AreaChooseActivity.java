@@ -20,4 +20,5 @@ public class AreaChooseActivity extends BaseActivity {
 //            return super.onKeyDown(keyCode,keyEvent);
 //        }
 //    }
+
 }
