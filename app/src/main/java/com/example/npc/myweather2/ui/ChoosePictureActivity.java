@@ -17,10 +17,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.util.BaseActivity;
+import com.example.npc.myweather2.util.MyUtil;
 
 public class ChoosePictureActivity extends BaseActivity {
     public static final int TAKE_PHOTO = 1;
@@ -40,6 +40,7 @@ public class ChoosePictureActivity extends BaseActivity {
             public void onClick(View v) {
                 editor.remove("imagePath");
                 editor.commit();
+                MyUtil.showToast(ChoosePictureActivity.this,"设置成功,下次启动生效");
                 finish();
             }
         });
@@ -68,7 +69,7 @@ public class ChoosePictureActivity extends BaseActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openAlbum();
                 } else {
-                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
+                    MyUtil.showToast(this, "请授予权限");
                 }
                 break;
             default:
@@ -144,9 +145,10 @@ public class ChoosePictureActivity extends BaseActivity {
         if (imagePath != null) {
             editor.putString("imagePath", imagePath);
             editor.apply();
+            MyUtil.showToast(this,"设置成功,下次启动生效");
             finish();
         } else {
-            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
+            MyUtil.showToast(this,"获取图片失败");
         }
     }
 

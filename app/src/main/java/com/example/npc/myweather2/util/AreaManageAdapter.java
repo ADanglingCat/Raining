@@ -9,10 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
-import com.example.npc.myweather2.model.County;
 import com.example.npc.myweather2.model.CountyList;
-
-import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
@@ -31,7 +28,6 @@ public class AreaManageAdapter extends ArrayAdapter<CountyList> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        //List<CountyList> countyLists=DataSupport.findAll(CountyList.class);
         CountyList countyList=getItem(position);
 
         View view;
@@ -47,10 +43,8 @@ public class AreaManageAdapter extends ArrayAdapter<CountyList> {
             viewHolder.cityName=(TextView)view.findViewById(R.id.cityName_manager);
             view.setTag(viewHolder);
         }
-        List<County> counties= DataSupport.where("id=?",countyList.getCountyId()+"").find(County.class);
-//        Log.d("TAG", "getView: "+countyList.getId());
-        viewHolder.cityFirstName.setText(counties.get(0).getCountyName().substring(0,1));
-        viewHolder.cityName.setText(counties.get(0).getCountyName());
+        viewHolder.cityFirstName.setText(countyList.getCountyName().substring(0,1));
+        viewHolder.cityName.setText(countyList.getCountyName());
         return view;
     }
     class ViewHolder{

@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.npc.myweather2.R;
-import com.example.npc.myweather2.model.County;
 import com.example.npc.myweather2.model.CountyList;
 import com.example.npc.myweather2.util.BaseActivity;
 
@@ -30,23 +30,24 @@ public class MainActivity extends BaseActivity {
         List<CountyList> countyLists= DataSupport.findAll(CountyList.class);
         if(countyLists.size()>0){
             boolean flag=true;
-            String weatherId;
-            List<County>counties=null;
+            String weatherId="";
             for(CountyList countyList:countyLists){
                 if(countyList.isMainCity()){
                     flag=false;
-                    counties=DataSupport.where("id=?",countyList.getCountyId()+"").find(County.class);
+                    weatherId=countyList.getWeatherId();
+                    Log.d("TAG", "onCreate1: "+weatherId);
+                    break;
                 }
             }
             if(flag){
                 countyLists.get(0).setMainCity(true);
                 countyLists.get(0).save();
-                //Log.d("TAG", "onCreate: saved"+countyLists.get(0).isMainCity());
-                counties=DataSupport.where("id=?",countyLists.get(0).getCountyId()+"").find(County.class);
+                weatherId=countyLists.get(0).getWeatherId();
+                Log.d("TAG", "onCreate: 2"+weatherId);
             }
-            weatherId=counties.get(0).getWeatherId();
             Intent intent=new Intent(this,Main2Activity.class);
             intent.putExtra("weatherId",weatherId);
+
             startActivity(intent);
             finish();
         }

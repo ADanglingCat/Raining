@@ -1,18 +1,17 @@
 package com.example.npc.myweather2.ui;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.npc.myweather2.R;
-import com.example.npc.myweather2.model.County;
 import com.example.npc.myweather2.model.CountyList;
 import com.example.npc.myweather2.util.AreaManageAdapter;
 import com.example.npc.myweather2.util.BaseActivity;
@@ -40,30 +39,34 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final CountyList countyList=countyCollect.get(position);
-                final List<County> counties= DataSupport.where("id=?",countyList.getCountyId()+"").find(County.class);
                 AlertDialog.Builder builder=new AlertDialog.Builder(AreaManagerActivity.this)
                         .setItems(R.array.area_manage_select_list, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which){
                                     case 0:
-                                       countyList.delete();
-                                        countyCollect.remove(position);
-                                        adapter.notifyDataSetChanged();
-                                       // listView.setSelection(0);
-                                        break;
-                                    case 1:
-                                        ContentValues values=new ContentValues();
-                                        values.put("mainCity",false);
-                                        DataSupport.updateAll(CountyList.class,values,"mainCity=?","true");
-                                        countyList.setMainCity(true);
-                                        countyList.save();
-                                        break;
-                                    case 2:
                                         Intent intent=new Intent(AreaManagerActivity.this,Main2Activity.class);
-                                        intent.putExtra("weatherId",counties.get(0).getWeatherId());
+                                        intent.putExtra("weatherId",countyList.getWeatherId());
+                                        Log.d("TAG", "1111"+countyList.getWeatherId());
                                         startActivity(intent);
                                         finish();
+                                        break;
+                                    case 1:
+//                                        ContentValues values=new ContentValues();
+//                                        values.put("mainCity",false);
+//                                        DataSupport.updateAll(CountyList.class,values,"mainCity=?","1");
+                                        CountyList countyList1=new CountyList();
+                                        countyList1.setMainCity(false);
+                                        countyList1.setToDefault("mainCity");
+                                        countyList1.updateAll();
+                                        countyList.setMainCity(true);
+                                        countyList.save();
+                                        Log.d("TAG", "default: "+countyList.getWeatherId());
+                                        break;
+                                    case 2:
+                                        countyList.delete();
+                                        countyCollect.remove(position);
+                                        adapter.notifyDataSetChanged();
                                         break;
                                 }
                             }
@@ -71,13 +74,6 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
                 builder.create().show();
 
 
-            }
-        });
-        listView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                return false;
             }
         });
 
@@ -92,8 +88,7 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
         Intent intent;
         switch (view.getId()){
             case R.id.backBu_citymanage:
-                intent=new Intent(AreaManagerActivity.this,Main2Activity.class);
-                startActivity(intent);
+                onBackPressed();
                 finish();
                 break;
             case R.id.addCityBu:

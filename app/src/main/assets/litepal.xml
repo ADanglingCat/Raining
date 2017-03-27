@@ -1,6 +1,6 @@
 <litepal>
     <dbname value="myWeather"/>
-    <version value="2"/>
+    <version value="3"/>
     <list>
         <mapping class="com.example.npc.myweather2.model.Province"/>
         <mapping class="com.example.npc.myweather2.model.City"/>

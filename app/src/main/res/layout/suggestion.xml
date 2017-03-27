@@ -26,11 +26,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_travel"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/trav_sug"
                     style="@style/suggestion_text_view_small"
-                     />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -42,11 +43,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_air"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/air_sug"
                     style="@style/suggestion_text_view_small"
-                    />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -58,11 +60,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_cw"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/cw_sug"
                     style="@style/suggestion_text_view_small"
-                    />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -74,11 +77,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_sport"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/sport_sug"
                     style="@style/suggestion_text_view_small"
-                    />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -90,11 +94,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_uv"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/uv_sug"
                     style="@style/suggestion_text_view_small"
-                    />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -106,11 +111,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_comf"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/comf_sug"
                     style="@style/suggestion_text_view_small"
-                    />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -122,11 +128,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_drsg"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/drsg_sug"
                     style="@style/suggestion_text_view_small"
-                    />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -138,11 +145,12 @@
                 style="@style/suggestion_vertical_layout">
                 <TextView
                     android:id="@+id/suggestion_flu"
-                    style="@style/suggestion_text_view_big" />
+                    style="@style/suggestion_text_view_big"
+                    android:text="@string/unknown"/>
                 <TextView
                     android:id="@+id/flu_sug"
                     style="@style/suggestion_text_view_small"
-                    />
+                    android:text="@string/unknown"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

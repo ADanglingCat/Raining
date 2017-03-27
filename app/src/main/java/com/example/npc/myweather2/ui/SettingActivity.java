@@ -1,6 +1,5 @@
 package com.example.npc.myweather2.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +20,13 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         backBu_setting.setOnClickListener(this);
     }
     public void onClick(View view){
-        Intent intent;
-        intent=new Intent(SettingActivity.this,Main2Activity.class);
-        startActivity(intent);
-        finish();
+//                Intent intent;
+//                intent=new Intent(SettingActivity.this,Main2Activity.class);
+//                startActivity(intent);
+                onBackPressed();
+                finish();
     }
+//    public void onBackPressed(){
+//        onClick(backBu_setting);
+//    }
 }

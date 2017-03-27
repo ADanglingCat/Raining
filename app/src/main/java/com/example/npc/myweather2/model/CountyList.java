@@ -10,10 +10,25 @@ public class CountyList extends DataSupport {
     private int id;
     private int countyId;
     private boolean mainCity;
+    private String weatherId;
+    private String countyName;
     public CountyList(){}
     public CountyList(int countyId){
         this.countyId=countyId;
     }
+    public CountyList(String weatherId,String countyName){
+        this.weatherId=weatherId;
+        this.countyName=countyName;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
+    }
+
     public int getId() {
         return id;
     }
@@ -36,5 +51,13 @@ public class CountyList extends DataSupport {
 
     public void setMainCity(boolean mainCity) {
         this.mainCity = mainCity;
+    }
+
+    public String getWeatherId() {
+        return weatherId;
+    }
+
+    public void setWeatherId(String weatherId) {
+        this.weatherId = weatherId;
     }
 }

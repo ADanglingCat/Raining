@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v7.widget.SearchView
         android:id="@+id/searchView"
-        android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorLine"
-        android:queryHint="输入城市名">
-    </android.support.v7.widget.SearchView>
+        android:fitsSystemWindows="true"/>
+    <ListView
+        android:id="@+id/search_result_listView"
+        android:layout_below="@id/searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <RelativeLayout
+        android:id="@+id/title_choose_area"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/search_result_listView"
         android:background="@color/colorLine">
         <TextView
             android:id="@+id/titleTx"
@@ -26,15 +31,17 @@
             android:id="@+id/backBu"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_marginLeft="8dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_back"/>
+            android:background="@drawable/ic_back"
+            tools:ignore="RtlHardcoded" />
     </RelativeLayout>
     <ListView
         android:id="@+id/areaList"
         android:background="#fff"
+        android:layout_below="@id/title_choose_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"/>
-</LinearLayout>
+</RelativeLayout>

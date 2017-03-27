@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +25,12 @@ import com.example.npc.myweather2.model.County;
 import com.example.npc.myweather2.model.CountyList;
 import com.example.npc.myweather2.model.Province;
 import com.example.npc.myweather2.util.MyUtil;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -42,6 +49,7 @@ public class AreaChooseFragment extends Fragment {
     public static final int LEVEL_PROVINCE=0;//省级
     public static final int LEVEL_CITY=1;    //市级
     public static final int LEVEL_COUNTY=2;  //县级
+    public static final int LEVEL_SEARCH=3;  //县级
     private SearchView searchView;
     private TextView titleText;
     private Button backButton;
@@ -56,6 +64,11 @@ public class AreaChooseFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private List<String> dataList=new ArrayList<>();//数据库表中查询到的数据
     private ProgressDialog progressDialog;
+    private RelativeLayout layout;
+    private List<SearchCounty> searchCountyList;
+    private ListView searchResult;
+    private ArrayAdapter<String> arrayAdapter;
+    private List<String> searchDataList;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,12 +76,18 @@ public class AreaChooseFragment extends Fragment {
         titleText=(TextView) view.findViewById(R.id.titleTx);
         backButton=(Button)view.findViewById(R.id.backBu);
         areaList=(ListView)view.findViewById(R.id.areaList);
-        adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,dataList);
+        searchResult=(ListView)view.findViewById(R.id.search_result_listView);
+        layout=(RelativeLayout)view.findViewById(R.id.title_choose_area);
+        adapter=new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,dataList);
         areaList.setAdapter(adapter);
+        searchCountyList=new ArrayList<>();
         searchView=(SearchView)view.findViewById(R.id.searchView);
-       // searchView.setSubmitButtonEnabled(true);
-        //searchView.setIconifiedByDefault(false);
-
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setIconifiedByDefault(false);
+        searchView.setQueryHint("输入城市名");
+        searchDataList=new ArrayList<>();
+        arrayAdapter=new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,searchDataList);
+        searchResult.setAdapter(arrayAdapter);
         return view;
     }
 
@@ -85,8 +104,8 @@ public class AreaChooseFragment extends Fragment {
                     selectedCity=cityList.get(position);
                     queryCounties();
                 }else if(selectedLevel==LEVEL_COUNTY){
-                    selectedCounty=countyList.get(position);
-                    saveCounty();
+                        selectedCounty=countyList.get(position);
+                        saveCounty(selectedCounty.getWeatherId(),selectedCounty.getCountyName());
                     Intent intent;
                     if(getActivity()instanceof MainActivity){
                         intent=new Intent(getContext(),Main2Activity.class);
@@ -99,41 +118,49 @@ public class AreaChooseFragment extends Fragment {
                 }
             }
         });
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
+        searchResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SearchCounty s=searchCountyList.get(position);
+                saveCounty(s.basic.weatherId,s.basic.countyName);
+                Intent intent;
+                if(getActivity()instanceof MainActivity){
+                    intent=new Intent(getContext(),Main2Activity.class);
+                    intent.putExtra("weatherId",s.basic.weatherId);
+                }else{
+                    intent=new Intent(getContext(),AreaManagerActivity.class);
+                }
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                selectedLevel=LEVEL_SEARCH;
+                queryCountyByName(query);
+                //areaList.setVisibility(View.GONE);
+                queryProvinces();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
 //                InputMethodManager inManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 //                inManager.hideSoftInputFromWindow(searchView.getWindowToken(),0);
-//                selectedProvince=new Province();
-//                selectedProvince.setProvinceName(query);
-//                queryCities();
-//               // if(!flag){
-//                    selectedCity=new City();
-//                    selectedCity.setCityName(query);
-//                    //queryCounties();
-//                //};
-//                Intent intent;
-//                if(getActivity()instanceof MainActivity){
-//                    intent=new Intent(getContext(),Main2Activity.class);
-//                }else{
-//                    intent=new Intent(getContext(),AreaManagerActivity.class);
-//                }
-//                startActivity(intent);
-//                getActivity().finish();
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
+//                selectedLevel=LEVEL_SEARCH;
+//                queryCountyByName(newText);
+                searchResult.setVisibility(View.GONE);
+                return false;
+            }
+        });
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(selectedLevel==LEVEL_COUNTY){
                     queryCities();
-                }else if(selectedLevel==LEVEL_CITY){
+                }else if(selectedLevel==LEVEL_CITY||selectedLevel==LEVEL_SEARCH){
                     queryProvinces();
                 }
             }
@@ -141,10 +168,10 @@ public class AreaChooseFragment extends Fragment {
         queryProvinces();
     }
     //储存选中城市
-    public void saveCounty(){
-        List<CountyList>countyLists=DataSupport.where("countyId=?",selectedCounty.getId()+"").find(CountyList.class);
+    public void saveCounty(String weatherId,String countyName){
+        List<CountyList>countyLists=DataSupport.where("weatherId=?",weatherId).find(CountyList.class);
         if(countyLists.size()<=0){
-            CountyList countyList=new CountyList(selectedCounty.getId());
+            CountyList countyList=new CountyList(weatherId,countyName);
             countyList.save();
         }
     }
@@ -163,11 +190,10 @@ public class AreaChooseFragment extends Fragment {
             selectedLevel=LEVEL_PROVINCE;
         }else{
             //本地查询失败,去服务器查询
-            String address="http://guolin.tech/api/china";
-            queryFromServer(address,0);
+            String address=getResources().getString(R.string.areaAddress);
+            queryFromServer(address,LEVEL_PROVINCE);
         }
     }
-    //查询市
     private void queryCities(){
         titleText.setText(selectedProvince.getProvinceName());
         backButton.setVisibility(View.VISIBLE);
@@ -182,7 +208,7 @@ public class AreaChooseFragment extends Fragment {
             selectedLevel=LEVEL_CITY;
         }else{
             int selectedProvinceCode=selectedProvince.getProvinceCode();
-            String address="http://guolin.tech/api/china/"+selectedProvinceCode;
+            String address=getResources().getString(R.string.areaAddress)+selectedProvinceCode;
             queryFromServer(address,LEVEL_CITY);
         }
     }
@@ -201,9 +227,46 @@ public class AreaChooseFragment extends Fragment {
         }else{
             int selectedProvinceCode=selectedProvince.getProvinceCode();
             int selectedCityCode=selectedCity.getCityCode();
-            String address="http://guolin.tech/api/china/"+selectedProvinceCode+"/"+selectedCityCode;
+            String address=getResources().getString(R.string.areaAddress)+selectedProvinceCode+"/"+selectedCityCode;
             queryFromServer(address,LEVEL_COUNTY);
         }
+    }
+    //通过城市名搜索城市
+    private void queryCountyByName(String countyName){
+            String address=getResources().getString(R.string.countyAddress)+countyName+"&"+getResources().getString(R.string.weatherKey);
+            queryFromServer(address,LEVEL_SEARCH);
+    }
+    //显示查询结果
+    private void showSearchResult(){
+        searchDataList.clear();
+        if(searchCountyList.size()>0&&searchCountyList.get(0).basic!=null){
+            for(SearchCounty s :searchCountyList){
+                    searchDataList.add(s.basic.countyName+"  "+s.basic.provinceName);
+            }
+        }else{
+
+            MyUtil.showToast(getContext(),"地区不存在,请重新输入");
+            searchResult.setVisibility(View.GONE);
+            //searchView搜索框数据清空
+        }
+        arrayAdapter.notifyDataSetChanged();
+        searchResult.setVisibility(View.VISIBLE);
+    }
+    private boolean handleCounty(String response){
+        try{
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather5");
+            String BasicContent=jsonArray.toString();
+            //SearchCounty s1=new Gson().fromJson(BasicContent,SearchCounty.class);
+            searchCountyList.clear();
+            //searchCountyList.add(s1);
+            //Log.d("TAG", "handleCounty: "+BasicContent);
+            searchCountyList=new Gson().fromJson(BasicContent,new TypeToken<List<SearchCounty>>(){}.getType());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
     //从服务器查询地区数据
     private void queryFromServer(String address, final int type){
@@ -228,8 +291,10 @@ public class AreaChooseFragment extends Fragment {
                     result= MyUtil.handleProvinceResponse(responseText);
                 }else if(type==LEVEL_CITY){
                     result=MyUtil.handleCityResponse(responseText,selectedProvince.getId());
-                }else{
+                }else if(type==LEVEL_COUNTY){
                     result=MyUtil.handleCountyResponse(responseText,selectedCity.getId());
+                }else if(type==LEVEL_SEARCH){
+                    result=handleCounty(responseText);
                 }
                 if (result){
                     getActivity().runOnUiThread(new Runnable() {
@@ -242,10 +307,15 @@ public class AreaChooseFragment extends Fragment {
                                 queryCities();
                             }else if(type==LEVEL_COUNTY){
                                 queryCounties();
+                            }else if(type==LEVEL_SEARCH){
+                                showSearchResult();
                             }
                             closeProgressDialog();
                         }
                     });
+                }else{
+                    Log.d("TAG", "onResponse: "+responseText);
+                    closeProgressDialog();
                 }
             }
         });
@@ -254,7 +324,7 @@ public class AreaChooseFragment extends Fragment {
         if(progressDialog==null){
             progressDialog=new ProgressDialog(getActivity());
             progressDialog.setMessage("加载中...");
-            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCanceledOnTouchOutside(true);
         }
         progressDialog.show();
     }
@@ -291,5 +361,18 @@ public class AreaChooseFragment extends Fragment {
             }
         });
     }
+
+    public class SearchCounty{
+        public Basic basic;
+        public class Basic{
+            @SerializedName("city")
+            public String countyName;
+            @SerializedName("prov")
+            public String provinceName;
+            @SerializedName("id")
+            public String weatherId;
+        }
+    }
+
 
 }

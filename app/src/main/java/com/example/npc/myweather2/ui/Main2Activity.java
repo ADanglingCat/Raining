@@ -10,11 +10,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -42,6 +44,7 @@ import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -84,7 +87,10 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
     private TextView title_designText;
     private ImageView backgroundImg;
     private Resources resources;
-    String weatherId;
+    private Button voiceBu;
+    public String weatherId;
+    public TextToSpeech tts;
+    public String voiceWeather;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,6 +154,34 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+        tts=new TextToSpeech(Main2Activity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status==TextToSpeech.SUCCESS){
+                    int result=tts.setLanguage(Locale.CHINA);
+                    if(result!=TextToSpeech.LANG_COUNTRY_AVAILABLE&&result!=TextToSpeech.LANG_AVAILABLE){
+                        MyUtil.showToast(Main2Activity.this,"无法语音播报");
+                    }
+                }
+            }
+        });
+        voiceBu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tts.isSpeaking()){
+                   tts.stop();
+                    return;
+                }else{
+                    if (Build.VERSION.SDK_INT >= 21){
+                        tts.speak(voiceWeather,TextToSpeech.QUEUE_FLUSH,null,"speech");
+                       Log.d("TAG", "onClick: "+voiceWeather);
+
+                    }else{
+                        MyUtil.showToast(Main2Activity.this,"无法语音播报");
+                    }
+                }
             }
         });
         NavigationView navigationView = (NavigationView) findViewById(R.id.menuNa);
@@ -235,100 +269,178 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
      * 处理并展示Weather实体类中的数据。
      */
     private void showWeatherInfo(Weather weather) {
-        String cityName = weather.basic.cityName;
-        String updateTime = weather.basic.update.updateTime.split(" ")[1];
-        String degree = weather.now.tmp + "℃";
-        String weatherInfo = weather.now.cond.txt;
-        String windDir = weather.now.wind.dir;
-        String windSc = weather.now.wind.sc;
-        String fl = weather.now.fl;
+        voiceWeather="";
+        if (weather.basic.update!=null) {
+            String updateTime = weather.basic.update.updateTime.split(" ")[1];
+            titleUpdateTime.setText(updateTime + "更新");
+        }
+        if (weather.basic.cityName!=null) {
+            String cityName = weather.basic.cityName;
+            titleCity.setText(cityName);
+        }
+        voiceWeather+=titleCity.getText()+"..今日天气:";
+        if (weather.now!=null) {
+            if ( weather.now.tmp!=null) {
+                String degree = weather.now.tmp + "℃";
+                degreeText.setText(degree);
+            }
+            if (weather.now.cond!=null) {
+                String weatherInfo = weather.now.cond.txt;
+                weatherInfoText.setText(weatherInfo);
+                voiceWeather+=weatherInfo+"。";
+            }else{
+                voiceWeather+=weatherInfoText.getText();
+            }
+            if (weather.now.wind!=null) {
+                String windDir = weather.now.wind.dir;
+                String windSc = weather.now.wind.sc;
 
-        titleCity.setText(cityName);
-        titleUpdateTime.setText(updateTime + "更新");
-        flText.setText("体感温度:" + fl + "℃");
-        degreeText.setText(degree);
-        weatherInfoText.setText(weatherInfo);
-        windText.setText("风向/风力:" + windDir + "/" + windSc);
+                if(windSc.contains("-")){
+                    windText.setText("风向/风力:" + windDir + "/" + windSc+"级");
+                    voiceWeather+=windDir+","+windSc+"级。最高温度：";
+                }else{
+                    windText.setText("风向/风力:" + windDir + "/" + windSc);
+                    voiceWeather+=windDir+","+windSc+"。最高温度：";
+                }
+
+
+            }
+            if (weather.now.fl!=null) {
+                String fl = weather.now.fl;
+                flText.setText("体感温度:" + fl + "℃");
+            }
+        }
         forecastLayout.removeAllViews();
         hourlylayout.removeAllViews();
         boolean flag = true;
-        for (HourlyForecast forecast : weather.hourlyForecasts) {
-            View view = LayoutInflater.from(this).inflate(R.layout.hourly_item, hourlylayout, false);
-            TextView tmpText = (TextView) view.findViewById(R.id.hour_tmpTx);
-            ImageView image = (ImageView) view.findViewById(R.id.hour_imageTx);
-            TextView hourText = (TextView) view.findViewById(R.id.hour_time);
-            String code = "ic_" + forecast.cond.code;
-            int id = getDrawable(Main2Activity.this, code);
-            image.setImageResource(id);
-            tmpText.setText(forecast.tmp + "℃");
-            hourText.setText(forecast.date.substring(11));
-            hourlylayout.addView(view);
+        //未来几小时天气
+
+        if (weather.hourlyForecasts!=null) {
+            for (HourlyForecast forecast : weather.hourlyForecasts) {
+                View view = LayoutInflater.from(this).inflate(R.layout.hourly_item, hourlylayout, false);
+                TextView tmpText = (TextView) view.findViewById(R.id.hour_tmpTx);
+                ImageView image = (ImageView) view.findViewById(R.id.hour_imageTx);
+                TextView hourText = (TextView) view.findViewById(R.id.hour_time);
+                String code = "ic_" + forecast.cond.code;
+                int id = getDrawable(Main2Activity.this, code);
+                image.setImageResource(id);
+                tmpText.setText(forecast.tmp + "℃");
+                hourText.setText(forecast.date.substring(11));
+                hourlylayout.addView(view);
+            }
         }
-        for (DailyForecast forecast : weather.dailyForecasts) {
-            View view = LayoutInflater.from(this).inflate(R.layout.daily_item, forecastLayout, false);
-            TextView dateText = (TextView) view.findViewById(daily_dateTx);
-            TextView condText = (TextView) view.findViewById(R.id.daily_condTx);
-            TextView popText = (TextView) view.findViewById(R.id.daily_popTx);
-            TextView maxText = (TextView) view.findViewById(R.id.daily_maxTx);
-            TextView minText = (TextView) view.findViewById(R.id.daily_minTx);
-            dateText.setText(forecast.date.substring(5));
-            condText.setText(forecast.cond.txt_d);
-            popText.setText(forecast.pop + "%");
-            maxText.setText(forecast.tmp.max + "℃");
-            minText.setText(forecast.tmp.min + "℃");
-            forecastLayout.addView(view);
-            if (flag) {
-                String sr = forecast.astro.sr;//日出
-                String ss = forecast.astro.ss;//日落
-                astroText.setText("日出/日落:" + sr + "/" + ss);
-                flag = false;
+        //未来几天天气
+        if (weather.dailyForecasts!=null) {
+            for (DailyForecast forecast : weather.dailyForecasts) {
+                View view = LayoutInflater.from(this).inflate(R.layout.daily_item, forecastLayout, false);
+                if (forecast.date!=null) {
+                    TextView dateText = (TextView) view.findViewById(daily_dateTx);
+                    dateText.setText(forecast.date.substring(5));
+                }
+                if (forecast.cond!=null) {
+                    TextView condText = (TextView) view.findViewById(R.id.daily_condTx);
+                    condText.setText(forecast.cond.txt_d);
+                }
+                if (forecast.pop!=null) {
+                    TextView popText = (TextView) view.findViewById(R.id.daily_popTx);
+                    popText.setText(forecast.pop + "%");
+                }
+                TextView maxText = (TextView) view.findViewById(R.id.daily_maxTx);
+                if (forecast.tmp.max!=null) {
+
+                    maxText.setText(forecast.tmp.max + "℃");
+                }
+                TextView minText = (TextView) view.findViewById(R.id.daily_minTx);
+                if (forecast.tmp.min !=null) {
+
+                    minText.setText(forecast.tmp.min + "℃");
+                }
+                forecastLayout.addView(view);
+                //只获取第一天的日出日落时间
+                if (forecast.astro!=null) {
+                    if (flag) {
+                        voiceWeather+=maxText.getText()+"，最低温度："+minText.getText();
+                        String sr = null;//日出
+                        if (forecast.astro.sr!=null) {
+                            sr = forecast.astro.sr;
+                        }
+                        String ss = null;//日落
+                        if (forecast.astro.ss!=null) {
+                            ss = forecast.astro.ss;
+                        }
+                        astroText.setText("日出/日落:" + sr + "/" + ss);
+                        flag = false;
+                    }
+                }
             }
         }
         if (weather.aqi != null) {
             aqiText.setText("空气质量:" + weather.aqi.city.aqi + "/" + weather.aqi.city.qlty);
         }
-        String comfort = weather.suggestion.comf.txt;
-        String carWash = weather.suggestion.cw.txt;
-        String sport = weather.suggestion.sport.txt;
-        String drsg = weather.suggestion.drsg.txt;
-        String uv = weather.suggestion.uv.txt;
-        String air = weather.suggestion.air.txt;
-        String trav = weather.suggestion.trav.txt;
-        String flu = weather.suggestion.flu.txt;
-        String title_comfort = "舒适度指数：" + weather.suggestion.comf.brf;
-        String title_carWash = "洗车指数：" + weather.suggestion.cw.brf;
-        String title_sport = "运动指数：" + weather.suggestion.sport.brf;
-        String title_drsg = "穿衣指数:" + weather.suggestion.drsg.brf;
-        String title_uv = "紫外线指数:" + weather.suggestion.uv.brf;
-        String title_air = "污染指数:" + weather.suggestion.air.brf;
-        String title_trav = "旅行指数:" + weather.suggestion.trav.brf;
-        String title_flu = "感冒指数:" + weather.suggestion.flu.brf;
-
-        comfortText.setText(comfort);
-        carWashText.setText(carWash);
-        sportText.setText(sport);
-        travelText.setText(trav);
-        uvText.setText(uv);
-        fluText.setText(flu);
-        airText.setText(air);
-        designText.setText(drsg);
-        title_comfortText.setText(title_comfort);
-        title_carWashText.setText(title_carWash);
-        title_sportText.setText(title_sport);
-        title_travelText.setText(title_trav);
-        title_uvText.setText(title_uv);
-        title_fluText.setText(title_flu);
-        title_airText.setText(title_air);
-        title_designText.setText(title_drsg);
-        weatherLayout.setVisibility(View.VISIBLE);
+        if(weather.suggestion!=null){
+            if (weather.suggestion.comf!=null) {
+                String comfort = weather.suggestion.comf.txt;
+                comfortText.setText(comfort);
+                String title_comfort = "舒适度指数：" + weather.suggestion.comf.brf;
+                title_comfortText.setText(title_comfort);
+                voiceWeather+="。"+weather.suggestion.comf.txt+"。";
+            }
+            if (weather.suggestion.cw!=null) {
+                String carWash = weather.suggestion.cw.txt;
+                String title_carWash = "洗车指数：" + weather.suggestion.cw.brf;
+                title_carWashText.setText(title_carWash);
+                carWashText.setText(carWash);
+            }
+            if (weather.suggestion.sport!=null) {
+                String sport = weather.suggestion.sport.txt;
+                sportText.setText(sport);
+                String title_sport = "运动指数：" + weather.suggestion.sport.brf;
+                title_sportText.setText(title_sport);
+            }
+            if (weather.suggestion.drsg!=null) {
+                String drsg = weather.suggestion.drsg.txt;
+                designText.setText(drsg);
+                String title_drsg = "穿衣指数:" + weather.suggestion.drsg.brf;
+                title_designText.setText(title_drsg);
+                //voiceWeather+=drsg+"。";
+            }
+            if (weather.suggestion.uv!=null) {
+                String uv = weather.suggestion.uv.txt;
+                uvText.setText(uv);
+                String title_uv = "紫外线指数:" + weather.suggestion.uv.brf;
+                title_uvText.setText(title_uv);
+            }
+            if (weather.suggestion.air!=null) {
+                String air = weather.suggestion.air.txt;
+                airText.setText(air);
+                String title_air = "污染指数:" + weather.suggestion.air.brf;
+                title_airText.setText(title_air);
+                //voiceWeather+=air+"。";
+            }
+            if (weather.suggestion.trav!=null) {
+                String trav = weather.suggestion.trav.txt;
+                travelText.setText(trav);
+                String title_trav = "旅行指数:" + weather.suggestion.trav.brf;
+                title_travelText.setText(title_trav);
+            }
+            if (weather.suggestion.flu!=null) {
+                String flu = weather.suggestion.flu.txt;
+                fluText.setText(flu);
+                String title_flu = "感冒指数:" + weather.suggestion.flu.brf;
+                title_fluText.setText(title_flu);
+            }
+            voiceWeather+="祝您一切顺利.";
+            weatherLayout.setVisibility(View.VISIBLE);
+        }
 //        Intent intent = new Intent(this, AutoUpdateService.class);
 //        startService(intent);
     }
 
     //初始化变量
     public void initVar() {
+        voiceWeather="";
+        voiceBu=(Button)findViewById(R.id.VoiceBu);
         resources = Main2Activity.this.getResources();
-        titleCity = (TextView) findViewById(R.id.titleCity);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuBu = (Button) findViewById(R.id.menuBu);
         gestureDetector = new GestureDetector(this, this);
@@ -422,5 +534,20 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
     public void onBackPressed() {
         ActivityCollector.removeAll();
         //android.os.Process.killProcess(android.os.Process.myPid());
+    }
+    public void onPause(){
+        if(tts.isSpeaking()){
+            tts.stop();
+            //tts.shutdown();
+        }
+        super.onPause();
+    }
+    public void onDestroy(){
+
+        if(tts!=null){
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 }
