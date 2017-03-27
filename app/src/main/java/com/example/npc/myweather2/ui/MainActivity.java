@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.npc.myweather2.R;
@@ -35,7 +34,6 @@ public class MainActivity extends BaseActivity {
                 if(countyList.isMainCity()){
                     flag=false;
                     weatherId=countyList.getWeatherId();
-                    Log.d("TAG", "onCreate1: "+weatherId);
                     break;
                 }
             }
@@ -43,7 +41,6 @@ public class MainActivity extends BaseActivity {
                 countyLists.get(0).setMainCity(true);
                 countyLists.get(0).save();
                 weatherId=countyLists.get(0).getWeatherId();
-                Log.d("TAG", "onCreate: 2"+weatherId);
             }
             Intent intent=new Intent(this,Main2Activity.class);
             intent.putExtra("weatherId",weatherId);

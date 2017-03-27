@@ -47,8 +47,8 @@ public class ChoosePictureActivity extends BaseActivity {
         choose_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(ChoosePictureActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ChoosePictureActivity.this, new String[]{ Manifest.permission. WRITE_EXTERNAL_STORAGE }, 1);
+                if (ContextCompat.checkSelfPermission(ChoosePictureActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(ChoosePictureActivity.this, new String[]{ Manifest.permission. READ_EXTERNAL_STORAGE }, 1);
                 } else {
                     openAlbum();
                 }

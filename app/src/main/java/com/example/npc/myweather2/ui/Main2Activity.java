@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.gson.DailyForecast;
 import com.example.npc.myweather2.gson.HourlyForecast;
@@ -91,6 +92,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
     public String weatherId;
     public TextToSpeech tts;
     public String voiceWeather;
+    public String bingPic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +105,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
         }
         setContentView(R.layout.activity_main2);
         initVar();
+        setBackgroundByBing();
         drawerLayout.closeDrawer(GravityCompat.START);
         String imagePath;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -111,7 +114,8 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             backgroundImg.setImageBitmap(bitmap);
         } else {
-            backgroundImg.setImageResource(R.drawable.ic_background);
+            //backgroundImg.setImageResource(R.drawable.ic_background);
+            setBackgroundByBing();
         }
         String id=getIntent().getStringExtra("weatherId");
         if(id!=null){
@@ -148,6 +152,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             @Override
             public void onRefresh() {
                 requestWeather(weatherId);
+                requestBing();
             }
         });
         menuBu.setOnClickListener(new View.OnClickListener() {
@@ -213,7 +218,47 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             }
         });
     }
+    //必应每日一图设置背景
+    public void setBackgroundByBing(){
+        SharedPreferences preference=PreferenceManager.getDefaultSharedPreferences(Main2Activity.this);
+        bingPic=preference.getString("bingPic",null);
+        if(bingPic!=null){
+            Glide.with(Main2Activity.this).load(bingPic).into(backgroundImg);
+        }else{
+            requestBing();
+        }
+    }
+    //获取必应每日一图
+    public void requestBing(){
+       MyUtil.sendRequest(resources.getString(R.string.bingPicture), new Callback() {
+           @Override
+           public void onFailure(Call call, IOException e) {
+               e.printStackTrace();
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       MyUtil.showToast(Main2Activity.this, "获取图片失败");
+                       swipeRefresh.setRefreshing(false);
+                   }
+               });
+           }
 
+           @Override
+           public void onResponse(Call call, Response response) throws IOException {
+               bingPic=response.body().string();
+               SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(Main2Activity.this).edit();
+               editor.putString("bingPic",bingPic);
+               Log.d("TAG", "onCreate: "+bingPic);
+               editor.apply();
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       Glide.with(Main2Activity.this).load(bingPic).into(backgroundImg);
+                   }
+               });
+           }
+       });
+    }
     /**
      * 根据天气id请求城市天气信息。
      */
@@ -256,7 +301,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
         });
         //loadBingPic();
     }
-
+    //根据名字获取drawable资源
     public int getDrawable(Context context, String name) {
         Assert.assertNotNull(context);
         Assert.assertNotNull(name);

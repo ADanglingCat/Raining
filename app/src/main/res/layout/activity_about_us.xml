@@ -67,38 +67,7 @@
             android:textSize="12sp"
             android:layout_marginTop="12dp"
             android:text="当前版本:1.0.0"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/ic_about_change_log"
-            android:background="@color/colorLine"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_gravity="center"
-            android:text="更新日志"
-            android:textColor="@color/colorLine"
-            android:layout_marginLeft="15dp"/>
-    </LinearLayout>
-        <TextView
-            android:id="@+id/update_log"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="13sp"
-            android:layout_marginLeft="30dp"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorLine"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,7 +109,7 @@
             android:layout_marginLeft="20dp"
             android:clickable="true"
             android:textSize="15sp"
-
+            android:textColor="@color/colorLink"
             android:text="dw12278@outlook.com"/>
     </LinearLayout>
     <LinearLayout
@@ -161,6 +130,7 @@
             android:layout_marginLeft="20dp"
             android:clickable="true"
             android:textSize="15sp"
+            android:textColor="@color/colorLink"
             android:text="新浪微博"/>
     </LinearLayout>
     <LinearLayout
@@ -181,6 +151,7 @@
             android:layout_marginLeft="20dp"
             android:clickable="true"
             android:textSize="15sp"
+            android:textColor="@color/colorLink"
             android:text="2692937678"/>
     </LinearLayout>
     <View
@@ -188,6 +159,38 @@
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="@color/colorLine"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/ic_about_change_log"
+                android:background="@color/colorLine"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_gravity="center"
+                android:text="感谢"
+                android:textColor="@color/colorLine"
+                android:layout_marginLeft="15dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/update_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="13sp"
+            android:layout_marginLeft="30dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorLine"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -218,6 +221,7 @@
         android:layout_marginTop="10dp"
         android:textSize="15sp"
         android:layout_marginLeft="30dp"
+        android:textColor="@color/colorLink"
         android:text="Apache License 2.0"/>
     </LinearLayout>
     </ScrollView>
