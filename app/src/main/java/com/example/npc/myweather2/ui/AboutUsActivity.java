@@ -40,7 +40,8 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         init();
 
         //String log="1.新增城市切换功能\n2.优化启动速度\n3.新增定时提醒功能";
-        String log="☞天气API-和风天气\n\n☞'生活建议'图标-https://icons8.com\n\n☞'关于我们'图标-Pure天气 by han95\n\n";
+        String log="☞天气API-和风天气\n\n☞'生活建议'图标-https://icons8.com\n\n☞默认背景图片-http://www.coolapk.com\n" +
+                "\n☞'关于我们'图标-Pure天气 by han95\n\n";
         update_log.setText(log);
         backBu_about.setOnClickListener(this);
         title_licenseTx.setOnClickListener(this);

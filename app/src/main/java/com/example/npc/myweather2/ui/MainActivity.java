@@ -15,6 +15,8 @@ import org.litepal.crud.DataSupport;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
+
+//    TextView locaTx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +28,10 @@ public class MainActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main);
+//        locaTx=(TextView)findViewById(locaTx);
+
         List<CountyList> countyLists= DataSupport.findAll(CountyList.class);
+        Intent intent;
         if(countyLists.size()>0){
             boolean flag=true;
             String weatherId="";
@@ -42,11 +47,15 @@ public class MainActivity extends BaseActivity {
                 countyLists.get(0).save();
                 weatherId=countyLists.get(0).getWeatherId();
             }
-            Intent intent=new Intent(this,Main2Activity.class);
+            intent=new Intent(this,Main2Activity.class);
             intent.putExtra("weatherId",weatherId);
 
-            startActivity(intent);
-            finish();
+        }else{
+            intent=new Intent(this,AreaChooseActivity.class);
         }
+        startActivity(intent);
+        finish();
     }
+
+
 }

@@ -16,11 +16,9 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -53,7 +51,7 @@ import okhttp3.Response;
 
 import static com.example.npc.myweather2.R.id.daily_dateTx;
 
-public class Main2Activity extends BaseActivity implements GestureDetector.OnGestureListener {
+public class Main2Activity extends BaseActivity {
     public DrawerLayout drawerLayout;
     private Button menuBu;
     public GestureDetector gestureDetector;
@@ -93,6 +91,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
     public TextToSpeech tts;
     public String voiceWeather;
     public String bingPic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,9 +103,10 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main2);
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission. READ_EXTERNAL_STORAGE }, 1);
+//        }
         initVar();
-        setBackgroundByBing();
-        drawerLayout.closeDrawer(GravityCompat.START);
         String imagePath;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getString("imagePath", null) != null) {
@@ -114,27 +114,23 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             backgroundImg.setImageBitmap(bitmap);
         } else {
-            //backgroundImg.setImageResource(R.drawable.ic_background);
             setBackgroundByBing();
         }
-        String id=getIntent().getStringExtra("weatherId");
-        if(id!=null){
-
+        String id = getIntent().getStringExtra("weatherId");
+        if (id != null) {
             weatherId = id;
-        }else {
-            List<CountyList> countyLists= DataSupport.where("mainCity=?","true").find(CountyList.class);
+        } else {
+            List<CountyList> countyLists = DataSupport.where("mainCity=?", "true").find(CountyList.class);
             List<County> counties;
-            if(countyLists.size()>0){
-                counties=DataSupport.where("id=?",countyLists.get(0).getCountyId()+"").find(County.class);
-            }else{
-                List<CountyList> countyListss= DataSupport.findAll(CountyList.class);
-                counties=DataSupport.where("id=?",countyListss.get(0).getCountyId()+"").find(County.class);
+            if (countyLists.size() > 0) {
+                counties = DataSupport.where("id=?", countyLists.get(0).getCountyId() + "").find(County.class);
+            } else {
+                List<CountyList> countyListss = DataSupport.findAll(CountyList.class);
+                counties = DataSupport.where("id=?", countyListss.get(0).getCountyId() + "").find(County.class);
             }
-            weatherId=counties.get(0).getWeatherId();
+            weatherId = counties.get(0).getWeatherId();
         }
-        String weatherString = prefs.getString("weather"+weatherId, null);
-//        String wweatherId = getIntent().getStringExtra("weatherId");
-//        Log.d("TAG", "onCreate: 1111"+wweatherId);
+        String weatherString = prefs.getString("weather" + weatherId, null);
         if (weatherString != null) {
             // 有缓存时直接解析天气数据
             Weather weather = MyUtil.handleWeatherResponse(weatherString);
@@ -152,7 +148,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             @Override
             public void onRefresh() {
                 requestWeather(weatherId);
-                requestBing();
+
             }
         });
         menuBu.setOnClickListener(new View.OnClickListener() {
@@ -161,30 +157,31 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
                 drawerLayout.openDrawer(GravityCompat.START);
             }
         });
-        tts=new TextToSpeech(Main2Activity.this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status==TextToSpeech.SUCCESS){
-                    int result=tts.setLanguage(Locale.CHINA);
-                    if(result!=TextToSpeech.LANG_COUNTRY_AVAILABLE&&result!=TextToSpeech.LANG_AVAILABLE){
-                        MyUtil.showToast(Main2Activity.this,"无法语音播报");
-                    }
-                }
-            }
-        });
+
         voiceBu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tts.isSpeaking()){
-                   tts.stop();
+                tts = new TextToSpeech(Main2Activity.this, new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int status) {
+                        if (status == TextToSpeech.SUCCESS) {
+                            int result = tts.setLanguage(Locale.CHINA);
+                            if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE && result != TextToSpeech.LANG_AVAILABLE) {
+                                MyUtil.showToast(Main2Activity.this, "无法语音播报");
+                            }
+                        }
+                    }
+                });
+                if (tts.isSpeaking()) {
+                    tts.stop();
                     return;
-                }else{
-                    if (Build.VERSION.SDK_INT >= 21){
-                        tts.speak(voiceWeather,TextToSpeech.QUEUE_FLUSH,null,"speech");
-                       Log.d("TAG", "onClick: "+voiceWeather);
+                } else {
+                    if (Build.VERSION.SDK_INT >= 21) {
+                        tts.speak(voiceWeather, TextToSpeech.QUEUE_FLUSH, null, "speech");
+                        //Log.d("TAG", "onClick: " + voiceWeather);
 
-                    }else{
-                        MyUtil.showToast(Main2Activity.this,"无法语音播报");
+                    } else {
+                        MyUtil.showToast(Main2Activity.this, "无法语音播报");
                     }
                 }
             }
@@ -218,47 +215,50 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             }
         });
     }
+
     //必应每日一图设置背景
-    public void setBackgroundByBing(){
-        SharedPreferences preference=PreferenceManager.getDefaultSharedPreferences(Main2Activity.this);
-        bingPic=preference.getString("bingPic",null);
-        if(bingPic!=null){
+    public void setBackgroundByBing() {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(Main2Activity.this);
+        bingPic = preference.getString("bingPic", null);
+        if (bingPic != null) {
             Glide.with(Main2Activity.this).load(bingPic).into(backgroundImg);
-        }else{
+        } else {
             requestBing();
         }
     }
-    //获取必应每日一图
-    public void requestBing(){
-       MyUtil.sendRequest(resources.getString(R.string.bingPicture), new Callback() {
-           @Override
-           public void onFailure(Call call, IOException e) {
-               e.printStackTrace();
-               runOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
-                       MyUtil.showToast(Main2Activity.this, "获取图片失败");
-                       swipeRefresh.setRefreshing(false);
-                   }
-               });
-           }
 
-           @Override
-           public void onResponse(Call call, Response response) throws IOException {
-               bingPic=response.body().string();
-               SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(Main2Activity.this).edit();
-               editor.putString("bingPic",bingPic);
-               Log.d("TAG", "onCreate: "+bingPic);
-               editor.apply();
-               runOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
-                       Glide.with(Main2Activity.this).load(bingPic).into(backgroundImg);
-                   }
-               });
-           }
-       });
+    //获取必应每日一图
+    public void requestBing() {
+        MyUtil.sendRequest(resources.getString(R.string.bingPicture), new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MyUtil.showToast(Main2Activity.this, "获取图片失败");
+                        swipeRefresh.setRefreshing(false);
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                bingPic = response.body().string();
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(Main2Activity.this).edit();
+                editor.putString("bingPic", bingPic);
+               // Log.d("TAG", "onCreate: " + bingPic);
+                editor.apply();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.with(Main2Activity.this).load(bingPic).into(backgroundImg);
+                    }
+                });
+            }
+        });
     }
+
     /**
      * 根据天气id请求城市天气信息。
      */
@@ -276,7 +276,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
                     public void run() {
                         if (weather != null && "ok".equals(weather.status)) {
                             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(Main2Activity.this).edit();
-                            editor.putString("weather"+weatherId, responseText);
+                            editor.putString("weather" + weatherId, responseText);
                             editor.apply();
                             showWeatherInfo(weather);
                         } else {
@@ -301,6 +301,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
         });
         //loadBingPic();
     }
+
     //根据名字获取drawable资源
     public int getDrawable(Context context, String name) {
         Assert.assertNotNull(context);
@@ -314,43 +315,43 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
      * 处理并展示Weather实体类中的数据。
      */
     private void showWeatherInfo(Weather weather) {
-        voiceWeather="";
-        if (weather.basic.update!=null) {
+        voiceWeather = "";
+        if (weather.basic.update != null) {
             String updateTime = weather.basic.update.updateTime.split(" ")[1];
             titleUpdateTime.setText(updateTime + "更新");
         }
-        if (weather.basic.cityName!=null) {
+        if (weather.basic.cityName != null) {
             String cityName = weather.basic.cityName;
             titleCity.setText(cityName);
         }
-        voiceWeather+=titleCity.getText()+"..今日天气:";
-        if (weather.now!=null) {
-            if ( weather.now.tmp!=null) {
+        voiceWeather += titleCity.getText() + "..今日天气:";
+        if (weather.now != null) {
+            if (weather.now.tmp != null) {
                 String degree = weather.now.tmp + "℃";
                 degreeText.setText(degree);
             }
-            if (weather.now.cond!=null) {
+            if (weather.now.cond != null) {
                 String weatherInfo = weather.now.cond.txt;
                 weatherInfoText.setText(weatherInfo);
-                voiceWeather+=weatherInfo+"。";
-            }else{
-                voiceWeather+=weatherInfoText.getText();
+                voiceWeather += weatherInfo + "。";
+            } else {
+                voiceWeather += weatherInfoText.getText();
             }
-            if (weather.now.wind!=null) {
+            if (weather.now.wind != null) {
                 String windDir = weather.now.wind.dir;
                 String windSc = weather.now.wind.sc;
 
-                if(windSc.contains("-")){
-                    windText.setText("风向/风力:" + windDir + "/" + windSc+"级");
-                    voiceWeather+=windDir+","+windSc+"级。最高温度：";
-                }else{
+                if (windSc.contains("-")) {
+                    windText.setText("风向/风力:" + windDir + "/" + windSc + "级");
+                    voiceWeather += windDir + "," + windSc + "级。最高温度：";
+                } else {
                     windText.setText("风向/风力:" + windDir + "/" + windSc);
-                    voiceWeather+=windDir+","+windSc+"。最高温度：";
+                    voiceWeather += windDir + "," + windSc + "。最高温度：";
                 }
 
 
             }
-            if (weather.now.fl!=null) {
+            if (weather.now.fl != null) {
                 String fl = weather.now.fl;
                 flText.setText("体感温度:" + fl + "℃");
             }
@@ -360,7 +361,7 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
         boolean flag = true;
         //未来几小时天气
 
-        if (weather.hourlyForecasts!=null) {
+        if (weather.hourlyForecasts != null) {
             for (HourlyForecast forecast : weather.hourlyForecasts) {
                 View view = LayoutInflater.from(this).inflate(R.layout.hourly_item, hourlylayout, false);
                 TextView tmpText = (TextView) view.findViewById(R.id.hour_tmpTx);
@@ -375,42 +376,42 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
             }
         }
         //未来几天天气
-        if (weather.dailyForecasts!=null) {
+        if (weather.dailyForecasts != null) {
             for (DailyForecast forecast : weather.dailyForecasts) {
                 View view = LayoutInflater.from(this).inflate(R.layout.daily_item, forecastLayout, false);
-                if (forecast.date!=null) {
+                if (forecast.date != null) {
                     TextView dateText = (TextView) view.findViewById(daily_dateTx);
                     dateText.setText(forecast.date.substring(5));
                 }
-                if (forecast.cond!=null) {
+                if (forecast.cond != null) {
                     TextView condText = (TextView) view.findViewById(R.id.daily_condTx);
                     condText.setText(forecast.cond.txt_d);
                 }
-                if (forecast.pop!=null) {
+                if (forecast.pop != null) {
                     TextView popText = (TextView) view.findViewById(R.id.daily_popTx);
                     popText.setText(forecast.pop + "%");
                 }
                 TextView maxText = (TextView) view.findViewById(R.id.daily_maxTx);
-                if (forecast.tmp.max!=null) {
+                if (forecast.tmp.max != null) {
 
                     maxText.setText(forecast.tmp.max + "℃");
                 }
                 TextView minText = (TextView) view.findViewById(R.id.daily_minTx);
-                if (forecast.tmp.min !=null) {
+                if (forecast.tmp.min != null) {
 
                     minText.setText(forecast.tmp.min + "℃");
                 }
                 forecastLayout.addView(view);
                 //只获取第一天的日出日落时间
-                if (forecast.astro!=null) {
+                if (forecast.astro != null) {
                     if (flag) {
-                        voiceWeather+=maxText.getText()+"，最低温度："+minText.getText();
+                        voiceWeather += maxText.getText() + "，最低温度：" + minText.getText();
                         String sr = null;//日出
-                        if (forecast.astro.sr!=null) {
+                        if (forecast.astro.sr != null) {
                             sr = forecast.astro.sr;
                         }
                         String ss = null;//日落
-                        if (forecast.astro.ss!=null) {
+                        if (forecast.astro.ss != null) {
                             ss = forecast.astro.ss;
                         }
                         astroText.setText("日出/日落:" + sr + "/" + ss);
@@ -422,59 +423,59 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
         if (weather.aqi != null) {
             aqiText.setText("空气质量:" + weather.aqi.city.aqi + "/" + weather.aqi.city.qlty);
         }
-        if(weather.suggestion!=null){
-            if (weather.suggestion.comf!=null) {
+        if (weather.suggestion != null) {
+            if (weather.suggestion.comf != null) {
                 String comfort = weather.suggestion.comf.txt;
                 comfortText.setText(comfort);
                 String title_comfort = "舒适度指数：" + weather.suggestion.comf.brf;
                 title_comfortText.setText(title_comfort);
-                voiceWeather+="。"+weather.suggestion.comf.txt+"。";
+                voiceWeather += "。" + weather.suggestion.comf.txt + "。";
             }
-            if (weather.suggestion.cw!=null) {
+            if (weather.suggestion.cw != null) {
                 String carWash = weather.suggestion.cw.txt;
                 String title_carWash = "洗车指数：" + weather.suggestion.cw.brf;
                 title_carWashText.setText(title_carWash);
                 carWashText.setText(carWash);
             }
-            if (weather.suggestion.sport!=null) {
+            if (weather.suggestion.sport != null) {
                 String sport = weather.suggestion.sport.txt;
                 sportText.setText(sport);
                 String title_sport = "运动指数：" + weather.suggestion.sport.brf;
                 title_sportText.setText(title_sport);
             }
-            if (weather.suggestion.drsg!=null) {
+            if (weather.suggestion.drsg != null) {
                 String drsg = weather.suggestion.drsg.txt;
                 designText.setText(drsg);
                 String title_drsg = "穿衣指数:" + weather.suggestion.drsg.brf;
                 title_designText.setText(title_drsg);
                 //voiceWeather+=drsg+"。";
             }
-            if (weather.suggestion.uv!=null) {
+            if (weather.suggestion.uv != null) {
                 String uv = weather.suggestion.uv.txt;
                 uvText.setText(uv);
                 String title_uv = "紫外线指数:" + weather.suggestion.uv.brf;
                 title_uvText.setText(title_uv);
             }
-            if (weather.suggestion.air!=null) {
+            if (weather.suggestion.air != null) {
                 String air = weather.suggestion.air.txt;
                 airText.setText(air);
                 String title_air = "污染指数:" + weather.suggestion.air.brf;
                 title_airText.setText(title_air);
                 //voiceWeather+=air+"。";
             }
-            if (weather.suggestion.trav!=null) {
+            if (weather.suggestion.trav != null) {
                 String trav = weather.suggestion.trav.txt;
                 travelText.setText(trav);
                 String title_trav = "旅行指数:" + weather.suggestion.trav.brf;
                 title_travelText.setText(title_trav);
             }
-            if (weather.suggestion.flu!=null) {
+            if (weather.suggestion.flu != null) {
                 String flu = weather.suggestion.flu.txt;
                 fluText.setText(flu);
                 String title_flu = "感冒指数:" + weather.suggestion.flu.brf;
                 title_fluText.setText(title_flu);
             }
-            voiceWeather+="祝您一切顺利.";
+            voiceWeather += "祝您一切顺利.";
             weatherLayout.setVisibility(View.VISIBLE);
         }
 //        Intent intent = new Intent(this, AutoUpdateService.class);
@@ -483,12 +484,12 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
 
     //初始化变量
     public void initVar() {
-        voiceWeather="";
-        voiceBu=(Button)findViewById(R.id.VoiceBu);
+        voiceWeather = "";
+        voiceBu = (Button) findViewById(R.id.VoiceBu);
         resources = Main2Activity.this.getResources();
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuBu = (Button) findViewById(R.id.menuBu);
-        gestureDetector = new GestureDetector(this, this);
+        //gestureDetector = new GestureDetector(this, this);
         backgroundImg = (ImageView) findViewById(R.id.backgroundIm);
         weatherLayout = (ScrollView) findViewById(R.id.sv_weather_layout);
         titleCity = (TextView) findViewById(R.id.titleCity);
@@ -522,77 +523,92 @@ public class Main2Activity extends BaseActivity implements GestureDetector.OnGes
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
     }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        if(e1!=null&&e2!=null){
-//            if(e1.getX()-e2.getX()>200&&Math.abs(e1.getY()-e2.getY())<50){
-//               titleCity.setText("深圳");
-//                return false;
-//            }else if(e2.getX()-e1.getX()>=200&&Math.abs(e1.getY()-e2.getY())<50){
-//                titleCity.setText("项城");
-//                return false;
-//            }
-//        }
-        return false;
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        //drawerLayout.onTouchEvent(ev);
-        //让GestureDetector响应触碰事件
-        gestureDetector.onTouchEvent(ev);
-        //让Activity响应触碰事件
-        super.dispatchTouchEvent(ev);
-        return false;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        return gestureDetector.onTouchEvent(event);
-    }
+//
+//    @Override
+//    public boolean onDown(MotionEvent e) {
+//        return false;
+//    }
+//
+//    @Override
+//    public void onShowPress(MotionEvent e) {
+//    }
+//
+//    @Override
+//    public boolean onSingleTapUp(MotionEvent e) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+//        return false;
+//    }
+//
+//    @Override
+//    public void onLongPress(MotionEvent e) {
+//    }
+//
+//    @Override
+//    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+////        if(e1!=null&&e2!=null){
+////            if(e1.getX()-e2.getX()>200&&Math.abs(e1.getY()-e2.getY())<50){
+////               titleCity.setText("深圳");
+////                return false;
+////            }else if(e2.getX()-e1.getX()>=200&&Math.abs(e1.getY()-e2.getY())<50){
+////                titleCity.setText("项城");
+////                return false;
+////            }
+////        }
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        //drawerLayout.onTouchEvent(ev);
+//        //让GestureDetector响应触碰事件
+//        gestureDetector.onTouchEvent(ev);
+//        //让Activity响应触碰事件
+//        super.dispatchTouchEvent(ev);
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//
+//        return gestureDetector.onTouchEvent(event);
+//    }
 
     public void onBackPressed() {
         ActivityCollector.removeAll();
         //android.os.Process.killProcess(android.os.Process.myPid());
     }
-    public void onPause(){
-        if(tts.isSpeaking()){
+
+    public void onPause() {
+        if (tts!=null&&tts.isSpeaking()) {
             tts.stop();
             //tts.shutdown();
         }
         super.onPause();
     }
-    public void onDestroy(){
 
-        if(tts!=null){
+    public void onDestroy() {
+
+        if (tts != null) {
             tts.stop();
             tts.shutdown();
         }
         super.onDestroy();
     }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        switch (requestCode) {
+//            case 1:
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    openAlbum();
+//                } else {
+//                    MyUtil.showToast(this, "将无法使用背景功能");
+//                }
+//                break;
+//            default:
+//        }
+//    }
 }

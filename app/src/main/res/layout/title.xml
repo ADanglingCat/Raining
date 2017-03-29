@@ -18,14 +18,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/unknown"/>
-    <TextView
-        android:id="@+id/timeTx"
-        android:textColor="@color/colorFont"
-        android:textSize="10sp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/unknown"/>
+    <!--<TextView-->
+        <!--android:id="@+id/timeTx"-->
+        <!--android:textColor="@color/colorFont"-->
+        <!--android:textSize="10sp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/unknown"/>-->
 </RelativeLayout>

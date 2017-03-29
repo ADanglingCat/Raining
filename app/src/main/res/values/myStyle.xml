@@ -36,18 +36,34 @@
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center_vertical</item>
     </style>
-    <style name="suggestion_text_view_big" >
+    <style name="now_small_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorFont</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:gravity">end</item>
+    </style>
+    <style name="now_big_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorFont</item>
+        <item name="android:textSize">45sp</item>
+        <item name="android:gravity">end</item>
+    </style>
+
+
+    <style name="suggestion_text_view_big" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorFont</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:padding">1dp</item>
     </style>
     <style name="suggestion_text_view_small" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorFont</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:padding">1dp</item>
     </style>
     <style name="forecast_title">
@@ -56,6 +72,7 @@
         <item name="android:layout_marginBottom">10dp</item>
         <item name="android:textColor">@color/colorFont</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 </resources>

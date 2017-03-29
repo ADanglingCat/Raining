@@ -3,10 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLine">
-    <fragment
-        android:id="@+id/city_choose_frag"
-        android:name="com.example.npc.myweather2.ui.AreaChooseFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"/>
+    <!--<fragment-->
+        <!--android:id="@+id/city_choose_frag"-->
+        <!--android:name="com.example.npc.myweather2.ui.AreaChooseFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fitsSystemWindows="true"/>-->
+    <!--<TextView-->
+        <!--android:id="@+id/locaTx"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 </FrameLayout>

@@ -93,6 +93,7 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.addCityBu:
                 intent=new Intent(AreaManagerActivity.this,AreaChooseActivity.class);
+                //intent=new Intent(AreaManagerActivity.this,Main3Activity.class);
                 startActivity(intent);
                 finish();
                 break;

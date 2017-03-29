@@ -13,12 +13,9 @@
             android:layout_height="wrap_content">
         <TextView
             android:id="@+id/condTx"
-            android:gravity="end"
-            android:textSize="45sp"
             android:layout_marginLeft="25dp"
             android:textColor="@color/colorFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/now_big_text"
             android:text="@string/unknown"/>
         <Button
             android:id="@+id/VoiceBu"
@@ -29,23 +26,15 @@
         </LinearLayout>
         <TextView
             android:id="@+id/aqiTx"
-            android:gravity="end"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:textSize="12sp"
-            android:textColor="@color/colorFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/now_small_text"
             android:text="@string/unknown"/>
         <TextView
             android:id="@+id/windTx"
-            android:gravity="end"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:textSize="12sp"
-            android:textColor="@color/colorFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/now_small_text"
             android:text="@string/unknown"/>
     </LinearLayout>
     <LinearLayout
@@ -56,29 +45,17 @@
         android:orientation="vertical">
         <TextView
             android:id="@+id/tmpTx"
-            android:gravity="end"
-            android:textSize="45sp"
-            android:textColor="@color/colorFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/now_big_text"
             android:text="@string/unknown"/>
             <TextView
                 android:id="@+id/flTx"
-                android:gravity="end"
-                android:textSize="12sp"
                 android:layout_marginTop="10dp"
-                android:textColor="@color/colorFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/now_small_text"
                 android:text="@string/unknown"/>
         <TextView
             android:id="@+id/astroTx"
-            android:gravity="end"
-            android:textSize="12sp"
             android:layout_marginTop="10dp"
-            android:textColor="@color/colorFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/now_small_text"
             android:text="@string/unknown"/>
     </LinearLayout>
 

@@ -32,15 +32,15 @@
 
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
+        <!--<item>15 分钟</item>-->
+        <item>30 分钟</item>
+        <item>1 小时</item>
+        <item>3 小时</item>
+        <item>6 小时</item>
+        <item>从不</item>
     </string-array>
     <string-array name="pref_sync_frequency_values">
-        <item>15</item>
+        <!--<item>15</item>-->
         <item>30</item>
         <item>60</item>
         <item>180</item>
@@ -113,4 +113,5 @@
     <string name="areaAddress">http://guolin.tech/api/china/</string>
     <string name="countyAddress">https://api.heweather.com/v5/search?city=</string>
     <string name="bingPicture">http://guolin.tech/api/bing_pic</string>
+    <string name="map_location">d4fd7178892ebc28784a2341048a1128</string>
 </resources>

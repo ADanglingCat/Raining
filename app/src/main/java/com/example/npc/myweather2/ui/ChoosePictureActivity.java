@@ -31,6 +31,7 @@ public class ChoosePictureActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_choose_picture);
         Button default_picture = (Button) findViewById(R.id.default_picture);
         Button choose_picture = (Button) findViewById(R.id.choose_picture);
