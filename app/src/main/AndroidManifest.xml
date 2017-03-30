@@ -52,7 +52,7 @@
             android:name="com.amap.api.v2.apikey"
             android:value="28c24666d667eccdeb3d9b7db81b1df8" />
         <!-- 定位需要的服务 -->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService" />
 
         <activity
             android:name=".ui.MainActivity"
@@ -63,7 +63,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.Main2Activity" />
         <activity android:name=".ui.AboutUsActivity" />
         <activity android:name=".ui.LicenseActivity" />
         <activity android:name=".ui.AreaManagerActivity" />
@@ -79,6 +78,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".util.BaseActivity" />
+        <activity android:name=".ui.Main3Activity"></activity>
     </application>
 
 </manifest>

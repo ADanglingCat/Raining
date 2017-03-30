@@ -74,7 +74,8 @@ public class AreaChooseActivity extends BaseActivity {
     private AMapLocationClient client;
     private String locCounty;
     private String locprovince;
-
+private boolean isFirst;
+    private Intent intent1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,11 +120,7 @@ public class AreaChooseActivity extends BaseActivity {
                 } else if (selectedLevel == LEVEL_COUNTY) {
                     selectedCounty = countyList.get(position);
                     saveCounty(selectedCounty.getWeatherId(), selectedCounty.getCountyName());
-                    Intent intent;
-
-                    intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
-                    startActivity(intent);
-                    finish();
+                    goToAreaManager();
                 }
             }
         });
@@ -132,10 +129,7 @@ public class AreaChooseActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SearchCounty s = searchCountyList.get(position);
                 saveCounty(s.basic.weatherId, s.basic.countyName);
-                Intent intent;
-                intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
-                startActivity(intent);
-                finish();
+                goToAreaManager();
             }
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -166,24 +160,12 @@ public class AreaChooseActivity extends BaseActivity {
                 }
             }
         });
-
+        //自动定位结果点击事件
         locaLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != locCounty && null != locprovince) {
                     queryCountyByName(locCounty, LEVEL_LOCATION);
-//                    if (!progressDialog.isShowing()) {
-//                        for (SearchCounty s : searchCountyList) {
-//                            if (s.basic.provinceName.equals(locprovince)) {
-//                                saveCounty(s.basic.weatherId, s.basic.countyName);
-//                                Intent intent;
-//                                intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
-//                                startActivity(intent);
-//                                closeProgressDialog();
-//                                finish();
-//                            }
-//                        }
-//                    }
                 }
             }
         });
@@ -281,7 +263,7 @@ public class AreaChooseActivity extends BaseActivity {
         arrayAdapter.notifyDataSetChanged();
         searchResult.setVisibility(View.VISIBLE);
     }
-
+    //处理搜索城市返回的数据
     private boolean handleCounty(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
@@ -343,17 +325,11 @@ public class AreaChooseActivity extends BaseActivity {
                                 showSearchResult();
                                 closeProgressDialog();
                             }else
-                            //closeProgressDialog();
                             if (type==LEVEL_LOCATION){
-                                //if(null!=locCounty&&null!=locprovince){
-                                    //queryCountyByName(locCounty,LEVEL_LOCATION);
                                     for(SearchCounty s:searchCountyList){
                                         if(s.basic.provinceName.equals(locprovince)){
                                             saveCounty(s.basic.weatherId, s.basic.countyName);
-                                            Intent intent;
-                                            intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                                            goToAreaManager();
                                         }
                                     }
                                 }
@@ -400,7 +376,7 @@ public class AreaChooseActivity extends BaseActivity {
             public String weatherId;
         }
     }
-
+    //请求权限结果
     public void onRequestPermissionsResult(int requestCode, String[] permissons, int[] grantResults) {
         switch (requestCode) {
             case 1:
@@ -418,8 +394,10 @@ public class AreaChooseActivity extends BaseActivity {
             default:
         }
     }
-
+    //初始化变量
     public void initVar() {
+        intent1=getIntent();
+        isFirst=intent1.getBooleanExtra("isFirst",false);
         client = new AMapLocationClient(getApplicationContext());
         titleText = (TextView) findViewById(R.id.titleTx);
         backButton = (Button) findViewById(R.id.backBu);
@@ -446,17 +424,26 @@ public class AreaChooseActivity extends BaseActivity {
             client = null;
         }
     }
-
+    //重写back键事件
     public void onBackPressed() {
         if (selectedLevel == LEVEL_COUNTY) {
             queryCities();
         } else if (selectedLevel == LEVEL_CITY) {
             queryProvinces();
-        } else if (selectedLevel == LEVEL_PROVINCE) {
+        } else  {
+
             Intent intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
             startActivity(intent);
             finish();
         }
 
+    }
+    //跳转到城市管理页面
+    public void goToAreaManager(){
+        Intent intent;
+        intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
+        intent.putExtra("isFirst",isFirst);
+        startActivity(intent);
+        finish();
     }
 }

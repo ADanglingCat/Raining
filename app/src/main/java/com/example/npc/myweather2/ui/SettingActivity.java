@@ -20,13 +20,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         backBu_setting.setOnClickListener(this);
     }
     public void onClick(View view){
-//                Intent intent;
-//                intent=new Intent(SettingActivity.this,Main2Activity.class);
-//                startActivity(intent);
                 onBackPressed();
                 finish();
     }
-//    public void onBackPressed(){
-//        onClick(backBu_setting);
-//    }
 }

@@ -1,0 +1,53 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main2_fram"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorHeader">
+    <!--<ImageView-->
+        <!--android:id="@+id/backgroundIm"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:src="@drawable/ic_background"/>-->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:id="@+id/sv_weather_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/li_weather_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+                <!--android:background="@drawable/ic_background"-->
+                <!--<include layout="@layout/title" />-->
+                <TextView
+                    android:id="@+id/timeTx"
+                    android:textColor="@color/colorFont"
+                    android:textSize="14sp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unknown"/>
+
+                <include layout="@layout/now" />
+
+                <include layout="@layout/hourly_forecast" />
+
+                <include layout="@layout/daily_forecast" />
+
+                <include layout="@layout/suggestion" />
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</android.support.design.widget.CoordinatorLayout>

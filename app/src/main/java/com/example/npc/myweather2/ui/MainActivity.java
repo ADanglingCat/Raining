@@ -47,11 +47,12 @@ public class MainActivity extends BaseActivity {
                 countyLists.get(0).save();
                 weatherId=countyLists.get(0).getWeatherId();
             }
-            intent=new Intent(this,Main2Activity.class);
+            intent=new Intent(this,Main3Activity.class);
             intent.putExtra("weatherId",weatherId);
 
         }else{
             intent=new Intent(this,AreaChooseActivity.class);
+            intent.putExtra("isFirst",true);
         }
         startActivity(intent);
         finish();

@@ -70,7 +70,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="7bb2578db92d92be69b414222062798043194fd0">
+        sha1="ad8d8be2e8bd86a7b54b484756f5cbdf4d0b8b34">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\instant-run_50702a164b7ce2862e404d6416c2fe82d963e90f.jar" />
     </item>
     <item
@@ -205,7 +205,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="63714cee24b10979c64887cd530afa76bc549b25">
+        sha1="7572b259396c38dd0c0327e6b7b1800fcffe0254">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_0e19a9ebdda9267f59c0c22e842acfe474f4c918.jar" />
     </item>
     <item
