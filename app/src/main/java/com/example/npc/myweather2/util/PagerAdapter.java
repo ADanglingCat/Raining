@@ -2,7 +2,7 @@ package com.example.npc.myweather2.util;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by npc on 3-29 0029.
  */
 
-public class PagerAdapter extends FragmentPagerAdapter {
+public class PagerAdapter extends FragmentStatePagerAdapter {
     List<Fragment> fragmentList;
     public PagerAdapter(FragmentManager fm,List<Fragment> fragmentList) {
         super(fm);

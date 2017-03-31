@@ -112,7 +112,7 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
     public void onBackPressed() {
         Intent intent1;
         countyCollect = DataSupport.findAll(CountyList.class);
-        Log.d("TAG", "onBackPressed: "+flag);
+        //Log.d("TAG", "onBackPressed: "+flag);
         if (countyCollect.size() <= 0) {
             ActivityCollector.removeAll();
         } else if (flag) {

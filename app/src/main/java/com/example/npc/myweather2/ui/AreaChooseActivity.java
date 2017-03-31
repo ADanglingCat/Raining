@@ -94,8 +94,9 @@ private boolean isFirst;
         String[] list = requestPermissions.toArray(new String[requestPermissions.size()]);
         if (list.length < 1) {
             client.startLocation();
+        }else{
+            ActivityCompat.requestPermissions(AreaChooseActivity.this, list, 1);
         }
-        ActivityCompat.requestPermissions(AreaChooseActivity.this, list, 1);
 
         client.setLocationListener(new AMapLocationListener() {
             @Override

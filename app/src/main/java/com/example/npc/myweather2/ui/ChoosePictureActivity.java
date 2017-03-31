@@ -41,7 +41,7 @@ public class ChoosePictureActivity extends BaseActivity {
             public void onClick(View v) {
                 editor.remove("imagePath");
                 editor.commit();
-                MyUtil.showToast(ChoosePictureActivity.this,"设置成功,下次启动生效");
+               // MyUtil.showToast(ChoosePictureActivity.this,"设置成功,下次启动生效");
                 finish();
             }
         });
@@ -146,7 +146,7 @@ public class ChoosePictureActivity extends BaseActivity {
         if (imagePath != null) {
             editor.putString("imagePath", imagePath);
             editor.apply();
-            MyUtil.showToast(this,"设置成功,下次启动生效");
+           // MyUtil.showToast(this,"设置成功,下次启动生效");
             finish();
         } else {
             MyUtil.showToast(this,"获取图片失败");

@@ -70,7 +70,7 @@
             android:dependency="diy"
             android:title="自动更换背景"
             android:key="autoBing"
-            android:summaryOn="获取必应每日一图"
+            android:summaryOn="@string/summary_on"
             android:summaryOff="@string/summary_off" />
 
         <Preference android:title="自定义图片"

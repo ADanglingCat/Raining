@@ -10,10 +10,11 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp">
         <TextView
             android:id="@+id/condTx"
-            android:layout_marginLeft="25dp"
+
             android:textColor="@color/colorFont"
             style="@style/now_big_text"
             android:text="@string/unknown"/>
@@ -25,15 +26,15 @@
             android:background="@drawable/ic_volume"/>
         </LinearLayout>
         <TextView
-            android:id="@+id/aqiTx"
-            android:layout_marginLeft="30dp"
+            android:id="@+id/flTx"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
             style="@style/now_small_text"
             android:text="@string/unknown"/>
         <TextView
-            android:id="@+id/windTx"
-            android:layout_marginLeft="30dp"
+            android:id="@+id/aqiTx"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
             style="@style/now_small_text"
             android:text="@string/unknown"/>
     </LinearLayout>
@@ -41,19 +42,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tmpTx"
             style="@style/now_big_text"
             android:text="@string/unknown"/>
-            <TextView
-                android:id="@+id/flTx"
-                android:layout_marginTop="10dp"
-                style="@style/now_small_text"
-                android:text="@string/unknown"/>
+
         <TextView
             android:id="@+id/astroTx"
+
+            android:layout_marginTop="10dp"
+            style="@style/now_small_text"
+            android:text="@string/unknown"/>
+
+        <TextView
+            android:id="@+id/windTx"
+
             android:layout_marginTop="10dp"
             style="@style/now_small_text"
             android:text="@string/unknown"/>

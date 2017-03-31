@@ -10,7 +10,6 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,15 +34,12 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static com.example.npc.myweather2.R.id.daily_dateTx;
-
 /**
  * Created by npc on 3-29 0029.
  */
 
 public class PagerFragment extends Fragment {
     public DrawerLayout drawerLayout;
-//    private Button menuBu;
     public SwipeRefreshLayout swipeRefresh;
     private ScrollView weatherLayout;
     private TextView titleUpdateTime;
@@ -91,7 +87,6 @@ public class PagerFragment extends Fragment {
             drawerView=inflater.inflate(R.layout.activity_main3,container,false);
 
             drawerLayout = (DrawerLayout) drawerView.findViewById(R.id.drawer_layout);
-//            menuBu = (Button) rootView.findViewById(menuBu);
             //backgroundImg = (ImageView) rootView.findViewById(R.id.backgroundIm);
             weatherLayout = (ScrollView) rootView.findViewById(R.id.sv_weather_layout);
             titleUpdateTime = (TextView) rootView.findViewById(R.id.timeTx);
@@ -137,32 +132,19 @@ public class PagerFragment extends Fragment {
 //        } else {
 //            setBackgroundByBing();
 //        }
-//        String id = getActivity().getIntent().getStringExtra("weatherId");
-//        if (id != null) {
-//            weatherId = id;
-//        } else {
-//            List<CountyList> countyLists = DataSupport.where("mainCity=?", "true").find(CountyList.class);
-//            List<County> counties;
-//            if (countyLists.size() > 0) {
-//                counties = DataSupport.where("id=?", countyLists.get(0).getCountyId() + "").find(County.class);
-//            } else {
-//                List<CountyList> countyListss = DataSupport.findAll(CountyList.class);
-//                counties = DataSupport.where("id=?", countyListss.get(0).getCountyId() + "").find(County.class);
-//            }
-//            weatherId = counties.get(0).getWeatherId();
-//        }
         weatherId=getArguments().getString("weatherId");
         String weatherString = prefs.getString("weather" + weatherId, null);
         if (weatherString != null) {
             // 有缓存时直接解析天气数据
             Weather weather = MyUtil.handleWeatherResponse(weatherString);
             weatherId = weather.basic.weatherId;
-//             Log.d("TAG", "onCreate: 1111"+weatherId);
             showWeatherInfo(weather);
+            //Bundle args=new Bundle();
+           // args.putString("voiceWeather",voiceWeather);
+            //setArguments(args);
         } else {
             // 无缓存时去服务器查询天气
 
-//            Log.d("TAG", "onCreate:2222"+weatherId);
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
         }
@@ -173,40 +155,20 @@ public class PagerFragment extends Fragment {
 
             }
         });
-//        menuBu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                drawerLayout.openDrawer(GravityCompat.START);
-//            }
-//        });
 
         voiceBu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tts = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        if (status == TextToSpeech.SUCCESS) {
-                            int result = tts.setLanguage(Locale.CHINA);
-                            if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE && result != TextToSpeech.LANG_AVAILABLE) {
-                                MyUtil.showToast(getContext(), "无法语音播报");
-                            }
-                        }
-                    }
-                });
-                if (tts.isSpeaking()) {
-                    tts.stop();
-                    return;
-                } else {
-                    if (Build.VERSION.SDK_INT >= 21) {
-                        tts.speak(voiceWeather, TextToSpeech.QUEUE_FLUSH, null, "speech");
-                        //Log.d("TAG", "onClick: " + voiceWeather);
-
+                if (Build.VERSION.SDK_INT >= 21) {
+                    if (tts.isSpeaking()) {
+                        tts.stop();
                     } else {
-                        MyUtil.showToast(getContext(), "无法语音播报");
+                        tts.speak(voiceWeather, TextToSpeech.QUEUE_FLUSH, null, "speech");
                     }
+                }else{
+                    MyUtil.showToast(getContext(),"不支持的机型");
                 }
+
             }
         });
 //
@@ -242,7 +204,6 @@ public class PagerFragment extends Fragment {
 //                bingPic = response.body().string();
 //                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 //                editor.putString("bingPic", bingPic);
-//                // Log.d("TAG", "onCreate: " + bingPic);
 //                editor.apply();
 //                getActivity().runOnUiThread(new Runnable() {
 //                    @Override
@@ -320,7 +281,6 @@ public class PagerFragment extends Fragment {
             //titleCity.setText(cityName);
 
         voiceWeather += countyName + "..今日天气:";
-            Log.d("TAG", "showWeatherInfo: 0"+countyName);
         }
         if (weather.now != null) {
             if (weather.now.tmp != null) {
@@ -377,7 +337,7 @@ public class PagerFragment extends Fragment {
             for (DailyForecast forecast : weather.dailyForecasts) {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.daily_item, forecastLayout, false);
                 if (forecast.date != null) {
-                    TextView dateText = (TextView) view.findViewById(daily_dateTx);
+                    TextView dateText = (TextView) view.findViewById(R.id.daily_dateTx);
                     dateText.setText(forecast.date.substring(5));
                 }
                 if (forecast.cond != null) {
@@ -475,29 +435,43 @@ public class PagerFragment extends Fragment {
             voiceWeather += "祝您一切顺利.";
             weatherLayout.setVisibility(View.VISIBLE);
         }
-//        Intent intent = new Intent(this, AutoUpdateService.class);
-//        startService(intent);
+    }
+    public void onResume(){
+        initTts();
+        super.onResume();
     }
     public void onPause() {
-        if (tts!=null&&tts.isSpeaking()) {
+        if (tts!=null||tts.isSpeaking()) {
             tts.stop();
-            //tts.shutdown();
+            tts.shutdown();
+
         }
         super.onPause();
     }
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
+
         if (rootView != null) {
             ((ViewGroup) rootView.getParent()).removeView(rootView);
         }
+        super.onDestroyView();
     }
     public void onDestroy() {
-
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
-        }
         super.onDestroy();
+    }
+    public void initTts(){
+        tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.CHINA);
+                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE && result != TextToSpeech.LANG_AVAILABLE) {
+                        //MyUtil.showToast(getContext(), "只支持中文");
+                    }
+                }else{
+                    //MyUtil.showToast(getContext(), "tts引擎启动失败");
+                }
+            }
+        });
     }
 }

@@ -3,33 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorHeader">
+
+        android:fitsSystemWindows="true">
+
         <ImageView
             android:id="@+id/backgroundIm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_background3"/>
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <include layout="@layout/title" />
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
-                android:layout_marginTop="?attr/actionBarSize"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             </android.support.v4.view.ViewPager>
-        </RelativeLayout>
-        <android.support.design.widget.NavigationView
-            android:id="@+id/menuNa"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/menu_header"
-            app:menu="@menu/home_menu" />
+        </LinearLayout>
 
-    </android.support.v4.widget.DrawerLayout>
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/menuNa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/menu_header"
+        app:menu="@menu/home_menu" />
+
+</android.support.v4.widget.DrawerLayout>
