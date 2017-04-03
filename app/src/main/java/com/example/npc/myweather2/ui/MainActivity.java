@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 
 import com.example.npc.myweather2.R;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
             intent.putExtra("weatherId",weatherId);
 
         }else{
+            PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
             intent=new Intent(this,AreaChooseActivity.class);
             intent.putExtra("isFirst",true);
         }

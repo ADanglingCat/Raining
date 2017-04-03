@@ -33,18 +33,6 @@ public class MyTimePreference extends DialogPreference {
             calendar.set(0,0,0,timePicker.getCurrentHour(),timePicker.getCurrentMinute());
             currentTime =(calendar.getTime()).getTime();
             persistLong(currentTime);
-
-//            if(callChangeListener(value))
-//
-//            {
-//
-//                SharedPreferences.Editor vEditor = getEditor();
-//
-//                vEditor.putLong(getKey(), value);//(checkbox_key, false);
-//
-//                vEditor.commit();
-//
-//            }
         }
     }
     //获取sharepreference中的配置参数

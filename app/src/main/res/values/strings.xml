@@ -32,20 +32,14 @@
 
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
-        <!--<item>15 分钟</item>-->
-        <item>30 分钟</item>
         <item>1 小时</item>
         <item>3 小时</item>
         <item>6 小时</item>
-        <item>从不</item>
     </string-array>
     <string-array name="pref_sync_frequency_values">
-        <!--<item>15</item>-->
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
+        <item>1</item>
+        <item>3</item>
+        <item>6</item>
     </string-array>
 
     <string-array name="list_preference_entries">
@@ -65,17 +59,15 @@
         <item>40%</item>
         <item>60%</item>
         <item>80%</item>
-        <item>90%</item>
         <item>100%</item>
     </string-array>
     <string-array name="list_preference_alpha_values">
-        <item>1</item>
-        <item>0.8</item>
-        <item>0.6</item>
-        <item>0.4</item>
-        <item>0.2</item>
-        <item>0.1</item>
         <item>0</item>
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>255</item>
     </string-array>
     <string-array name="multi_select_list_preference_default_value" />
     <string-array name="area_manage_select_list">

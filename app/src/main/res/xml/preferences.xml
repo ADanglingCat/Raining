@@ -2,30 +2,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="通知管理">
         <SwitchPreference
-            android:defaultValue="true"
-            android:disableDependentsState="false"
-            android:title="通知总开关"
-            android:key="Notify"
-            android:summaryOn="@string/summary_on"
-            android:summaryOff="@string/summary_off" />
-        <SwitchPreference
-            android:dependency="Notify"
-            android:defaultValue="true"
-            android:title="天气预警通知"
-            android:key="alarmNotify"
-            android:summaryOn="@string/summary_on"
-            android:summaryOff="@string/summary_off" />
-        <SwitchPreference
-            android:dependency="Notify"
             android:defaultValue="false"
             android:title="定时天气提醒"
-            android:key="morningNotify"
+            android:key="Notify"
             android:summaryOn="@string/summary_on"
             android:summaryOff="@string/summary_off" />
         <com.example.npc.myweather2.ui.MyTimePreference
             android:title="提醒时间"
             android:defaultValue="0"
-            android:dependency="morningNotify"
+            android:dependency="Notify"
             android:key="notifyTime"/>
     </PreferenceCategory>
 
@@ -45,7 +30,7 @@
             android:summaryOff="所有城市"/>
         <ListPreference android:title="更新频率"
             android:dependency="autoUpdate"
-            android:defaultValue="180"
+            android:defaultValue="3"
             android:key="updateFre"
             android:entries="@array/pref_sync_frequency_titles"
             android:entryValues="@array/pref_sync_frequency_values"/>
@@ -74,22 +59,24 @@
             android:summaryOff="@string/summary_off" />
 
         <Preference android:title="自定义图片"
-            android:dependency="diy">
+            android:dependency="diy"
+            android:key="selfPic">
             <intent android:action="com.example.myweather.Choose" />
         </Preference>
         <ListPreference android:title="背景透明度"
             android:dependency="diy"
-            android:defaultValue="1"
+            android:defaultValue="255"
             android:key="alpha"
             android:entries="@array/list_preference_alpha_titles"
             android:entryValues="@array/list_preference_alpha_values"/>
     </PreferenceCategory>
-    <PreferenceCategory android:title="其他">
-        <SwitchPreference
-            android:defaultValue="false"
-            android:title="自动定位"
-            android:key="autoLocate"
-            android:summaryOn="@string/summary_on"
-            android:summaryOff="@string/summary_off" />
-    </PreferenceCategory>
+    <!--<PreferenceCategory android:title="其他">-->
+        <!--<SwitchPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:title="自动定位"-->
+            <!--android:key="autoLocate"-->
+            <!--android:summaryOn="@string/summary_on"-->
+            <!--android:summaryOff="@string/summary_off" />-->
+
+    <!--</PreferenceCategory>-->
 </PreferenceScreen>

@@ -59,7 +59,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -67,7 +66,12 @@
         <activity android:name=".ui.LicenseActivity" />
         <activity android:name=".ui.AreaManagerActivity" />
         <activity android:name=".ui.AreaChooseActivity" />
-        <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.SettingActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.ChoosePictureActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
@@ -78,7 +82,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".util.BaseActivity" />
-        <activity android:name=".ui.Main3Activity"></activity>
+        <activity android:name=".ui.Main3Activity" />
+
+        <service
+            android:name=".service.UpdateWeatherService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.NotifyWeatherService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.NotifyService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.model.CountyList;
+import com.example.npc.myweather2.service.NotifyService;
+import com.example.npc.myweather2.service.UpdateWeatherService;
 import com.example.npc.myweather2.util.ActivityCollector;
 import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
@@ -39,22 +41,22 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class Main3Activity extends BaseActivity{
+public class Main3Activity extends BaseActivity {
     private PagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private List<CountyList> countyLists;
     private List<Fragment> fragmentList;
     private Button menuBu;
-    private  TextView titleCounty;
-    private  DrawerLayout drawer;
-    private  ImageView backIm;
-    private   NavigationView navigationView;
+    private TextView titleCounty;
+    private DrawerLayout drawer;
+    private ImageView backIm;
+    private NavigationView navigationView;
     private String imagePath;
     private String bingPic;
     private Calendar calendar;
     private int today;
     private int yestarday;
-    private         SharedPreferences preference ;
+    private SharedPreferences preference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,32 +69,30 @@ public class Main3Activity extends BaseActivity{
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main3);
-        menuBu=(Button)findViewById(R.id.menuBu);
-        titleCounty=(TextView)findViewById(R.id.titleCity);
-        countyLists= DataSupport.findAll(CountyList.class);
-        fragmentList=new ArrayList<>();
-        drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
+        menuBu = (Button) findViewById(R.id.menuBu);
+        titleCounty = (TextView) findViewById(R.id.titleCity);
+        countyLists = DataSupport.findAll(CountyList.class);
+        fragmentList = new ArrayList<>();
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.menuNa);
-        backIm=(ImageView)findViewById(R.id.backgroundIm);
+        backIm = (ImageView) findViewById(R.id.backgroundIm);
         preference = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
-        calendar=Calendar.getInstance();
-        today=calendar.get(Calendar.DATE);
-        yestarday=preference.getInt("date",0);
-        if(today!=yestarday){
-           requestBing();
-        }
-        for(CountyList countyList:countyLists){
+        calendar = Calendar.getInstance();
+        today = calendar.get(Calendar.DATE);
+        yestarday = preference.getInt("date", 0);
+
+        for (CountyList countyList : countyLists) {
             Fragment fragment = new PagerFragment();
-            Bundle arg=new Bundle();
-            arg.putString("weatherId",countyList.getWeatherId());
+            Bundle arg = new Bundle();
+            arg.putString("weatherId", countyList.getWeatherId());
             fragment.setArguments(arg);
             fragmentList.add(fragment);
         }
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager(),fragmentList);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mViewPager.setAdapter(pagerAdapter);
         //mViewPager.setOffscreenPageLimit(0);
-        ViewPager.OnPageChangeListener listener=new ViewPager.OnPageChangeListener() {
+        ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -143,67 +143,89 @@ public class Main3Activity extends BaseActivity{
                 return true;
             }
         });
+        Intent intent;
+        SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(this);
+        if(preferences.getBoolean("autoUpdate",true)){
+            //启动自动更新
+            intent=new Intent(this,UpdateWeatherService.class);
+            startService(intent);
+        }
+        if(preferences.getBoolean("Notify",false)){
+            intent=new Intent(this, NotifyService.class);
+            startService(intent);
+        }
     }
-    public void onResume(){
+
+    public void onResume() {
         super.onResume();
-        int mainPosition=getMainPosition();
-        titleCounty.setText( countyLists.get(mainPosition).getCountyName());
-        if(countyLists.size()!=fragmentList.size()){
+        int mainPosition = getMainPosition();
+        titleCounty.setText(countyLists.get(mainPosition).getCountyName());
+        if (countyLists.size() != fragmentList.size()) {
             fragmentList.clear();
-            for(CountyList countyList:countyLists){
+            for (CountyList countyList : countyLists) {
                 Fragment fragment1 = new PagerFragment();
-                Bundle arg=new Bundle();
-                arg.putString("weatherId",countyList.getWeatherId());
+                Bundle arg = new Bundle();
+                arg.putString("weatherId", countyList.getWeatherId());
                 fragment1.setArguments(arg);
                 fragmentList.add(fragment1);
             }
             pagerAdapter.notifyDataSetChanged();
         }
-        Intent intent=getIntent();
-        int position=intent.getIntExtra("position",mainPosition);
+        Intent intent = getIntent();
+        int position = intent.getIntExtra("position", mainPosition);
         intent.removeExtra("position");
-        if(fragmentList.size()!=0){
+        if (fragmentList.size() != 0) {
             mViewPager.setCurrentItem(position);
-
         }
-        if (preference.getString("imagePath", null) != null) {
-            imagePath = preference.getString("imagePath", null);
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            backIm.setImageBitmap(bitmap);
+
+        if (preference.getBoolean("diy",false)) {
+            if(preference.getBoolean("autoBing",false)){
+                setBackgroundByBing();
+            }else if (preference.getString("imagePath", null) != null) {
+                imagePath = preference.getString("imagePath", null);
+                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                backIm.setImageBitmap(bitmap);
+            }else {
+                backIm.setImageResource(R.drawable.ic_background);
+            }
+            backIm.setImageAlpha(Integer.parseInt(preference.getString("alpha","255")));
         } else {
-            setBackgroundByBing();
+            backIm.setImageResource(R.drawable.ic_background);
         }
 
 
     }
+
     public void onBackPressed() {
         ActivityCollector.removeAll();
         //android.os.Process.killProcess(android.os.Process.myPid());
     }
+
     //获取默认城市
-    public int getMainPosition(){
-        countyLists= DataSupport.findAll(CountyList.class);
-        int position=-1;
-        for(int i=0;i<countyLists.size();i++){
-            if(countyLists.get(i).isMainCity()){
-                position=i;
+    public int getMainPosition() {
+        countyLists = DataSupport.findAll(CountyList.class);
+        int position = -1;
+        for (int i = 0; i < countyLists.size(); i++) {
+            if (countyLists.get(i).isMainCity()) {
+                position = i;
                 break;
             }
         }
-        if(position==-1){
+        if (position == -1) {
             countyLists.get(0).setMainCity(true);
-            position=0;
+            position = 0;
         }
         return position;
     }
+
     //必应每日一图设置背景
     public void setBackgroundByBing() {
         preference = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
         bingPic = preference.getString("bingPic", null);
-        if (bingPic != null) {
-            Glide.with(Main3Activity.this).load(bingPic).into(backIm);
-        } else {
+        if (today != yestarday||bingPic==null) {
             requestBing();
+        }else{
+            Glide.with(Main3Activity.this).load(bingPic).into(backIm);
         }
     }
 
@@ -213,7 +235,7 @@ public class Main3Activity extends BaseActivity{
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-               runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         MyUtil.showToast(Main3Activity.this, "获取图片失败");
@@ -226,7 +248,7 @@ public class Main3Activity extends BaseActivity{
                 bingPic = response.body().string();
                 SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this).edit();
                 editor.putString("bingPic", bingPic);
-                editor.putInt("date",today);
+                editor.putInt("date", today);
                 editor.apply();
                 runOnUiThread(new Runnable() {
                     @Override
@@ -238,4 +260,5 @@ public class Main3Activity extends BaseActivity{
             }
         });
     }
+
 }

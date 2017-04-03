@@ -123,15 +123,7 @@ public class PagerFragment extends Fragment {
     }
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-       // String imagePath;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        if (prefs.getString("imagePath", null) != null) {
-//            imagePath = prefs.getString("imagePath", null);
-//            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-//            backgroundImg.setImageBitmap(bitmap);
-//        } else {
-//            setBackgroundByBing();
-//        }
         weatherId=getArguments().getString("weatherId");
         String weatherString = prefs.getString("weather" + weatherId, null);
         if (weatherString != null) {
@@ -139,9 +131,6 @@ public class PagerFragment extends Fragment {
             Weather weather = MyUtil.handleWeatherResponse(weatherString);
             weatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
-            //Bundle args=new Bundle();
-           // args.putString("voiceWeather",voiceWeather);
-            //setArguments(args);
         } else {
             // 无缓存时去服务器查询天气
 
@@ -171,49 +160,7 @@ public class PagerFragment extends Fragment {
 
             }
         });
-//
     }
-    //必应每日一图设置背景
-//    public void setBackgroundByBing() {
-//        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        bingPic = preference.getString("bingPic", null);
-//        if (bingPic != null) {
-//            Glide.with(getContext()).load(bingPic).into(backgroundImg);
-//        } else {
-//            requestBing();
-//        }
-//    }
-
-    //获取必应每日一图
-//    public void requestBing() {
-//        MyUtil.sendRequest(resources.getString(R.string.bingPicture), new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        MyUtil.showToast(getContext(), "获取图片失败");
-//                        swipeRefresh.setRefreshing(false);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                bingPic = response.body().string();
-//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-//                editor.putString("bingPic", bingPic);
-//                editor.apply();
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Glide.with(getContext()).load(bingPic).into(backgroundImg);
-//                    }
-//                });
-//            }
-//        });
-//    }
 
     /**
      * 根据天气id请求城市天气信息。
@@ -224,7 +171,7 @@ public class PagerFragment extends Fragment {
         String weatherUrl = weatherAddress + weatherId + "&" + weatherKey;
         MyUtil.sendRequest(weatherUrl, new Callback() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, Response response) throws IOException,NullPointerException {
                 final String responseText = response.body().string();
                 final Weather weather = MyUtil.handleWeatherResponse(responseText);
                 getActivity().runOnUiThread(new Runnable() {
@@ -384,20 +331,20 @@ public class PagerFragment extends Fragment {
             if (weather.suggestion.comf != null) {
                 String comfort = weather.suggestion.comf.txt;
                 comfortText.setText(comfort);
-                String title_comfort = "舒适度指数：" + weather.suggestion.comf.brf;
+                String title_comfort = "舒适度指数:" + weather.suggestion.comf.brf;
                 title_comfortText.setText(title_comfort);
                 voiceWeather += "。" + weather.suggestion.comf.txt + "。";
             }
             if (weather.suggestion.cw != null) {
                 String carWash = weather.suggestion.cw.txt;
-                String title_carWash = "洗车指数：" + weather.suggestion.cw.brf;
+                String title_carWash = "洗车指数:" + weather.suggestion.cw.brf;
                 title_carWashText.setText(title_carWash);
                 carWashText.setText(carWash);
             }
             if (weather.suggestion.sport != null) {
                 String sport = weather.suggestion.sport.txt;
                 sportText.setText(sport);
-                String title_sport = "运动指数：" + weather.suggestion.sport.brf;
+                String title_sport = "运动指数:" + weather.suggestion.sport.brf;
                 title_sportText.setText(title_sport);
             }
             if (weather.suggestion.drsg != null) {
@@ -464,12 +411,10 @@ public class PagerFragment extends Fragment {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    int result = tts.setLanguage(Locale.CHINA);
-                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE && result != TextToSpeech.LANG_AVAILABLE) {
-                        //MyUtil.showToast(getContext(), "只支持中文");
-                    }
-                }else{
-                    //MyUtil.showToast(getContext(), "tts引擎启动失败");
+                    tts.setLanguage(Locale.CHINA);
+//                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE && result != TextToSpeech.LANG_AVAILABLE) {
+//                        //MyUtil.showToast(getContext(), "只支持中文");
+//                    }
                 }
             }
         });
