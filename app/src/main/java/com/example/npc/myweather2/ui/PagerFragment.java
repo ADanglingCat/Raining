@@ -28,6 +28,8 @@ import com.example.npc.myweather2.util.MyUtil;
 import junit.framework.Assert;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import okhttp3.Call;
@@ -68,26 +70,28 @@ public class PagerFragment extends Fragment {
     private TextView title_fluText;
     private TextView title_airText;
     private TextView title_designText;
-//    private ImageView backgroundImg;
     private Resources resources;
     private Button voiceBu;
     public String weatherId;
     public TextToSpeech tts;
     public String voiceWeather;
-    public String bingPic;
     public View drawerView;
     public View rootView;
+    private SharedPreferences prefs;
+    private int today;
+    private int yesterday;
+    private static final String TAG = "TAGpageFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if(rootView==null){
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_pager, container, false);
             voiceWeather = "";
             voiceBu = (Button) rootView.findViewById(R.id.VoiceBu);
             resources = getActivity().getResources();
-            drawerView=inflater.inflate(R.layout.activity_main3,container,false);
+            drawerView = inflater.inflate(R.layout.activity_main3, container, false);
 
             drawerLayout = (DrawerLayout) drawerView.findViewById(R.id.drawer_layout);
-            //backgroundImg = (ImageView) rootView.findViewById(R.id.backgroundIm);
             weatherLayout = (ScrollView) rootView.findViewById(R.id.sv_weather_layout);
             titleUpdateTime = (TextView) rootView.findViewById(R.id.timeTx);
             degreeText = (TextView) rootView.findViewById(R.id.tmpTx);
@@ -114,28 +118,36 @@ public class PagerFragment extends Fragment {
             title_uvText = (TextView) rootView.findViewById(R.id.suggestion_uv);
             title_fluText = (TextView) rootView.findViewById(R.id.suggestion_flu);
             title_airText = (TextView) rootView.findViewById(R.id.suggestion_air);
-            title_designText = (TextView)rootView. findViewById(R.id.suggestion_drsg);
+            title_designText = (TextView) rootView.findViewById(R.id.suggestion_drsg);
 
             swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
             swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
+            prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+
+
         }
         return rootView;
     }
-    public void onActivityCreated(Bundle savedInstanceState){
+
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        weatherId=getArguments().getString("weatherId");
+        weatherId = getArguments().getString("weatherId");
         String weatherString = prefs.getString("weather" + weatherId, null);
-        if (weatherString != null) {
+        Calendar calendar = Calendar.getInstance();
+        today = calendar.get(Calendar.DATE);
+        yesterday = prefs.getInt("date"+weatherId, 0);
+        if (today != yesterday || weatherString == null) {
+            weatherLayout.setVisibility(View.INVISIBLE);
+
+            requestWeather(weatherId);
+
+
+        } else {
             // 有缓存时直接解析天气数据
             Weather weather = MyUtil.handleWeatherResponse(weatherString);
             weatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
-        } else {
-            // 无缓存时去服务器查询天气
-
-            weatherLayout.setVisibility(View.INVISIBLE);
-            requestWeather(weatherId);
         }
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -154,8 +166,8 @@ public class PagerFragment extends Fragment {
                     } else {
                         tts.speak(voiceWeather, TextToSpeech.QUEUE_FLUSH, null, "speech");
                     }
-                }else{
-                    MyUtil.showToast(getContext(),"不支持的机型");
+                } else {
+                    MyUtil.showToast(getContext(), "不支持的机型");
                 }
 
             }
@@ -169,25 +181,34 @@ public class PagerFragment extends Fragment {
         String weatherAddress = resources.getString(R.string.weatherAddress);
         String weatherKey = resources.getString(R.string.weatherKey);
         String weatherUrl = weatherAddress + weatherId + "&" + weatherKey;
+       // Log.d(TAG, "requestWeather: "+weatherId);
         MyUtil.sendRequest(weatherUrl, new Callback() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException,NullPointerException {
+            public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 final Weather weather = MyUtil.handleWeatherResponse(responseText);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (weather != null && "ok".equals(weather.status)) {
-                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-                            editor.putString("weather" + weatherId, responseText);
-                            editor.apply();
-                            showWeatherInfo(weather);
-                        } else {
-                            MyUtil.showToast(getContext(), "获取天气信息失败");
+                try {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (weather != null && "ok".equals(weather.status)) {
+                                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+                                editor.putString("weather" + weatherId, responseText);
+                                if (today != yesterday) {
+                                    editor.putString("hourWeather" + weatherId, responseText);
+                                    editor.putInt("date" + weatherId, today);
+                                }
+                                editor.apply();
+                                showWeatherInfo(weather);
+                            } else {
+                                MyUtil.showToast(getContext(), "获取天气信息失败");
+                            }
+                            swipeRefresh.setRefreshing(false);
                         }
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -227,7 +248,7 @@ public class PagerFragment extends Fragment {
             String countyName = weather.basic.cityName;
             //titleCity.setText(cityName);
 
-        voiceWeather += countyName + "..今日天气:";
+            voiceWeather += countyName + "..今日天气:";
         }
         if (weather.now != null) {
             if (weather.now.tmp != null) {
@@ -264,9 +285,19 @@ public class PagerFragment extends Fragment {
         hourlylayout.removeAllViews();
         boolean flag = true;
         //未来几小时天气
+        String hourWeatherText = prefs.getString("hourWeather" + weatherId, null);
+        List<HourlyForecast> hourlyForecasts = null;
+        if (hourWeatherText != null) {
+            Weather hourWeather = MyUtil.handleWeatherResponse(hourWeatherText);
+            if (hourWeather != null && "ok".equals(hourWeather.status)) {
+                hourlyForecasts = hourWeather.hourlyForecasts;
+            }
 
-        if (weather.hourlyForecasts != null) {
-            for (HourlyForecast forecast : weather.hourlyForecasts) {
+        } else if (weather.hourlyForecasts != null) {
+            hourlyForecasts = weather.hourlyForecasts;
+        }
+        if (hourlyForecasts != null) {
+            for (HourlyForecast forecast : hourlyForecasts) {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.hourly_item, hourlylayout, false);
                 TextView tmpText = (TextView) view.findViewById(R.id.hour_tmpTx);
                 ImageView image = (ImageView) view.findViewById(R.id.hour_imageTx);
@@ -279,6 +310,7 @@ public class PagerFragment extends Fragment {
                 hourlylayout.addView(view);
             }
         }
+
         //未来几天天气
         if (weather.dailyForecasts != null) {
             for (DailyForecast forecast : weather.dailyForecasts) {
@@ -383,18 +415,21 @@ public class PagerFragment extends Fragment {
             weatherLayout.setVisibility(View.VISIBLE);
         }
     }
-    public void onResume(){
+
+    public void onResume() {
         initTts();
         super.onResume();
     }
+
     public void onPause() {
-        if (tts!=null||tts.isSpeaking()) {
+        if (tts != null || tts.isSpeaking()) {
             tts.stop();
             tts.shutdown();
 
         }
         super.onPause();
     }
+
     @Override
     public void onDestroyView() {
 
@@ -403,10 +438,12 @@ public class PagerFragment extends Fragment {
         }
         super.onDestroyView();
     }
+
     public void onDestroy() {
         super.onDestroy();
     }
-    public void initTts(){
+
+    public void initTts() {
         tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {

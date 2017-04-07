@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.graphics.Palette;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +24,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.model.CountyList;
-import com.example.npc.myweather2.service.NotifyService;
 import com.example.npc.myweather2.service.UpdateWeatherService;
 import com.example.npc.myweather2.util.ActivityCollector;
 import com.example.npc.myweather2.util.BaseActivity;
@@ -55,8 +55,13 @@ public class Main3Activity extends BaseActivity {
     private String bingPic;
     private Calendar calendar;
     private int today;
-    private int yestarday;
+    private int yesterday;
     private SharedPreferences preference;
+    private ImageView userImage;
+    private TextView userId;
+    private TextView userName;
+    private View headerView;
+    private static final String TAG = "TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +84,26 @@ public class Main3Activity extends BaseActivity {
         preference = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
         calendar = Calendar.getInstance();
         today = calendar.get(Calendar.DATE);
-        yestarday = preference.getInt("date", 0);
+        yesterday = preference.getInt("date", 0);
+
+        headerView = navigationView.getHeaderView(0);
+        userId = (TextView) headerView.findViewById(R.id.user_id);
+        userName = (TextView) headerView.findViewById(R.id.user_name);
+        userImage = (ImageView) headerView.findViewById(R.id.user_image);
+        menuBu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
+        userImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Main3Activity.this, ChoosePictureActivity.class);
+                intent.putExtra("headerPath", "headerPath");
+                startActivity(intent);
+            }
+        });
 
         for (CountyList countyList : countyLists) {
             Fragment fragment = new PagerFragment();
@@ -109,12 +133,7 @@ public class Main3Activity extends BaseActivity {
             }
         };
         mViewPager.addOnPageChangeListener(listener);
-        menuBu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -143,21 +162,13 @@ public class Main3Activity extends BaseActivity {
                 return true;
             }
         });
-        Intent intent;
-        SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(this);
-        if(preferences.getBoolean("autoUpdate",true)){
-            //启动自动更新
-            intent=new Intent(this,UpdateWeatherService.class);
-            startService(intent);
-        }
-        if(preferences.getBoolean("Notify",false)){
-            intent=new Intent(this, NotifyService.class);
-            startService(intent);
-        }
+
     }
 
     public void onResume() {
         super.onResume();
+
+        String headerPath = preference.getString("headerPath", null);
         int mainPosition = getMainPosition();
         titleCounty.setText(countyLists.get(mainPosition).getCountyName());
         if (countyLists.size() != fragmentList.size()) {
@@ -178,21 +189,40 @@ public class Main3Activity extends BaseActivity {
             mViewPager.setCurrentItem(position);
         }
 
-        if (preference.getBoolean("diy",false)) {
-            if(preference.getBoolean("autoBing",false)){
+        if (preference.getBoolean("diy", false)) {
+            if (preference.getBoolean("autoBing", false)) {
                 setBackgroundByBing();
-            }else if (preference.getString("imagePath", null) != null) {
+            } else if (preference.getString("imagePath", null) != null) {
                 imagePath = preference.getString("imagePath", null);
-                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                Bitmap bitmap = getBitmap(imagePath);
                 backIm.setImageBitmap(bitmap);
-            }else {
+            } else {
                 backIm.setImageResource(R.drawable.ic_background);
             }
-            backIm.setImageAlpha(Integer.parseInt(preference.getString("alpha","255")));
+            backIm.setImageAlpha(Integer.parseInt(preference.getString("alpha", "255")));
         } else {
+            backIm.setImageAlpha(255);
             backIm.setImageResource(R.drawable.ic_background);
         }
 
+        if (headerPath != null) {
+            Bitmap bitmap = getBitmap(headerPath);
+            userImage.setImageBitmap(bitmap);
+            getColor(bitmap);
+
+        } else {
+            userImage.setImageResource(R.drawable.ic_userimage);
+            headerView.setBackgroundResource(R.color.colorImage);
+           // navigationView.setItemIconTintList();
+        }
+
+
+        if (preference.getBoolean("autoUpdate", true)) {
+            //启动自动更新
+            intent = new Intent(this, UpdateWeatherService.class);
+            startService(intent);
+        }
 
     }
 
@@ -222,9 +252,9 @@ public class Main3Activity extends BaseActivity {
     public void setBackgroundByBing() {
         preference = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
         bingPic = preference.getString("bingPic", null);
-        if (today != yestarday||bingPic==null) {
+        if (today != yesterday || bingPic == null) {
             requestBing();
-        }else{
+        } else {
             Glide.with(Main3Activity.this).load(bingPic).into(backIm);
         }
     }
@@ -261,4 +291,44 @@ public class Main3Activity extends BaseActivity {
         });
     }
 
+    //图片处理
+    public Bitmap getBitmap(String path) {
+
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+        if (bitmap!=null) {
+            int bheight = bitmap.getHeight();
+            int bwidth = bitmap.getWidth();
+            if (bheight > 4096 || bwidth > 4096) {
+
+                bheight = (int) (bitmap.getHeight() * 0.9);
+                bwidth = (int) (bitmap.getWidth() * 0.9);
+            }
+            //  Log.d(TAG, "getBitmap: hei"+bitmap.getHeight()+"wid"+bitmap.getWidth());
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
+        } else{
+            bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.ic_userimage);
+        }
+        return bitmap;
+
+    }
+//从图片中取色
+    public void getColor(Bitmap bitmap) {
+        Palette.Builder builder = Palette.from(bitmap);
+        builder.generate(new Palette.PaletteAsyncListener() {
+            @Override
+            public void onGenerated(Palette palette) {
+                Palette.Swatch vibrant = palette.getVibrantSwatch();
+                Palette.Swatch vibrant1 = palette.getDarkVibrantSwatch();
+                if (vibrant1 != null) {
+                    headerView.setBackgroundColor(vibrant1.getRgb());
+
+                } else if (vibrant != null) {
+                    headerView.setBackgroundColor(vibrant.getRgb());
+                } else {
+                    headerView.setBackgroundResource(R.color.colorHeaderBackground);
+                }
+            }
+        });
+    }
 }

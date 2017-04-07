@@ -15,16 +15,17 @@
         android:id="@+id/user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="xyz111@outlook.com"
         android:textSize="14sp"
         android:layout_alignParentBottom="true"
         android:textColor="@color/colorFont"/>
+
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
         android:layout_above="@id/user_id"
-        android:text="小宇宙"
+        android:text="未来的事不笑着说出来可不行呢"
         android:textSize="14sp"
         android:textColor="@color/colorFont"/>
 </RelativeLayout>

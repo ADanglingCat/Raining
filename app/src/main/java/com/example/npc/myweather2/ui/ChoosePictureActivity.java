@@ -26,8 +26,9 @@ public class ChoosePictureActivity extends BaseActivity {
     public static final int TAKE_PHOTO = 1;
 
     public static final int CHOOSE_PHOTO = 2;
-    String imagePath = null;
-    SharedPreferences.Editor editor;
+   private String imagePath = null;
+    private SharedPreferences.Editor editor;
+   private  String extra;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +37,17 @@ public class ChoosePictureActivity extends BaseActivity {
         Button default_picture = (Button) findViewById(R.id.default_picture);
         Button choose_picture = (Button) findViewById(R.id.choose_picture);
         editor = PreferenceManager.getDefaultSharedPreferences(ChoosePictureActivity.this).edit();
+        Intent intent=getIntent();
+        extra= intent.getStringExtra("headerPath");
+        if(extra==null){
+            extra="imagePath";
+        }
+
         default_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.remove("imagePath");
+                editor.remove(extra);
                 editor.commit();
-               // MyUtil.showToast(ChoosePictureActivity.this,"设置成功,下次启动生效");
                 finish();
             }
         });
@@ -144,7 +150,8 @@ public class ChoosePictureActivity extends BaseActivity {
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-            editor.putString("imagePath", imagePath);
+
+            editor.putString( extra, imagePath);
             editor.apply();
            // MyUtil.showToast(this,"设置成功,下次启动生效");
             finish();

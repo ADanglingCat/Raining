@@ -12,5 +12,6 @@
     <color name="colorBackground">#8000</color>
     <color name="colorHeader">#56B0BB</color>
     <color name="colorImage">#5F80B5</color>
+    <color name="colorHeaderBackground">#0B2442</color>
     <color name="colorLink">#0059D0</color>
 </resources>

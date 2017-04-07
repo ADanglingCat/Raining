@@ -3,6 +3,8 @@
     package="com.example.npc.myweather2">
 
     <!-- Normal Permissions 不需要运行时注册 -->
+    <!-- 启动状态 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
@@ -42,7 +44,7 @@
     <application
         android:name=".util.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_catcat"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -56,9 +58,11 @@
 
         <activity
             android:name=".ui.MainActivity"
+            android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -66,17 +70,19 @@
         <activity android:name=".ui.LicenseActivity" />
         <activity android:name=".ui.AreaManagerActivity" />
         <activity android:name=".ui.AreaChooseActivity" />
-        <activity android:name=".ui.SettingActivity" >
+        <activity android:name=".ui.SettingActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.ChoosePictureActivity"
+            android:label="自定义图片"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
             <intent-filter>
-                <action android:name="com.example.myweather.Choose" />
+                <action android:name="com.example.myweather.CHOOSE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -92,10 +98,23 @@
             android:name=".service.NotifyWeatherService"
             android:enabled="true"
             android:exported="true" />
-        <service
-            android:name=".service.NotifyService"
+
+        <receiver
+            android:name=".broadcast.BootReceiver"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".ui.PersonalActivity">
+            <intent-filter>
+                <action android:name="com.example.myweather.PERSONAL" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

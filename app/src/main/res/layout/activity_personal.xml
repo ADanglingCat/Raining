@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_personal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorLine"
+        android:fitsSystemWindows="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/backBu_personal"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_back" />
+
+        <TextView
+            style="@style/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:text="个人中心" />
+    </LinearLayout>
+    <View style="@style/mline"/>
+
+    <RelativeLayout
+        android:id="@+id/image_layout"
+        style="@style/personal_layout">
+        <TextView
+            style="@style/personal_title"
+            android:text="头像" />
+        <ImageView
+            android:id="@+id/go_image"
+            style="@style/personal_go" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/p_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+           android:layout_toLeftOf="@id/go_image"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/ic_userimage"/>
+    </RelativeLayout>
+    <View style="@style/line"/>
+    <RelativeLayout
+        android:id="@+id/name_layout"
+        style="@style/personal_layout">
+
+        <TextView
+            style="@style/personal_title"
+            android:text="昵称" />
+
+        <ImageView
+            android:id="@+id/go_name"
+            style="@style/personal_go" />
+        <TextView
+            android:id="@+id/p_name"
+            style="@style/personal_value"
+            android:layout_toLeftOf="@id/go_name"
+            android:text="蕾姆" />
+    </RelativeLayout>
+    <View style="@style/line"/>
+    <RelativeLayout
+        android:id="@+id/sign_layout"
+        style="@style/personal_layout">
+
+        <TextView
+            style="@style/personal_title"
+            android:text="签名" />
+
+        <ImageView
+            android:id="@+id/go_sign"
+            style="@style/personal_go" />
+        <TextView
+            android:id="@+id/p_sign"
+            style="@style/personal_value"
+            android:layout_toLeftOf="@id/go_sign"
+            android:text="未来的事不笑着说出来可不行呢" />
+    </RelativeLayout>
+    <View style="@style/line"/>
+    <RelativeLayout
+        android:id="@+id/sex_layout"
+        style="@style/personal_layout">
+
+        <TextView
+            style="@style/personal_title"
+            android:text="性别" />
+
+        <ImageView
+            android:id="@+id/go_sex"
+            style="@style/personal_go" />
+        <TextView
+            android:id="@+id/p_sex"
+            style="@style/personal_value"
+            android:layout_toLeftOf="@id/go_sex"
+            android:text="保密" />
+    </RelativeLayout>
+    <View style="@style/line"/>
+    <RelativeLayout
+        android:id="@+id/email_layout"
+        style="@style/personal_layout">
+
+        <TextView
+            style="@style/personal_title"
+            android:text="邮箱" />
+
+        <ImageView
+            android:id="@+id/go_email"
+            style="@style/personal_go" />
+        <TextView
+            android:id="@+id/p_email"
+            style="@style/personal_value"
+            android:layout_toLeftOf="@id/go_email"
+            android:text="leimu@gmail.com" />
+    </RelativeLayout>
+    <View style="@style/mline"/>
+    <TextView
+        android:layout_margin="8dp"
+        style="@style/personal_title"
+        android:text="退出登录" />
+</LinearLayout>

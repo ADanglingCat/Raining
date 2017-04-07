@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.gson.DailyForecast;
@@ -22,6 +21,8 @@ import com.example.npc.myweather2.util.MyUtil;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -56,7 +57,6 @@ public class NotifyWeatherService extends Service {
                 if(list.isMainCity()){
                     //只更新默认城市天气
                     for(int i=0;i<3;i++){
-
                         updateWeather(list.getWeatherId());
                         if(weather!=null){
                             countyName=list.getCountyName();
@@ -74,9 +74,15 @@ public class NotifyWeatherService extends Service {
                                     .setSmallIcon(R.drawable.ic_notify)
                                     .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_notify))
                                     .build();
-                            Log.d("TAG", "onStartCommand: 通知");
-                            notificationManager.notify(1,notification);
+
+                            Calendar calendar=Calendar.getInstance();
+                            Date date1=calendar.getTime();//现在的时间
+                            Date date2=new Date( preferences.getLong("notifyTime",0));//设定的时间
+                            if(!date1.before(date2)) {
+                                notificationManager.notify(1,notification);
+                            }
                             break;
+
                         }
 
                     }

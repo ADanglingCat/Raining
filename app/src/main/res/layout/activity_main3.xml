@@ -45,6 +45,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/menu_header"
+        app:itemIconTint="@color/colorImage"
         app:menu="@menu/home_menu" />
 
 </android.support.v4.widget.DrawerLayout>

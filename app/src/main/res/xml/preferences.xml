@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="个人资料">
+       <Preference
+           android:key="personal"
+           android:title="个人中心">
+           <intent android:action="com.example.myweather.PERSONAL"/>
+       </Preference>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="通知管理">
         <SwitchPreference
             android:defaultValue="false"
@@ -11,7 +19,7 @@
             android:title="提醒时间"
             android:defaultValue="0"
             android:dependency="Notify"
-            android:key="notifyTime"/>
+            android:key="notifyTime" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="天气更新">
@@ -61,11 +69,11 @@
         <Preference android:title="自定义图片"
             android:dependency="diy"
             android:key="selfPic">
-            <intent android:action="com.example.myweather.Choose" />
+            <intent android:action="com.example.myweather.CHOOSE"/>
         </Preference>
         <ListPreference android:title="背景透明度"
             android:dependency="diy"
-            android:defaultValue="255"
+            android:defaultValue="200"
             android:key="alpha"
             android:entries="@array/list_preference_alpha_titles"
             android:entryValues="@array/list_preference_alpha_values"/>

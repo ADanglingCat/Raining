@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyWeather2</string>
+    <string name="app_name">下鱼了吗</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -74,6 +74,16 @@
         <item>查看天气</item>
         <item>设为默认</item>
         <item>删除城市</item>
+    </string-array>
+    <string-array name="list_preference_sex_titles">
+        <item>男</item>
+        <item>女</item>
+        <item>保密</item>
+    </string-array>
+    <string-array name="list_preference_sex_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
