@@ -3,30 +3,17 @@
     android:id="@+id/activity_city_manage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
-    android:orientation="vertical">
+    android:background="#fff">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorLine"
-        android:fitsSystemWindows="true"
-        android:orientation="horizontal">
+       style="@style/titleBar">
 
         <Button
             android:id="@+id/backBu_citymanage"
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_back" />
+           style="@style/backBu"/>
 
         <TextView
             style="@style/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
             android:text="城市管理" />
     </LinearLayout>
 

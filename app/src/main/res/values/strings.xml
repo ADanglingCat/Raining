@@ -75,6 +75,11 @@
         <item>设为默认</item>
         <item>删除城市</item>
     </string-array>
+    <string-array name="personal_sex_list">
+        <item>男的♂</item>
+        <item>女的♀</item>
+        <item>保密ி</item>
+    </string-array>
     <string-array name="list_preference_sex_titles">
         <item>男</item>
         <item>女</item>
@@ -116,4 +121,18 @@
     <string name="countyAddress">https://api.heweather.com/v5/search?city=</string>
     <string name="bingPicture">http://guolin.tech/api/bing_pic</string>
     <string name="map_location">d4fd7178892ebc28784a2341048a1128</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 </resources>

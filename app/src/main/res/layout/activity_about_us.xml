@@ -1,39 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_about_us"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#fff">
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="5dp"-->
-        <!--android:background="@color/colorLine"/>-->
+   style="@style/activityLayout">
     <LinearLayout
-        android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal"
-        android:background="@color/colorLine">
+        style="@style/titleBar">
         <Button
             android:id="@+id/backBu_about"
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_back"
-            android:layout_gravity="center"/>
+            style="@style/backBu"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             style="@style/title"
-            android:text="关于我们"
-            android:layout_gravity="center"/>
+            android:text="关于我们" />
     </LinearLayout>
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="10dp"-->
-        <!--android:background="@color/colorLine"/>-->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

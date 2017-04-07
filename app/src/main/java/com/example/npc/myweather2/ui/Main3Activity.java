@@ -58,7 +58,7 @@ public class Main3Activity extends BaseActivity {
     private int yesterday;
     private SharedPreferences preference;
     private ImageView userImage;
-    private TextView userId;
+    private TextView userSign;
     private TextView userName;
     private View headerView;
     private static final String TAG = "TAG";
@@ -87,7 +87,7 @@ public class Main3Activity extends BaseActivity {
         yesterday = preference.getInt("date", 0);
 
         headerView = navigationView.getHeaderView(0);
-        userId = (TextView) headerView.findViewById(R.id.user_id);
+        userSign = (TextView) headerView.findViewById(R.id.user_sign);
         userName = (TextView) headerView.findViewById(R.id.user_name);
         userImage = (ImageView) headerView.findViewById(R.id.user_image);
         menuBu.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +99,7 @@ public class Main3Activity extends BaseActivity {
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Main3Activity.this, ChoosePictureActivity.class);
-                intent.putExtra("headerPath", "headerPath");
+                Intent intent = new Intent("com.example.myweather.PERSONAL");
                 startActivity(intent);
             }
         });
@@ -169,6 +168,9 @@ public class Main3Activity extends BaseActivity {
         super.onResume();
 
         String headerPath = preference.getString("headerPath", null);
+        String sign = preference.getString("签名", null);
+        String name = preference.getString("昵称", null);
+
         int mainPosition = getMainPosition();
         titleCounty.setText(countyLists.get(mainPosition).getCountyName());
         if (countyLists.size() != fragmentList.size()) {
@@ -214,10 +216,13 @@ public class Main3Activity extends BaseActivity {
         } else {
             userImage.setImageResource(R.drawable.ic_userimage);
             headerView.setBackgroundResource(R.color.colorImage);
-           // navigationView.setItemIconTintList();
         }
-
-
+        if(sign!=null){
+            userSign.setText(sign);
+        }
+        if(name!=null){
+            userName.setText(name);
+        }
         if (preference.getBoolean("autoUpdate", true)) {
             //启动自动更新
             intent = new Intent(this, UpdateWeatherService.class);

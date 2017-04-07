@@ -1,36 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_personal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    android:orientation="vertical">
+    style="@style/activityLayout">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorLine"
-        android:fitsSystemWindows="true"
-        android:orientation="horizontal">
+        style="@style/titleBar">
 
         <Button
             android:id="@+id/backBu_personal"
-            android:layout_width="30dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_back" />
+            style="@style/backBu"/>
 
         <TextView
             style="@style/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
             android:text="个人中心" />
     </LinearLayout>
-    <View style="@style/mline"/>
-
+    <!--<View style="@style/mline"/>-->
     <RelativeLayout
         android:id="@+id/image_layout"
         style="@style/personal_layout">
@@ -117,12 +101,17 @@
         <TextView
             android:id="@+id/p_email"
             style="@style/personal_value"
-            android:layout_toLeftOf="@id/go_email"
-            android:text="leimu@gmail.com" />
+            android:layout_toLeftOf="@id/go_email" />
     </RelativeLayout>
     <View style="@style/mline"/>
-    <TextView
-        android:layout_margin="8dp"
-        style="@style/personal_title"
-        android:text="退出登录" />
+    <Button
+        android:id="@+id/exit_bu"
+        android:layout_width="240dp"
+        android:layout_height="46dp"
+        android:layout_margin="5dp"
+        android:textColor="#FE2E2E"
+        android:text="退出登录"
+        android:textSize="18sp"
+        android:background="#F2F2F2"
+        android:layout_gravity="center" />
 </LinearLayout>

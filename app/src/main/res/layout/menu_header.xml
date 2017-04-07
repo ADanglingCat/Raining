@@ -11,21 +11,22 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_userimage"/>
 
-    <TextView
-        android:id="@+id/user_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/colorFont"/>
+
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_above="@id/user_id"
-        android:text="未来的事不笑着说出来可不行呢"
-        android:textSize="14sp"
+        android:layout_below="@id/user_image"
+        android:text="蕾姆"
+        android:textSize="16sp"
         android:textColor="@color/colorFont"/>
+    <TextView
+        android:id="@+id/user_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_below="@id/user_name"
+        android:textColor="@color/colorFont"
+        android:text="未来的事不笑着说出来可不行呢"/>
 </RelativeLayout>
