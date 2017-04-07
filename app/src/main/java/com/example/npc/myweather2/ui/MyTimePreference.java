@@ -9,7 +9,6 @@ import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -50,7 +49,6 @@ public class MyTimePreference extends DialogPreference {
                 Intent i=new Intent(getContext(),NotifyWeatherService.class);
                 PendingIntent p=PendingIntent.getService(getContext(),0,i,0);
                      alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, p);
-                Log.d("TAG", "onDialogClosed: "+calendar.getTime());
             }
 
         }
