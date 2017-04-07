@@ -76,6 +76,7 @@ public class UpdateWeatherService extends Service {
     public void updateWeather(final String weatherId){
         Calendar calendar=Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
+        //夜间不更新
         if(preferences.getBoolean("nightUpdate",true)){
             if(calendar.get(Calendar.HOUR_OF_DAY)>22||calendar.get(Calendar.HOUR_OF_DAY)<5){
                 return;

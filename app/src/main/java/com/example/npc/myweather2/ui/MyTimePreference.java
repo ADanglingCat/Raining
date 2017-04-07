@@ -47,19 +47,9 @@ public class MyTimePreference extends DialogPreference {
             if(preferences.getBoolean("Notify",false)){
                 //定时通知天气
                 AlarmManager alarmManager=(AlarmManager)getContext().getSystemService(ALARM_SERVICE);
-//                Calendar calendar=Calendar.getInstance();
-//                calendar.setTimeInMillis(System.currentTimeMillis());
-//               //设定的时间
-
                 Intent i=new Intent(getContext(),NotifyWeatherService.class);
                 PendingIntent p=PendingIntent.getService(getContext(),0,i,0);
-                //现在的时间
-                //Date date2=new Date( preferences.getLong("notifyTime",0));
-                //calendar.setTime(date1);
-                //alarmManager.cancel(p);
-                // if(!date1.before(calendar.getTime())) {
-                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, p);
-                // }
+                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, p);
                 Log.d("TAG", "onDialogClosed: "+calendar.getTime());
             }
 
