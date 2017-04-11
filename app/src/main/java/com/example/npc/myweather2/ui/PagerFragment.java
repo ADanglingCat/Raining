@@ -30,7 +30,6 @@ import junit.framework.Assert;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -80,8 +79,8 @@ public class PagerFragment extends Fragment {
     private SharedPreferences prefs;
     private int today;
     private int yesterday;
-    private static final String TAG = "TAGpageFragment";
-
+    private DailyForecast yesterdayWeather;
+    private String weatherString;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
@@ -123,8 +122,8 @@ public class PagerFragment extends Fragment {
             swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
             swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
             prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-
+            yesterdayWeather = null;
+            weatherString = prefs.getString("weather" + weatherId, null);
 
         }
         return rootView;
@@ -133,13 +132,12 @@ public class PagerFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         weatherId = getArguments().getString("weatherId");
-        String weatherString = prefs.getString("weather" + weatherId, null);
         Calendar calendar = Calendar.getInstance();
         today = calendar.get(Calendar.DATE);
-        yesterday = prefs.getInt("date"+weatherId, 0);
+        //每天第一次打开自动刷新天气
+        yesterday = prefs.getInt("date" + weatherId, 0);
         if (today != yesterday || weatherString == null) {
             weatherLayout.setVisibility(View.INVISIBLE);
-
             requestWeather(weatherId);
 
 
@@ -156,11 +154,13 @@ public class PagerFragment extends Fragment {
 
             }
         });
-
+//语音播报按钮点击事件
         voiceBu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= 21) {
+                if(tts==null){
+                    MyUtil.showToast(getContext(), "暂时无法播报天气");
+                } else if (Build.VERSION.SDK_INT >= 21) {
                     if (tts.isSpeaking()) {
                         tts.stop();
                     } else {
@@ -178,10 +178,13 @@ public class PagerFragment extends Fragment {
      * 根据天气id请求城市天气信息。
      */
     public void requestWeather(final String weatherId) {
+//            缓存昨天天气
+        if (weatherString != null&&(today-yesterday==1||(today==1&&(yesterday==28||yesterday==30||yesterday==31)))) {
+            yesterdayWeather = MyUtil.handleWeatherResponse(weatherString).dailyForecasts.get(0);
+        }
         String weatherAddress = resources.getString(R.string.weatherAddress);
         String weatherKey = resources.getString(R.string.weatherKey);
         String weatherUrl = weatherAddress + weatherId + "&" + weatherKey;
-       // Log.d(TAG, "requestWeather: "+weatherId);
         MyUtil.sendRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -201,7 +204,7 @@ public class PagerFragment extends Fragment {
                                 editor.apply();
                                 showWeatherInfo(weather);
                             } else {
-                                MyUtil.showToast(getContext(), "获取天气信息失败");
+                                MyUtil.showToast(getContext(), "获取天气信息失败,请稍后再试");
                             }
                             swipeRefresh.setRefreshing(false);
                         }
@@ -217,7 +220,7 @@ public class PagerFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        MyUtil.showToast(getContext(), "获取天气信息失败");
+                        MyUtil.showToast(getContext(), "获取天气信息失败,请稍后再试");
                         swipeRefresh.setRefreshing(false);
                     }
                 });
@@ -274,7 +277,6 @@ public class PagerFragment extends Fragment {
                     voiceWeather += windDir + "," + windSc + "。最高温度：";
                 }
 
-
             }
             if (weather.now.fl != null) {
                 String fl = weather.now.fl;
@@ -313,11 +315,29 @@ public class PagerFragment extends Fragment {
 
         //未来几天天气
         if (weather.dailyForecasts != null) {
+            if (yesterdayWeather != null) {
+                weather.dailyForecasts.add(yesterdayWeather);
+            }
+            int i = 0;
             for (DailyForecast forecast : weather.dailyForecasts) {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.daily_item, forecastLayout, false);
+                i++;
                 if (forecast.date != null) {
                     TextView dateText = (TextView) view.findViewById(R.id.daily_dateTx);
-                    dateText.setText(forecast.date.substring(5));
+                    switch (i) {
+                        case 1:
+                            dateText.setText("今天");
+                            break;
+                        case 2:
+                            dateText.setText("明天");
+                            break;
+                        case 4:
+                            dateText.setText("昨天");
+                            break;
+                        default:
+                            dateText.setText(forecast.date.substring(5));
+                            break;
+                    }
                 }
                 if (forecast.cond != null) {
                     TextView condText = (TextView) view.findViewById(R.id.daily_condTx);
@@ -417,18 +437,10 @@ public class PagerFragment extends Fragment {
     }
 
     public void onResume() {
-        initTts();
+        tts = Main3Activity.getTTS();
         super.onResume();
     }
 
-    public void onPause() {
-        if (tts != null || tts.isSpeaking()) {
-            tts.stop();
-            tts.shutdown();
-
-        }
-        super.onPause();
-    }
 
     @Override
     public void onDestroyView() {
@@ -443,17 +455,4 @@ public class PagerFragment extends Fragment {
         super.onDestroy();
     }
 
-    public void initTts() {
-        tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    tts.setLanguage(Locale.CHINA);
-//                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE && result != TextToSpeech.LANG_AVAILABLE) {
-//                        //MyUtil.showToast(getContext(), "只支持中文");
-//                    }
-                }
-            }
-        });
-    }
 }

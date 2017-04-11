@@ -27,32 +27,35 @@ import static android.content.Context.ALARM_SERVICE;
 public class MyTimePreference extends DialogPreference {
     private long currentTime;
     private TimePicker timePicker;
-    public MyTimePreference(Context context, AttributeSet attributeSet){
-        super(context,attributeSet);
+
+    public MyTimePreference(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         setDialogLayoutResource(R.layout.timepicker_dialog);
         setPositiveButtonText(android.R.string.ok);
         setNegativeButtonText(android.R.string.cancel);
         setDialogIcon(null);
         setDialogTitle(null);
     }
-    public void onDialogClosed(boolean positiveResult){
-        if(positiveResult){
-            Calendar calendar=Calendar.getInstance();
+
+    public void onDialogClosed(boolean positiveResult) {
+        if (positiveResult) {
+            Calendar calendar = Calendar.getInstance();
             //Date date1=calendar.getTime();//现在的时间
-            calendar.set(0,0,0,timePicker.getCurrentHour(),timePicker.getCurrentMinute());
-            currentTime =(calendar.getTime()).getTime();
+            calendar.set(0, 0, 0, timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+            currentTime = (calendar.getTime()).getTime();
             persistLong(currentTime);
-            SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(getContext());
-            if(preferences.getBoolean("Notify",false)){
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            if (preferences.getBoolean("Notify", false)) {
                 //定时通知天气
-                AlarmManager alarmManager=(AlarmManager)getContext().getSystemService(ALARM_SERVICE);
-                Intent i=new Intent(getContext(),NotifyWeatherService.class);
-                PendingIntent p=PendingIntent.getService(getContext(),0,i,0);
-                     alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, p);
+                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+                Intent i = new Intent(getContext(), NotifyWeatherService.class);
+                PendingIntent p = PendingIntent.getService(getContext(), 0, i, 0);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, p);
             }
 
         }
     }
+
     //获取sharepreference中的配置参数
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         if (restorePersistedValue) {
@@ -64,20 +67,22 @@ public class MyTimePreference extends DialogPreference {
         }
         setDefaultValue(currentTime);
     }
+
     //默认值
     protected Object onGetDefaultValue(TypedArray a, int index) {
-        currentTime=Long.parseLong(a.getString(index));
+        currentTime = Long.parseLong(a.getString(index));
         return currentTime;
     }
+
     //弹出对话框时初始化
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        timePicker=(TimePicker)view.findViewById(R.id.timePicker);
-        if(timePicker!=null){
+        timePicker = (TimePicker) view.findViewById(R.id.timePicker);
+        if (timePicker != null) {
             timePicker.setIs24HourView(true);
-            Date date=new Date(currentTime);
-            Calendar calendar=Calendar.getInstance();
+            Date date = new Date(currentTime);
+            Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
             timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));

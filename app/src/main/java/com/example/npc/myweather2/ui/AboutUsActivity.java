@@ -20,8 +20,8 @@ import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
-public class AboutUsActivity extends BaseActivity implements View.OnClickListener{
-   private TextView vision;
+public class AboutUsActivity extends BaseActivity implements View.OnClickListener {
+    private TextView vision;
     private TextView update_log;
     private TextView contactEmail;
     private TextView contactQQ;
@@ -32,6 +32,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     private ImageView icon;
     private int count;
     private Resources rs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +47,8 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         init();
 
         //String log="1.新增城市切换功能\n2.优化启动速度\n3.新增定时提醒功能";
-        String log="☞天气API-和风天气\n\n☞'生活建议'图标-https://icons8.com\n\n☞默认背景图片-http://www.coolapk.com" +
-                "\n\n☞'关于我们'图标-http://iconfont.cn\n\n"+"☞高德地图定位服务\n\n☞部分布局参考-Pure天气 by han95";
+        String log = "☞天气API-和风天气\n\n☞'生活建议'图标-https://icons8.com\n\n☞默认背景图片-http://www.coolapk.com" +
+                "\n\n☞'关于我们'图标-http://iconfont.cn\n\n" + "☞高德地图定位服务\n\n☞部分布局参考-Pure天气 by han95";
         update_log.setText(log);
         backBu_about.setOnClickListener(this);
         title_licenseTx.setOnClickListener(this);
@@ -56,45 +57,46 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
         contactWeibo.setOnClickListener(this);
         licenseTx.setOnClickListener(this);
         icon.setOnClickListener(this);
-        count=0;
+        count = 0;
     }
-    public void onClick(View view){
+
+    public void onClick(View view) {
         Uri uri;
         Intent intent;
-        Bitmap bitmap=BitmapFactory.decodeResource(rs,R.mipmap.ic_catcat);
-        switch (view.getId()){
+        Bitmap bitmap = BitmapFactory.decodeResource(rs, R.mipmap.ic_catcat);
+        switch (view.getId()) {
             case R.id.licenseTx:
-                intent=new Intent(AboutUsActivity.this,LicenseActivity.class);
+                intent = new Intent(AboutUsActivity.this, LicenseActivity.class);
                 startActivity(intent);
                 break;
             case R.id.title_licenseTx:
-                intent=new Intent(AboutUsActivity.this,LicenseActivity.class);
+                intent = new Intent(AboutUsActivity.this, LicenseActivity.class);
                 startActivity(intent);
                 break;
             case R.id.contactEmail:
-                uri=Uri.parse("mailto:dw12278@outlook.com");
-                intent=new Intent(Intent.ACTION_SENDTO,uri);
+                uri = Uri.parse("mailto:dw12278@outlook.com");
+                intent = new Intent(Intent.ACTION_SENDTO, uri);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-                }else{
+                } else {
                     textCopy(contactEmail.getText().toString());
                 }
                 break;
             case R.id.contactQQ:
-                uri=Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin="+contactQQ.getText().toString());
-                intent=new Intent(Intent.ACTION_VIEW,uri);
+                uri = Uri.parse("mqqwpa://im/chat?chat_type=wpa&uin=" + contactQQ.getText().toString());
+                intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-                }else{
+                } else {
                     textCopy(contactQQ.getText().toString());
                 }
                 break;
             case R.id.contactWeibo:
-                uri=Uri.parse("http://m.weibo.cn/u/5872633972");
-                intent=new Intent(Intent.ACTION_VIEW,uri);
+                uri = Uri.parse("http://m.weibo.cn/u/5872633972");
+                intent = new Intent(Intent.ACTION_VIEW, uri);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
-                }else{
+                } else {
                     textCopy(contactWeibo.getText().toString());
                 }
                 break;
@@ -102,29 +104,29 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.icon_about:
-                switch (count){
+                switch (count) {
                     case 0:
-                        bitmap= BitmapFactory.decodeResource(rs,R.mipmap.ic_catangry);
+                        bitmap = BitmapFactory.decodeResource(rs, R.mipmap.ic_catangry);
                         count++;
                         break;
                     case 1:
-                        bitmap= BitmapFactory.decodeResource(rs,R.mipmap.ic_catrun);
+                        bitmap = BitmapFactory.decodeResource(rs, R.mipmap.ic_catrun);
                         count++;
                         break;
                     case 2:
-                        bitmap= BitmapFactory.decodeResource(rs,R.mipmap.ic_catback);
+                        bitmap = BitmapFactory.decodeResource(rs, R.mipmap.ic_catback);
                         count++;
                         break;
                     case 3:
-                        bitmap= BitmapFactory.decodeResource(rs,R.mipmap.ic_catsweat);
+                        bitmap = BitmapFactory.decodeResource(rs, R.mipmap.ic_catsweat);
                         count++;
                         break;
                     case 4:
-                        bitmap= BitmapFactory.decodeResource(rs,R.mipmap.ic_catturn);
+                        bitmap = BitmapFactory.decodeResource(rs, R.mipmap.ic_catturn);
                         count++;
                         break;
                     case 5:
-                        bitmap= BitmapFactory.decodeResource(rs,R.mipmap.ic_cathead);
+                        bitmap = BitmapFactory.decodeResource(rs, R.mipmap.ic_cathead);
                         count++;
                         break;
 
@@ -132,25 +134,27 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
 
                 break;
         }
-        if(count>=6)
-            count=0;
+        if (count >= 6)
+            count = 0;
         icon.setImageBitmap(bitmap);
     }
-    public void init(){
-        backBu_about=(Button)findViewById(R.id.backBu_about);
-        vision=(TextView)findViewById(R.id.vision);
-        update_log=(TextView)findViewById(R.id.update_log);
-        contactEmail=(TextView)findViewById(R.id.contactEmail);
-        rs=getResources();
-        contactQQ=(TextView)findViewById(R.id.contactQQ);
-        contactWeibo=(TextView)findViewById(R.id.contactWeibo);
-        title_licenseTx=(TextView)findViewById(R.id.title_licenseTx);
-        licenseTx=(TextView)findViewById(R.id.licenseTx);
-        icon=(ImageView)findViewById(R.id.icon_about);
+
+    public void init() {
+        backBu_about = (Button) findViewById(R.id.backBu_about);
+        vision = (TextView) findViewById(R.id.vision);
+        update_log = (TextView) findViewById(R.id.update_log);
+        contactEmail = (TextView) findViewById(R.id.contactEmail);
+        rs = getResources();
+        contactQQ = (TextView) findViewById(R.id.contactQQ);
+        contactWeibo = (TextView) findViewById(R.id.contactWeibo);
+        title_licenseTx = (TextView) findViewById(R.id.title_licenseTx);
+        licenseTx = (TextView) findViewById(R.id.licenseTx);
+        icon = (ImageView) findViewById(R.id.icon_about);
     }
-    public void textCopy(String text){
-        ClipboardManager clipboardManager=(ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-        clipboardManager.setPrimaryClip(ClipData.newPlainText(null,text));
-        MyUtil.showToast(AboutUsActivity.this,text+" 已复制到剪切板");
+
+    public void textCopy(String text) {
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager.setPrimaryClip(ClipData.newPlainText(null, text));
+        MyUtil.showToast(AboutUsActivity.this, text + " 已复制到剪切板");
     }
 }

@@ -12,8 +12,8 @@ public class LicenseActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_license);
-        TextView licenseContent=(TextView)findViewById(R.id.licenseContent);
-        String text="coolweather\n" +
+        TextView licenseContent = (TextView) findViewById(R.id.licenseContent);
+        String text = "coolweather\n" +
                 "\n" +
                 "Author: tony-green\n" +
                 "Link:https://github.com/tony-green/coolweather\n" +

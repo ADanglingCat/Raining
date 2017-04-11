@@ -16,7 +16,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         getFragmentManager().beginTransaction()
                 .replace(R.id.setting_fram,new PreferenceFragment())
                 .commit();
-        backBu_setting=(Button)findViewById(R.id.backBu_setting);
+        backBu_setting=(Button) findViewById(R.id.backBu_setting);
         backBu_setting.setOnClickListener(this);
     }
     public void onClick(View view){

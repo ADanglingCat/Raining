@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -61,7 +63,7 @@ public class Main3Activity extends BaseActivity {
     private TextView userSign;
     private TextView userName;
     private View headerView;
-    private static final String TAG = "TAG";
+    public static TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class Main3Activity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main3);
+        initTTS();
         menuBu = (Button) findViewById(R.id.menuBu);
         titleCounty = (TextView) findViewById(R.id.titleCity);
         countyLists = DataSupport.findAll(CountyList.class);
@@ -114,7 +117,6 @@ public class Main3Activity extends BaseActivity {
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragmentList);
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mViewPager.setAdapter(pagerAdapter);
-        //mViewPager.setOffscreenPageLimit(0);
         ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -124,6 +126,7 @@ public class Main3Activity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 titleCounty.setText(countyLists.get(position).getCountyName());
+                stopTTS();
             }
 
             @Override
@@ -161,6 +164,11 @@ public class Main3Activity extends BaseActivity {
                 return true;
             }
         });
+        if (preference.getBoolean("autoUpdate", true)) {
+            //启动自动更新
+            Intent intent = new Intent(this, UpdateWeatherService.class);
+            startService(intent);
+        }
 
     }
 
@@ -217,18 +225,26 @@ public class Main3Activity extends BaseActivity {
             userImage.setImageResource(R.drawable.ic_userimage);
             headerView.setBackgroundResource(R.color.colorImage);
         }
-        if(sign!=null){
+        if (sign != null) {
             userSign.setText(sign);
         }
-        if(name!=null){
+        if (name != null) {
             userName.setText(name);
         }
-        if (preference.getBoolean("autoUpdate", true)) {
-            //启动自动更新
-            intent = new Intent(this, UpdateWeatherService.class);
-            startService(intent);
-        }
 
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopTTS();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        destroyTTS();
     }
 
     public void onBackPressed() {
@@ -301,7 +317,7 @@ public class Main3Activity extends BaseActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(path);
 
-        if (bitmap!=null) {
+        if (bitmap != null) {
             int bheight = bitmap.getHeight();
             int bwidth = bitmap.getWidth();
             if (bheight > 4096 || bwidth > 4096) {
@@ -309,15 +325,15 @@ public class Main3Activity extends BaseActivity {
                 bheight = (int) (bitmap.getHeight() * 0.9);
                 bwidth = (int) (bitmap.getWidth() * 0.9);
             }
-            //  Log.d(TAG, "getBitmap: hei"+bitmap.getHeight()+"wid"+bitmap.getWidth());
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
-        } else{
-            bitmap=BitmapFactory.decodeResource(getResources(),R.drawable.ic_userimage);
+        } else {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);
         }
         return bitmap;
 
     }
-//从图片中取色
+
+    //从图片中取色
     public void getColor(Bitmap bitmap) {
         Palette.Builder builder = Palette.from(bitmap);
         builder.generate(new Palette.PaletteAsyncListener() {
@@ -335,5 +351,34 @@ public class Main3Activity extends BaseActivity {
                 }
             }
         });
+    }
+    public void initTTS() {
+        tts = new TextToSpeech(Main3Activity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                   tts.setLanguage(Locale.CHINA);
+                }
+            }
+        });
+    }
+    public void stopTTS(){
+        if (tts != null&& tts.isSpeaking()) {
+            tts.stop();
+        }
+    }
+    public void destroyTTS(){
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+
+        }
+    }
+    public static TextToSpeech getTTS(){
+        if(tts!=null){
+            return tts;
+        }else{
+            return null;
+        }
     }
 }

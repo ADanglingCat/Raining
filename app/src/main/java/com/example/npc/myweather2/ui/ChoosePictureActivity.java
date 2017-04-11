@@ -23,12 +23,12 @@ import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
 public class ChoosePictureActivity extends BaseActivity {
-    public static final int TAKE_PHOTO = 1;
-
+    //public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
-   private String imagePath = null;
+    private String imagePath = null;
     private SharedPreferences.Editor editor;
-   private  String extra;
+    private String extra;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +37,10 @@ public class ChoosePictureActivity extends BaseActivity {
         Button default_picture = (Button) findViewById(R.id.default_picture);
         Button choose_picture = (Button) findViewById(R.id.choose_picture);
         editor = PreferenceManager.getDefaultSharedPreferences(ChoosePictureActivity.this).edit();
-        Intent intent=getIntent();
-        extra= intent.getStringExtra("headerPath");
-        if(extra==null){
-            extra="imagePath";
+        Intent intent = getIntent();
+        extra = intent.getStringExtra("headerPath");
+        if (extra == null) {
+            extra = "imagePath";
         }
 
         default_picture.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class ChoosePictureActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(ChoosePictureActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ChoosePictureActivity.this, new String[]{ Manifest.permission. READ_EXTERNAL_STORAGE }, 1);
+                    ActivityCompat.requestPermissions(ChoosePictureActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
                 } else {
                     openAlbum();
                 }
@@ -86,19 +86,19 @@ public class ChoosePictureActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-       // Log.d("TAG", "onActivityResult: "+"处理图片");
-        switch(requestCode){
+        // Log.d("TAG", "onActivityResult: "+"处理图片");
+        switch (requestCode) {
             case CHOOSE_PHOTO:
                 if (resultCode == RESULT_OK) {
-                // 判断手机系统版本号
-                if (Build.VERSION.SDK_INT >= 19) {
-                    // 4.4及以上系统使用这个方法处理图片
-                    handleImageOnKitKat(data);
-                } else {
-                    // 4.4以下系统使用这个方法处理图片
-                    handleImageBeforeKitKat(data);
+                    // 判断手机系统版本号
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        // 4.4及以上系统使用这个方法处理图片
+                        handleImageOnKitKat(data);
+                    } else {
+                        // 4.4以下系统使用这个方法处理图片
+                        handleImageBeforeKitKat(data);
+                    }
                 }
-            }
         }
 
     }
@@ -107,11 +107,11 @@ public class ChoosePictureActivity extends BaseActivity {
     private void handleImageOnKitKat(Intent data) {
 
         Uri uri = data.getData();
-       // Log.d("TAG", "handleImageOnKitKat: uri is " + uri);
+        // Log.d("TAG", "handleImageOnKitKat: uri is " + uri);
         if (DocumentsContract.isDocumentUri(this, uri)) {
             // 如果是document类型的Uri，则通过document id处理
             String docId = DocumentsContract.getDocumentId(uri);
-            if("com.android.providers.media.documents".equals(uri.getAuthority())) {
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
                 String id = docId.split(":")[1]; // 解析出数字格式的id
                 String selection = MediaStore.Images.Media._ID + "=" + id;
                 imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
@@ -151,12 +151,12 @@ public class ChoosePictureActivity extends BaseActivity {
     private void displayImage(String imagePath) {
         if (imagePath != null) {
 
-            editor.putString( extra, imagePath);
+            editor.putString(extra, imagePath);
             editor.apply();
-           // MyUtil.showToast(this,"设置成功,下次启动生效");
+            // MyUtil.showToast(this,"设置成功,下次启动生效");
             finish();
         } else {
-            MyUtil.showToast(this,"获取图片失败");
+            MyUtil.showToast(this, "获取图片失败");
         }
     }
 

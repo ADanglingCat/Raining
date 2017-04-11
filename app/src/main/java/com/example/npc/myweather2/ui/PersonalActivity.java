@@ -8,17 +8,17 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
+import com.example.npc.myweather2.util.BaseActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PersonalActivity extends AppCompatActivity implements View.OnClickListener {
+public class PersonalActivity extends BaseActivity implements View.OnClickListener {
     private Button backBu;
     private Button exitBu;
     private RelativeLayout imageLayout;
@@ -115,8 +115,9 @@ public class PersonalActivity extends AppCompatActivity implements View.OnClickL
                 onBackPressed();
                 break;
             case R.id.exit_bu:
-                intent = new Intent(PersonalActivity.this, LoginActivity.class);
+                intent = new Intent(PersonalActivity.this,LoginActivity.class);
                 startActivity(intent);
+                //MyUtil.showToast(PersonalActivity.this, "退出登录");
                 break;
             case R.id.image_layout:
                 intent = new Intent(PersonalActivity.this, ChoosePictureActivity.class);
@@ -193,7 +194,6 @@ public class PersonalActivity extends AppCompatActivity implements View.OnClickL
                 bheight = (int) (bitmap.getHeight() * 0.9);
                 bwidth = (int) (bitmap.getWidth() * 0.9);
             }
-            //  Log.d(TAG, "getBitmap: hei"+bitmap.getHeight()+"wid"+bitmap.getWidth());
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
         } else {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);

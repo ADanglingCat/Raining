@@ -106,12 +106,7 @@
     <View style="@style/mline"/>
     <Button
         android:id="@+id/exit_bu"
-        android:layout_width="180dp"
-        android:layout_height="46dp"
-        android:layout_margin="5dp"
         android:textColor="#FE2E2E"
         android:text="退出登录"
-        android:textSize="18sp"
-        android:background="#F2F2F2"
-        android:layout_gravity="center" />
+        style="@style/MyButton"/>
 </LinearLayout>

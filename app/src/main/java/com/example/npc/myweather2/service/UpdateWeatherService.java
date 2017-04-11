@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.gson.Weather;
@@ -48,7 +47,6 @@ public class UpdateWeatherService extends Service {
         boolean updateMode=preferences.getBoolean("updateMode",true);
         if(lists!=null){
             for(CountyList list:lists){
-                Log.d("TAG", "onStartCommand: 更新天气");
                 if (updateMode) {
                     if(list.isMainCity()){
                         //只更新默认城市天气

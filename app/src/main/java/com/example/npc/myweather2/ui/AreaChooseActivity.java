@@ -74,8 +74,9 @@ public class AreaChooseActivity extends BaseActivity {
     private AMapLocationClient client;
     private String locCounty;
     private String locprovince;
-private boolean isFirst;
+    private boolean isFirst;
     private Intent intent1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +95,7 @@ private boolean isFirst;
         String[] list = requestPermissions.toArray(new String[requestPermissions.size()]);
         if (list.length < 1) {
             client.startLocation();
-        }else{
+        } else {
             ActivityCompat.requestPermissions(AreaChooseActivity.this, list, 1);
         }
 
@@ -137,16 +138,12 @@ private boolean isFirst;
             @Override
             public boolean onQueryTextSubmit(String query) {
                 queryCountyByName(query, LEVEL_SEARCH);
-                //locaLayout.setVisibility(View.GONE);
                 queryProvinces();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
-//                InputMethodManager inManager=(InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                inManager.hideSoftInputFromWindow(searchView.getWindowToken(),0);
                 searchResult.setVisibility(View.GONE);
                 return false;
             }
@@ -264,6 +261,7 @@ private boolean isFirst;
         arrayAdapter.notifyDataSetChanged();
         searchResult.setVisibility(View.VISIBLE);
     }
+
     //处理搜索城市返回的数据
     private boolean handleCounty(String response) {
         try {
@@ -325,17 +323,16 @@ private boolean isFirst;
                             } else if (type == LEVEL_SEARCH) {
                                 showSearchResult();
                                 closeProgressDialog();
-                            }else
-                            if (type==LEVEL_LOCATION){
-                                    for(SearchCounty s:searchCountyList){
-                                        if(s.basic.provinceName.equals(locprovince)){
-                                            saveCounty(s.basic.weatherId, s.basic.countyName);
-                                            goToAreaManager();
-                                        }
+                            } else if (type == LEVEL_LOCATION) {
+                                for (SearchCounty s : searchCountyList) {
+                                    if (s.basic.provinceName.equals(locprovince)) {
+                                        saveCounty(s.basic.weatherId, s.basic.countyName);
+                                        goToAreaManager();
                                     }
                                 }
-                                closeProgressDialog();
                             }
+                            closeProgressDialog();
+                        }
                         //}
                     });
                 } else {
@@ -360,11 +357,7 @@ private boolean isFirst;
         }
     }
 
-    public void onResume() {
-        super.onResume();
-
-    }
-
+//搜索城市
     public class SearchCounty {
         public Basic basic;
 
@@ -377,6 +370,7 @@ private boolean isFirst;
             public String weatherId;
         }
     }
+
     //请求权限结果
     public void onRequestPermissionsResult(int requestCode, String[] permissons, int[] grantResults) {
         switch (requestCode) {
@@ -395,10 +389,11 @@ private boolean isFirst;
             default:
         }
     }
+
     //初始化变量
     public void initVar() {
-        intent1=getIntent();
-        isFirst=intent1.getBooleanExtra("isFirst",false);
+        intent1 = getIntent();
+        isFirst = intent1.getBooleanExtra("isFirst", false);
         client = new AMapLocationClient(getApplicationContext());
         titleText = (TextView) findViewById(R.id.titleTx);
         backButton = (Button) findViewById(R.id.backBu);
@@ -425,13 +420,14 @@ private boolean isFirst;
             client = null;
         }
     }
+
     //重写back键事件
     public void onBackPressed() {
         if (selectedLevel == LEVEL_COUNTY) {
             queryCities();
         } else if (selectedLevel == LEVEL_CITY) {
             queryProvinces();
-        } else  {
+        } else {
 
             Intent intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
             startActivity(intent);
@@ -439,11 +435,12 @@ private boolean isFirst;
         }
 
     }
+
     //跳转到城市管理页面
-    public void goToAreaManager(){
+    public void goToAreaManager() {
         Intent intent;
         intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
-        intent.putExtra("isFirst",isFirst);
+        intent.putExtra("isFirst", isFirst);
         startActivity(intent);
         finish();
     }

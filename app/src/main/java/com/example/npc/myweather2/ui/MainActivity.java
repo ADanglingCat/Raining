@@ -16,8 +16,6 @@ import org.litepal.crud.DataSupport;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
-
-//    TextView locaTx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,36 +27,34 @@ public class MainActivity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main);
-//        locaTx=(TextView)findViewById(locaTx);
 
-        List<CountyList> countyLists= DataSupport.findAll(CountyList.class);
+        List<CountyList> countyLists = DataSupport.findAll(CountyList.class);
         Intent intent;
-        if(countyLists.size()>0){
-            boolean flag=true;
-            String weatherId="";
-            for(CountyList countyList:countyLists){
-                if(countyList.isMainCity()){
-                    flag=false;
-                    weatherId=countyList.getWeatherId();
+        if (countyLists.size() > 0) {
+            boolean flag = true;
+            String weatherId = "";
+            for (CountyList countyList : countyLists) {
+                if (countyList.isMainCity()) {
+                    flag = false;
+                    weatherId = countyList.getWeatherId();
                     break;
                 }
             }
-            if(flag){
+            if (flag) {
                 countyLists.get(0).setMainCity(true);
                 countyLists.get(0).save();
-                weatherId=countyLists.get(0).getWeatherId();
+                weatherId = countyLists.get(0).getWeatherId();
             }
-            intent=new Intent(this,Main3Activity.class);
-            intent.putExtra("weatherId",weatherId);
+            intent = new Intent(this, Main3Activity.class);
+            intent.putExtra("weatherId", weatherId);
 
-        }else{
-            PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
-            intent=new Intent(this,AreaChooseActivity.class);
-            intent.putExtra("isFirst",true);
+        } else {
+            PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+            intent = new Intent(this, AreaChooseActivity.class);
+            intent.putExtra("isFirst", true);
         }
         startActivity(intent);
         finish();
     }
-
 
 }

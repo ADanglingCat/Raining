@@ -7,9 +7,10 @@ import android.preference.PreferenceManager;
 
 import com.example.npc.myweather2.R;
 
-public class PreferenceFragment extends android.preference.PreferenceFragment{
+public class PreferenceFragment extends android.preference.PreferenceFragment {
     SharedPreferences p;
     SharedPreferences.OnSharedPreferenceChangeListener listener;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,16 +22,16 @@ public class PreferenceFragment extends android.preference.PreferenceFragment{
     @Override
     public void onResume() {
         super.onResume();
-       p= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        p = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-       listener=new SharedPreferences.OnSharedPreferenceChangeListener() {
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if("autoBing".equals(key)){
-                    Preference selfPic=findPreference("selfPic");
-                    if(p.getBoolean("autoBing",false)){
+                if ("autoBing".equals(key)) {
+                    Preference selfPic = findPreference("selfPic");
+                    if (p.getBoolean("autoBing", false)) {
                         selfPic.setEnabled(false);
-                    }else{
+                    } else {
                         selfPic.setEnabled(true);
                     }
 
