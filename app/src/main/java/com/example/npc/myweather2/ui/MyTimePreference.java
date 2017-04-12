@@ -9,6 +9,7 @@ import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -41,9 +42,12 @@ public class MyTimePreference extends DialogPreference {
         if (positiveResult) {
             Calendar calendar = Calendar.getInstance();
             //Date date1=calendar.getTime();//现在的时间
-            calendar.set(0, 0, 0, timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+            calendar.set(Calendar.HOUR_OF_DAY,timePicker.getCurrentHour());
+            calendar.set(Calendar.MINUTE,timePicker.getCurrentMinute());
             currentTime = (calendar.getTime()).getTime();
-            persistLong(currentTime);
+            SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+            editor.putLong("notifyTime",currentTime);
+            editor.apply();
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             if (preferences.getBoolean("Notify", false)) {
                 //定时通知天气

@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.gson.DailyForecast;
@@ -23,7 +22,6 @@ import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -81,10 +79,10 @@ public class NotifyWeatherService extends Service {
                             //现在的时间
                             int currentHour= calendar.get(Calendar.HOUR_OF_DAY);
                             int currentMinute= calendar.get(Calendar.MINUTE);
-                            calendar.setTime(new Date(preferences.getLong("notifyTime", 0)));
+                           long time=preferences.getLong("notifyTime", 0);
+                            calendar.setTimeInMillis(time);
                             int hour= calendar.get(Calendar.HOUR_OF_DAY);
                             int minute= calendar.get(Calendar.MINUTE);
-                            Log.d(TAG, "onStartCommand: "+currentHour+"date2:"+hour);
                             if (currentHour==hour&&currentMinute>=minute) {
                                 notificationManager.notify(1, notification);
                             }

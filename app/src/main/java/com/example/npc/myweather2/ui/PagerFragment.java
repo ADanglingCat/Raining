@@ -79,7 +79,6 @@ public class PagerFragment extends Fragment {
     private SharedPreferences prefs;
     private int today;
     private int yesterday;
-    private DailyForecast yesterdayWeather;
     private String weatherString;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -122,7 +121,6 @@ public class PagerFragment extends Fragment {
             swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
             swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
             prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            yesterdayWeather = null;
             weatherString = prefs.getString("weather" + weatherId, null);
 
         }
@@ -139,7 +137,6 @@ public class PagerFragment extends Fragment {
         if (today != yesterday || weatherString == null) {
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
-
 
         } else {
             // 有缓存时直接解析天气数据
@@ -178,10 +175,6 @@ public class PagerFragment extends Fragment {
      * 根据天气id请求城市天气信息。
      */
     public void requestWeather(final String weatherId) {
-//            缓存昨天天气
-        if (weatherString != null&&(today-yesterday==1||(today==1&&(yesterday==28||yesterday==30||yesterday==31)))) {
-            yesterdayWeather = MyUtil.handleWeatherResponse(weatherString).dailyForecasts.get(0);
-        }
         String weatherAddress = resources.getString(R.string.weatherAddress);
         String weatherKey = resources.getString(R.string.weatherKey);
         String weatherUrl = weatherAddress + weatherId + "&" + weatherKey;
@@ -315,9 +308,6 @@ public class PagerFragment extends Fragment {
 
         //未来几天天气
         if (weather.dailyForecasts != null) {
-            if (yesterdayWeather != null) {
-                weather.dailyForecasts.add(yesterdayWeather);
-            }
             int i = 0;
             for (DailyForecast forecast : weather.dailyForecasts) {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.daily_item, forecastLayout, false);

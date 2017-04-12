@@ -51,8 +51,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    //    private CheckBox rememberPWD;
-//    private CheckBox autoLogin;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private Button mEmailSignInButton;
@@ -60,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private TextView register;
     private String email;
     private String password;
+    private Button back;
     private static final String TAG = "TAGLoginActivity";
 
     @Override
@@ -73,14 +72,14 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         findPWD = (TextView) findViewById(R.id.find_pwd);
         register = (TextView) findViewById(R.id.register);
         mPasswordView = (EditText) findViewById(R.id.password);
-
+        back=(Button)findViewById(R.id.backBu_login);
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         mEmailSignInButton.setOnClickListener(this);
         findPWD.setOnClickListener(this);
         register.setOnClickListener(this);
-
+        back.setOnClickListener(this);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -104,8 +103,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 attemptLogin();
                 break;
             case R.id.backBu_login:
-                finish();
+
                 onBackPressed();
+                finish();
                 break;
             case R.id.find_pwd:
 
@@ -262,8 +262,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             if (success) {
                 editor.putString("email", email);
                 editor.putString("password", getMD5(password, 2));
+                editor.putBoolean("state",true);
                 editor.apply();
-                Intent intent = new Intent(LoginActivity.this, Main3Activity.class);
+                Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
                 startActivity(intent);
                 finish();
             } else {

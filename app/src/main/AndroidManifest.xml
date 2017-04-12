@@ -112,18 +112,21 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.PersonalActivity">
+        <activity android:name=".ui.PersonalActivity"></activity>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".ui.EditActivity" />
+        <activity android:name=".ui.FindPWDActivity" />
+
+
+        <activity android:name=".ui.CheckStateActivity">
             <intent-filter>
                 <action android:name="com.example.myweather.PERSONAL" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity android:name=".ui.EditActivity" />
-        <activity android:name=".ui.FindPWDActivity"></activity>
     </application>
 
 </manifest>

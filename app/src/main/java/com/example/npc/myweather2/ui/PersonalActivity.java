@@ -46,7 +46,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         nameLayout.setOnClickListener(this);
         signLayout.setOnClickListener(this);
         sexLayout.setOnClickListener(this);
-        emailLayout.setOnClickListener(this);
 
     }
 
@@ -61,7 +60,8 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         }
         String name = preferences.getString("昵称", null);
         String sign = preferences.getString("签名", null);
-        String email = preferences.getString("邮箱", null);
+        String email = preferences.getString("email", null);
+
         String sex = preferences.getString("sex", null);
         if (name == null || "".equals(name)) {
             editor.putString("昵称", "蕾姆");
@@ -117,6 +117,9 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             case R.id.exit_bu:
                 intent = new Intent(PersonalActivity.this,LoginActivity.class);
                 startActivity(intent);
+                editor.putBoolean("state",false);
+                editor.apply();
+                finish();
                 //MyUtil.showToast(PersonalActivity.this, "退出登录");
                 break;
             case R.id.image_layout:
@@ -132,11 +135,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             case R.id.sign_layout:
                 intent = new Intent(PersonalActivity.this, EditActivity.class);
                 intent.putExtra("personalType", "签名");
-                startActivity(intent);
-                break;
-            case R.id.email_layout:
-                intent = new Intent(PersonalActivity.this, EditActivity.class);
-                intent.putExtra("personalType", "邮箱");
                 startActivity(intent);
                 break;
             case R.id.sex_layout:
