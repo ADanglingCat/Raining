@@ -14,6 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -26,6 +29,15 @@ public class MyUtil {
     public static void showToast(Context context,String message){
         if(toast==null){
             toast=Toast.makeText(context,message,Toast.LENGTH_SHORT);
+        }else{
+            toast.setText(message);
+        }
+        if(!"".equals(message))
+            toast.show();
+    }
+    public static void showToast(String message){
+        if(toast==null){
+            toast=Toast.makeText(MyApplication.getContext(),message,Toast.LENGTH_SHORT);
         }else{
             toast.setText(message);
         }
@@ -124,5 +136,35 @@ public class MyUtil {
         }
         return false;
     }
+    public static String myMD5(String mess) {
+        MessageDigest md5;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(md5.digest(mess.getBytes()));
+            String result = "";
+            for (byte b : bytes) {
+                String temp = Integer.toHexString(b & 0xff);
+                if (temp.length() == 1) {
+                    temp = "0" + temp;
+                }
+                result += temp;
+            }
+            return result;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    public static String getMD5(String mess) {
+        if (TextUtils.isEmpty(mess)) {
+            return null;
+        } else {
+            String result = myMD5(mess);
+            for (int i = 0; i < 1; i++) {
+                result = myMD5(result);
+            }
+            return result;
+        }
+    }
 }

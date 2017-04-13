@@ -1,11 +1,12 @@
 package com.example.npc.myweather2.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
+import com.example.npc.myweather2.model._User;
 import com.example.npc.myweather2.util.BaseActivity;
+
+import cn.bmob.v3.BmobUser;
 
 public class CheckStateActivity extends BaseActivity {
 
@@ -16,10 +17,11 @@ public class CheckStateActivity extends BaseActivity {
     }
     public void onResume(){
         super.onResume();
-        SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
-        boolean state=preferences.getBoolean("state",false);
+       // SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
+       // boolean state=preferences.getBoolean("state",false);
+        _User user= BmobUser.getCurrentUser(_User.class);
         Intent intent;
-        if(state){
+        if(user!=null){
             intent=new Intent(this, PersonalActivity.class);
         }else{
             intent=new Intent(this, LoginActivity.class);

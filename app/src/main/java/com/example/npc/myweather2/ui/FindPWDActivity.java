@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.util.BaseActivity;
@@ -32,8 +31,6 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
     private View focusView;
     private CountDownTimer timer;
     private static final String TAG = "TAGFindPWDActivity";
-    private TextView titleTx;
-    private String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +42,6 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
         sendCodeBu = (Button) findViewById(R.id.send_code);
         findBu = (Button) findViewById(R.id.find_button);
         backBu = (Button) findViewById(R.id.backBu_find);
-        titleTx=(TextView)findViewById(R.id.title_find);
         timer=new CountDownTimer(60*1000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -62,14 +58,10 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
         cancel = false;
         focusView = null;
         Intent intent = getIntent();
-        title=intent.getStringExtra("titleTx");
-        titleTx.setText(title);
         email = intent.getStringExtra("email");
         if (email != null) {
             emailEd.setText(email);
         }
-
-
         sendCodeBu.setOnClickListener(this);
         findBu.setOnClickListener(this);
         backBu.setOnClickListener(this);
@@ -109,7 +101,6 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
             focusView.requestFocus();
         } else {
             sendCodeBu.setClickable(false);
-
             timer.start();
             MyUtil.showToast(FindPWDActivity.this, "发送验证码");
         }

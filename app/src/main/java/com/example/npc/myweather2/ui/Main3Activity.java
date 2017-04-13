@@ -16,6 +16,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.graphics.Palette;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -64,7 +65,7 @@ public class Main3Activity extends BaseActivity {
     private TextView userName;
     private View headerView;
     public static TextToSpeech tts;
-
+    private static final String TAG = "TAGMain3Activity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +105,7 @@ public class Main3Activity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent("com.example.myweather.PERSONAL");
                 startActivity(intent);
+                drawer.closeDrawers();
             }
         });
 
@@ -135,7 +137,7 @@ public class Main3Activity extends BaseActivity {
             }
         };
         mViewPager.addOnPageChangeListener(listener);
-
+        mViewPager.setOffscreenPageLimit(2);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -161,6 +163,7 @@ public class Main3Activity extends BaseActivity {
                         break;
                 }
                 drawer.closeDrawers();
+                Log.d(TAG, "onNavigationItemSelected: 1111closeDrawers");
                 return true;
             }
         });

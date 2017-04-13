@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,10 +20,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
+import com.example.npc.myweather2.model._User;
+import com.example.npc.myweather2.util.MyUtil;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 //import android.widget.AutoCompleteTextView;
 
@@ -38,13 +40,13 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:helloo", "bar@example.com:worldd"
-    };
+//    private static final String[] DUMMY_CREDENTIALS = new String[]{
+//            "foo@example.com:helloo", "bar@example.com:worldd"
+//    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+   // private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -97,10 +99,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 
     public void onClick(View view) {
         Intent intent;
-        intent = new Intent(LoginActivity.this, FindPWDActivity.class);
+
         switch (view.getId()) {
             case R.id.email_sign_in_button:
                 attemptLogin();
+                mEmailSignInButton.setClickable(false);
                 break;
             case R.id.backBu_login:
 
@@ -108,15 +111,20 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 finish();
                 break;
             case R.id.find_pwd:
-
+                intent = new Intent(LoginActivity.this, FindPWDActivity.class);
                 if (email != null && !"".equals(email)) {
                     intent.putExtra("email", email);
                 }
-                intent.putExtra("titleTx", "密码重置");
                 startActivity(intent);
                 break;
             case R.id.register:
-                intent.putExtra("titleTx", "注册");
+                intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                if (email != null && !"".equals(email)) {
+                    intent.putExtra("email", email);
+                }
+                if (password != null && !"".equals(password)) {
+                intent.putExtra("password", password);
+            }
                 startActivity(intent);
                 break;
             default:
@@ -124,9 +132,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     }
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -162,12 +170,35 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             // form field with an error.
             focusView.requestFocus();
         } else {
+            _User user=new _User();
+            String p= MyUtil.getMD5(password);
+            user.setUsername(email);
+            user.setPassword(p);
+
+
+            user.login(new SaveListener<_User>() {
+                public void done(_User u,BmobException e){
+                    if(e==null){
+                        //editor.putString("email", email);
+                        //editor.putBoolean("state",true);
+                        //editor.apply();
+                        MyUtil.showToast("登陆成功...");
+                        Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        mEmailSignInButton.setClickable(true);
+                        mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        mPasswordView.requestFocus();
+                    }
+                }
+            });
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
 
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+           // showProgress(true);
+            //mAuthTask = new UserLoginTask(email, password);
+           // mAuthTask.execute((Void) null);
         }
     }
 
@@ -217,99 +248,68 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+//    /**
+//     * Represents an asynchronous login/registration task used to authenticate
+//     * the user.
+//     */
+//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+//
+//        private final String mEmail;
+//        private final String mPassword;
+//        final boolean[] flag={false};
+//        UserLoginTask(String email, String password) {
+//            mEmail = email;
+//            mPassword = password;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            // TODO: attempt authentication against a network service.
+//            _User user=new _User();
+//            String p=MyUtil.getMD5(mPassword);
+//            user.setUsername(mEmail);
+//            user.setPassword(p);
+//            Log.d(TAG, "doInBackground: "+p);
+//            user.login(new SaveListener<_User>() {
+//                public void done(_User u,BmobException e){
+//                    if(e==null){
+//                        flag[0]=true;
+//                        Log.d(TAG, "成功: !!!!"+flag[0]);
+//                    }else{
+//                        flag[0]=false;
+//                        Log.e(TAG, "done: "+e);
+//                    }
+//                }
+//            });
+//            return false;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mAuthTask = null;
+//            showProgress(false);
+//            Log.d(TAG, "onPostExecute: 失败"+flag[0]);
+//            if (flag[0]) {
+//                editor.putString("email", mEmail);
+//                editor.putString("password", getMD5(mPassword));
+//                editor.putBoolean("state",true);
+//                editor.apply();
+//                MyUtil.showToast("登陆成功...");
+//                Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
+//                startActivity(intent);
+//                finish();
+//            } else {
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
+//            }
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            mAuthTask = null;
+//            showProgress(false);
+//        }
+//    }
 
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                editor.putString("email", email);
-                editor.putString("password", getMD5(password, 2));
-                editor.putBoolean("state",true);
-                editor.apply();
-                Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
-
-    public String myMD5(String mess) {
-        MessageDigest md5;
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-            byte[] bytes = md5.digest(md5.digest(mess.getBytes()));
-            String result = "";
-            for (byte b : bytes) {
-                String temp = Integer.toHexString(b & 0xff);
-                if (temp.length() == 1) {
-                    temp = "0" + temp;
-                }
-                result += temp;
-            }
-            return result;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String getMD5(String mess, int times) {
-        if (TextUtils.isEmpty(mess)) {
-            return null;
-        } else {
-            String result = myMD5(mess);
-            for (int i = 0; i < times - 1; i++) {
-                result = myMD5(result);
-            }
-            return result;
-        }
-    }
 }
 

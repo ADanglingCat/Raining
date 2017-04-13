@@ -8,15 +8,23 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
+import com.example.npc.myweather2.model._User;
 import com.example.npc.myweather2.util.BaseActivity;
+import com.example.npc.myweather2.util.MyUtil;
 
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.npc.myweather2.R.string.sign;
 
 public class PersonalActivity extends BaseActivity implements View.OnClickListener {
     private Button backBu;
@@ -32,8 +40,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private TextView pEmail;
     private TextView pSex;
     private SharedPreferences preferences;
-    private static final String TAG = "TAGPersonalActivity";
     private SharedPreferences.Editor editor;
+    private static final String TAG = "TAGPersonalActivity";
+    private String sex;
+    private boolean isChanged;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +61,8 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
 
     public void onResume() {
         super.onResume();
+        isChanged = preferences.getBoolean("isChanged", false);
+        Log.d(TAG, "onResume: ");
         String headerPath = preferences.getString("headerPath", null);
         if (headerPath != null) {
             Bitmap bitmap = getBitmap(headerPath);
@@ -58,39 +70,41 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         } else {
             pImage.setImageResource(R.drawable.ic_userimage);
         }
-        String name = preferences.getString("昵称", null);
-        String sign = preferences.getString("签名", null);
-        String email = preferences.getString("email", null);
-
-        String sex = preferences.getString("sex", null);
-        if (name == null || "".equals(name)) {
-            editor.putString("昵称", "蕾姆");
-            editor.apply();
-            pName.setText("蕾姆");
-        } else {
-            pName.setText(name);
+        //  BmobFile image=(BmobFile)BmobUser.getObjectByKey("userImage");
+//        String name = (String)BmobUser.getObjectByKey("name");
+//        String sign = (String)BmobUser.getObjectByKey("sign");
+//        String email =(String)BmobUser.getObjectByKey("email");
+        String name = preferences.getString("name",(String)BmobUser.getObjectByKey("name"));
+        String sign = preferences.getString("sign", (String)BmobUser.getObjectByKey("sign"));
+        String email = (String) BmobUser.getObjectByKey("email");
+        //sex = preferences.getString("sex", (String)BmobUser.getObjectByKey("sex"));
+        sex= (String)BmobUser.getObjectByKey("sex");
+        //if (name == null || "".equals(name)) {
+        //   pName.setText("蕾姆");
+        // } else {
+        pName.setText(name);
+        // }
+        // if (sign == null || "".equals(sign)) {
+        //   pSign.setText(getString(R.string.my_sign));
+        //} else {
+        if (sign.length() > 14) {
+            sign = sign.substring(0, 14) + "...";
         }
-        if (sign == null || "".equals(sign)) {
-            pSign.setText("未来的事不笑着说出来可不行呢");
-            editor.putString("签名", "未来的事不笑着说出来可不行呢");
-            editor.apply();
-        } else {
-            if (sign.length() > 14) {
-                sign = sign.substring(0, 14) + "...";
-            }
-            pSign.setText(sign);
+        pSign.setText(sign);
 
-        }
+        // }
         if (email != null) {
             pEmail.setText(email);
         }
-        if (sex != null) {
-            pSex.setText(sex);
-
-        }
+        //  if (sex != null) {
+        pSex.setText(sex);
+        // }else{
+        //    pSex.setText("保密");
+        // }
     }
 
     public void initVar() {
+        isChanged = false;
         preferences = PreferenceManager.getDefaultSharedPreferences(PersonalActivity.this);
         editor = PreferenceManager.getDefaultSharedPreferences(PersonalActivity.this).edit();
         backBu = (Button) findViewById(R.id.backBu_personal);
@@ -115,10 +129,11 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 onBackPressed();
                 break;
             case R.id.exit_bu:
-                intent = new Intent(PersonalActivity.this,LoginActivity.class);
+                intent = new Intent(PersonalActivity.this, LoginActivity.class);
                 startActivity(intent);
-                editor.putBoolean("state",false);
-                editor.apply();
+                BmobUser.logOut();
+                //editor.putBoolean("state",false);
+                //editor.apply();
                 finish();
                 //MyUtil.showToast(PersonalActivity.this, "退出登录");
                 break;
@@ -129,12 +144,12 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.name_layout:
                 intent = new Intent(PersonalActivity.this, EditActivity.class);
-                intent.putExtra("personalType", "昵称");
+                intent.putExtra("personalType", getString(R.string.name));
                 startActivity(intent);
                 break;
             case R.id.sign_layout:
                 intent = new Intent(PersonalActivity.this, EditActivity.class);
-                intent.putExtra("personalType", "签名");
+                intent.putExtra("personalType", getString(sign));
                 startActivity(intent);
                 break;
             case R.id.sex_layout:
@@ -144,20 +159,13 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:
-
-                                        editor.putString("sex", "男");
-                                        editor.apply();
                                         pSex.setText("男");
                                         break;
                                     case 1:
-                                        editor.putString("sex", "女");
-                                        editor.apply();
                                         pSex.setText("女");
 
                                         break;
                                     case 2:
-                                        editor.putString("sex", "保密");
-                                        editor.apply();
                                         pSex.setText("保密");
                                         break;
                                     default:
@@ -168,14 +176,38 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 builder.create().show();
 
                 break;
-
         }
     }
 
     public void onBackPressed() {
-
+        String content = pSex.getText().toString();
+        if (!content.equals(sex)) {
+            Log.d(TAG, "onClick: 222222222222");
+            isChanged=true;
+            editor.putString("sex",content);
+        }else{
+            isChanged=preferences.getBoolean("isChanged",false);
+        }
+        if (isChanged) {
+            _User user=new _User();
+            user.setName(preferences.getString("name",getString(R.string.my_name)))
+                    .setSign(preferences.getString("sign",getString(R.string.my_sign)))
+                    .setSex(preferences.getString("sex","保密"));
+            user.update(BmobUser.getCurrentUser(_User.class).getObjectId(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if(e==null){
+                        MyUtil.showToast("资料已同步");
+                    }else{
+                        MyUtil.showToast("资料同步失败");
+                        Log.e(TAG, "done: "+e);
+                    }
+                }
+            });
+        }
+        editor.putBoolean("isChanged",false);
+        editor.apply();
         super.onBackPressed();
-
         finish();
     }
 

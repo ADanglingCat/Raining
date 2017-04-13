@@ -13,29 +13,36 @@ import android.widget.TextView;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.util.BaseActivity;
 
+import cn.bmob.v3.BmobUser;
+
 public class EditActivity extends BaseActivity implements View.OnClickListener {
     private Button backBu;
     private TextView titleTx;
     private EditText contentEd;
     private String type;
-
+    private String oldContent;
+    private SharedPreferences.Editor editor;
+    private static final String TAG = "TAGEditActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(EditActivity.this);
         Intent intent = getIntent();
         type = intent.getStringExtra("personalType");
+        editor= PreferenceManager.getDefaultSharedPreferences(this).edit();
         backBu = (Button) findViewById(R.id.backBu_edit);
         backBu.setOnClickListener(this);
         titleTx = (TextView) findViewById(R.id.title_pe);
         titleTx.setText("修改" + type);
         contentEd = (EditText) findViewById(R.id.edit_content);
-        contentEd.setText(preferences.getString(type, null));
+        oldContent="";
         if ("昵称".equals(type)) {
+            oldContent=(String) BmobUser.getObjectByKey("name");
+            contentEd.setText(oldContent);
             contentEd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-        }
-        if ("签名".equals(type)) {
+        }else if ("签名".equals(type)) {
+            oldContent=(String) BmobUser.getObjectByKey("sign");
+            contentEd.setText(oldContent);
             contentEd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(38)});
         }
 //        contentEd.addTextChangedListener(new TextWatcher() {
@@ -66,12 +73,16 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void onBackPressed() {
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(EditActivity.this).edit();
         String content = contentEd.getText().toString();
-        if (content != null && !"".equals(content)) {
-            editor.putString(type, content);
+        if (content != null && !"".equals(content)&&!oldContent.equals(content)) {
+           editor.putBoolean("isChanged",true);
+            if ("昵称".equals(type)){
+                editor.putString("name",content);
+            }else if("签名".equals(type)){
+                editor.putString("sign",content);
+            }
+            editor.apply();
         }
-        editor.apply();
         super.onBackPressed();
         finish();
     }

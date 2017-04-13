@@ -74,7 +74,7 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.contactEmail:
-                uri = Uri.parse("mailto:dw12278@outlook.com");
+                uri = Uri.parse("mailto:dfy12278@gmail.com");
                 intent = new Intent(Intent.ACTION_SENDTO, uri);
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);

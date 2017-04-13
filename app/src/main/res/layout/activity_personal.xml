@@ -39,7 +39,7 @@
 
         <TextView
             style="@style/personal_title"
-            android:text="昵称" />
+            android:text="@string/name" />
 
         <ImageView
             android:id="@+id/go_name"
@@ -48,7 +48,7 @@
             android:id="@+id/p_name"
             style="@style/personal_value"
             android:layout_toLeftOf="@id/go_name"
-            android:text="蕾姆" />
+            android:text="@string/my_name" />
     </RelativeLayout>
     <View style="@style/line"/>
     <RelativeLayout
@@ -57,7 +57,7 @@
 
         <TextView
             style="@style/personal_title"
-            android:text="签名" />
+            android:text="@string/sign" />
 
         <ImageView
             android:id="@+id/go_sign"
@@ -66,7 +66,7 @@
             android:id="@+id/p_sign"
             style="@style/personal_value"
             android:layout_toLeftOf="@id/go_sign"
-            android:text="未来的事不笑着说出来可不行呢" />
+            android:text="@string/my_sign" />
     </RelativeLayout>
     <View style="@style/line"/>
     <RelativeLayout

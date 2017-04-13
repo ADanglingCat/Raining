@@ -137,4 +137,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="sign">签名</string>
+    <string name="name">昵称</string>
+    <string name="my_sign">未来的事不笑着说出来可不行呢</string>
+    <string name="my_name">蕾姆</string>
 </resources>
