@@ -19,7 +19,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private Button backBu;
     private TextView titleTx;
     private EditText contentEd;
-    private String type;
+    private boolean type;
     private String oldContent;
     private SharedPreferences.Editor editor;
     private static final String TAG = "TAGEditActivity";
@@ -28,39 +28,30 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         Intent intent = getIntent();
-        type = intent.getStringExtra("personalType");
+        type = intent.getBooleanExtra("isSign",false);
         editor= PreferenceManager.getDefaultSharedPreferences(this).edit();
         backBu = (Button) findViewById(R.id.backBu_edit);
         backBu.setOnClickListener(this);
         titleTx = (TextView) findViewById(R.id.title_pe);
-        titleTx.setText("修改" + type);
+        if(type){
+
+            titleTx.setText("修改签名");
+        }else{
+            titleTx.setText("修改昵称");
+
+        }
         contentEd = (EditText) findViewById(R.id.edit_content);
         oldContent="";
-        if ("昵称".equals(type)) {
+        if (!type) {
             oldContent=(String) BmobUser.getObjectByKey("name");
             contentEd.setText(oldContent);
             contentEd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10)});
-        }else if ("签名".equals(type)) {
+        }else{
             oldContent=(String) BmobUser.getObjectByKey("sign");
             contentEd.setText(oldContent);
-            contentEd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(38)});
+            contentEd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(37)});
         }
-//        contentEd.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+
     }
 
     public void onClick(View view) {
@@ -76,9 +67,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         String content = contentEd.getText().toString();
         if (content != null && !"".equals(content)&&!oldContent.equals(content)) {
            editor.putBoolean("isChanged",true);
-            if ("昵称".equals(type)){
+            if (!type){
                 editor.putString("name",content);
-            }else if("签名".equals(type)){
+            }else{
                 editor.putString("sign",content);
             }
             editor.apply();

@@ -179,8 +179,8 @@ public class Main3Activity extends BaseActivity {
         super.onResume();
 
         String headerPath = preference.getString("headerPath", null);
-        String sign = preference.getString("签名", null);
-        String name = preference.getString("昵称", null);
+        String sign = preference.getString("sign", null);
+        String name = preference.getString("name", null);
 
         int mainPosition = getMainPosition();
         titleCounty.setText(countyLists.get(mainPosition).getCountyName());

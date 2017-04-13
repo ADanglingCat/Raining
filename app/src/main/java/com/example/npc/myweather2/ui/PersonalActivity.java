@@ -24,8 +24,6 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.npc.myweather2.R.string.sign;
-
 public class PersonalActivity extends BaseActivity implements View.OnClickListener {
     private Button backBu;
     private Button exitBu;
@@ -70,37 +68,19 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         } else {
             pImage.setImageResource(R.drawable.ic_userimage);
         }
-        //  BmobFile image=(BmobFile)BmobUser.getObjectByKey("userImage");
-//        String name = (String)BmobUser.getObjectByKey("name");
-//        String sign = (String)BmobUser.getObjectByKey("sign");
-//        String email =(String)BmobUser.getObjectByKey("email");
         String name = preferences.getString("name",(String)BmobUser.getObjectByKey("name"));
         String sign = preferences.getString("sign", (String)BmobUser.getObjectByKey("sign"));
         String email = (String) BmobUser.getObjectByKey("email");
-        //sex = preferences.getString("sex", (String)BmobUser.getObjectByKey("sex"));
-        sex= (String)BmobUser.getObjectByKey("sex");
-        //if (name == null || "".equals(name)) {
-        //   pName.setText("蕾姆");
-        // } else {
+        sex=preferences.getString("sex", (String)BmobUser.getObjectByKey("sex"));
         pName.setText(name);
-        // }
-        // if (sign == null || "".equals(sign)) {
-        //   pSign.setText(getString(R.string.my_sign));
-        //} else {
         if (sign.length() > 14) {
             sign = sign.substring(0, 14) + "...";
         }
         pSign.setText(sign);
-
-        // }
         if (email != null) {
             pEmail.setText(email);
         }
-        //  if (sex != null) {
         pSex.setText(sex);
-        // }else{
-        //    pSex.setText("保密");
-        // }
     }
 
     public void initVar() {
@@ -132,10 +112,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 intent = new Intent(PersonalActivity.this, LoginActivity.class);
                 startActivity(intent);
                 BmobUser.logOut();
-                //editor.putBoolean("state",false);
-                //editor.apply();
                 finish();
-                //MyUtil.showToast(PersonalActivity.this, "退出登录");
                 break;
             case R.id.image_layout:
                 intent = new Intent(PersonalActivity.this, ChoosePictureActivity.class);
@@ -144,12 +121,12 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.name_layout:
                 intent = new Intent(PersonalActivity.this, EditActivity.class);
-                intent.putExtra("personalType", getString(R.string.name));
+                intent.putExtra("isSign",false);
                 startActivity(intent);
                 break;
             case R.id.sign_layout:
                 intent = new Intent(PersonalActivity.this, EditActivity.class);
-                intent.putExtra("personalType", getString(sign));
+                intent.putExtra("isSign", true);
                 startActivity(intent);
                 break;
             case R.id.sex_layout:
@@ -182,7 +159,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     public void onBackPressed() {
         String content = pSex.getText().toString();
         if (!content.equals(sex)) {
-            Log.d(TAG, "onClick: 222222222222");
             isChanged=true;
             editor.putString("sex",content);
         }else{
@@ -192,7 +168,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             _User user=new _User();
             user.setName(preferences.getString("name",getString(R.string.my_name)))
                     .setSign(preferences.getString("sign",getString(R.string.my_sign)))
-                    .setSex(preferences.getString("sex","保密"));
+                    .setSex(content);
             user.update(BmobUser.getCurrentUser(_User.class).getObjectId(), new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
