@@ -54,7 +54,14 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         nameLayout.setOnClickListener(this);
         signLayout.setOnClickListener(this);
         sexLayout.setOnClickListener(this);
-
+        emailLayout.setOnClickListener(this);
+        Intent intent = getIntent();
+        String login = intent.getStringExtra("login");
+        if (login != null) {
+            editor.putString("name", (String) BmobUser.getObjectByKey("name"));
+            editor.putString("sign", (String) BmobUser.getObjectByKey("sign"));
+            editor.apply();
+        }
     }
 
     public void onResume() {
@@ -68,10 +75,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         } else {
             pImage.setImageResource(R.drawable.ic_userimage);
         }
-        String name = preferences.getString("name",(String)BmobUser.getObjectByKey("name"));
-        String sign = preferences.getString("sign", (String)BmobUser.getObjectByKey("sign"));
+        String name = preferences.getString("name", (String) BmobUser.getObjectByKey("name"));
+        String sign = preferences.getString("sign", (String) BmobUser.getObjectByKey("sign"));
         String email = (String) BmobUser.getObjectByKey("email");
-        sex=preferences.getString("sex", (String)BmobUser.getObjectByKey("sex"));
+        sex = preferences.getString("sex", (String) BmobUser.getObjectByKey("sex"));
         pName.setText(name);
         if (sign.length() > 14) {
             sign = sign.substring(0, 14) + "...";
@@ -105,12 +112,20 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         Intent intent;
         switch (view.getId()) {
+            case R.id.email_layout:
+                intent = new Intent(PersonalActivity.this, PasswordChangeActivity.class);
+                startActivity(intent);
+                break;
             case R.id.backBu_personal:
                 onBackPressed();
                 break;
             case R.id.exit_bu:
                 intent = new Intent(PersonalActivity.this, LoginActivity.class);
                 startActivity(intent);
+                editor.remove("name");
+                editor.remove("sign");
+                editor.remove("sex");
+                editor.apply();
                 BmobUser.logOut();
                 finish();
                 break;
@@ -121,7 +136,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.name_layout:
                 intent = new Intent(PersonalActivity.this, EditActivity.class);
-                intent.putExtra("isSign",false);
+                intent.putExtra("isSign", false);
                 startActivity(intent);
                 break;
             case R.id.sign_layout:
@@ -159,29 +174,30 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     public void onBackPressed() {
         String content = pSex.getText().toString();
         if (!content.equals(sex)) {
-            isChanged=true;
-            editor.putString("sex",content);
-        }else{
-            isChanged=preferences.getBoolean("isChanged",false);
+            isChanged = true;
+            editor.putString("sex", content);
+        } else {
+            isChanged = preferences.getBoolean("isChanged", false);
         }
-        if (isChanged) {
-            _User user=new _User();
-            user.setName(preferences.getString("name",getString(R.string.my_name)))
-                    .setSign(preferences.getString("sign",getString(R.string.my_sign)))
+        if (isChanged ) {
+            _User user = new _User();
+            user.setName(preferences.getString("name", getString(R.string.my_name)))
+                    .setSign(preferences.getString("sign", getString(R.string.my_sign)))
                     .setSex(content);
             user.update(BmobUser.getCurrentUser(_User.class).getObjectId(), new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
+                    if (e == null) {
+                        editor.putBoolean("isChanged", false);
                         MyUtil.showToast("资料已同步");
-                    }else{
+                    } else {
+                        editor.putBoolean("isChanged",true);
                         MyUtil.showToast("资料同步失败");
-                        Log.e(TAG, "done: "+e);
+                        Log.e(TAG, "done: " + e);
                     }
                 }
             });
         }
-        editor.putBoolean("isChanged",false);
         editor.apply();
         super.onBackPressed();
         finish();

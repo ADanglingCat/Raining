@@ -2,6 +2,33 @@
 <items version="2" >
 
     <item
+        is-multidex="true"
+        jar="D:\AndroidProject\MyWeather2\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="70b6f36edd4e3b4108db3614b701050bcf310ed5">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_0e19a9ebdda9267f59c0c22e842acfe474f4c918\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\855ac5ab31d4166a4414cc1488e9557521a588a4\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a2af9c72ccaa4c5c049b500ca6ea664a4ce1f7d4">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_eb635aeb4dec7c5980338d2dd6ec59e1228b8d18.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\29f247038898a219f4f755c47fa03973612e1e2d\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_0b1d2471c81bd46d79fa82f4649c74644526895a.jar" />
+    </item>
+    <item
         is-multidex="false"
         jar="C:\Android\.android\build-cache\05fecd0de1f46258e236dbdf3d3adc62b22b95c8\output\jars\libs\internal_impl-24.2.1.jar"
         jumboMode="false"
@@ -9,6 +36,42 @@
         revision="25.0.0"
         sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_8e07ac73a62a8c402005a93b3c58c8b27f00535d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\585be5af19cc82b06623e4f9686b940f6e062765\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_41d1e4b73e7f7741225019776289e274ca66014a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\db06197ebd2cfc9627d2d9e6abc1a7e0dfb562e6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_596c361e025ff0487fb6026d0266fb7650852f16.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\585be5af19cc82b06623e4f9686b940f6e062765\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_3873cfe27f794f376927ca55d97cdf3e722b19e1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\npc\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.7.0\9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4\glide-3.7.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\glide-3.7.0_e929d7fed44243872ba0fd6e45d09db44f50e4c7.jar" />
     </item>
     <item
         is-multidex="false"
@@ -20,13 +83,13 @@
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\rxandroid-1.2.0_c6456513680e7ec15413a976d9a2af944c65c235.jar" />
     </item>
     <item
-        is-multidex="false"
-        jar="D:\AndroidProject\MyWeather2\app\libs\Android_Map3D_SDK_V5.0.0_20170311.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="D:\AndroidProject\MyWeather2\app\libs\rxandroid-1.2.0.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="1138283bb2b30bbf424a02eeeadab84edfc1571c">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\Android_Map3D_SDK_V5.0.0_20170311_f465e4be65917ef7ed42318c9a276fe5bac9e34e.jar" />
+        sha1="927e8ef5711b115b65b2f35495d77352be2b3c09">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\2\rxandroid-1.2.0_c6456513680e7ec15413a976d9a2af944c65c235\classes.dex" />
     </item>
     <item
         is-multidex="false"
@@ -39,12 +102,93 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Android\.android\build-cache\e3b18b28d33fbd7601beb4921d6e025cf28a0076\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_0352472d76e886c820223ca4ccacf5edc01a1b27.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\AndroidProject\MyWeather2\app\libs\BmobSDK_3.5.3_20161116.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7dd0893cb2b1d2e4249ce6a10934e3cba2d57d0f">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\BmobSDK_3.5.3_20161116_4bdbbe4ebdb8ba569f992d5571608b0428adf8d9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\849f369fdb1aa36436e5e5f6ca19afbacc223482\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_8df5003807ecfded2549542b9d2cda43ed877efd.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\AndroidProject\MyWeather2\app\libs\rxjava-1.1.6.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2586312cd2b8a511e4c6236736f5a039fc0f2273">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\2\rxjava-1.1.6_3d687630c4fb7f5acabcbe360f8130b7122dab7c\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\5cf370419211339c64cdc5b79b54b324ab802b2f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_972f292eeec44338559cc0ff1bfffef13bb06739.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\AndroidProject\MyWeather2\app\libs\rxjava-1.1.6.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2586312cd2b8a511e4c6236736f5a039fc0f2273">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\rxjava-1.1.6_3d687630c4fb7f5acabcbe360f8130b7122dab7c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\a4c507effc2c59a8061f41dc32cd02eb61b9559f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_34e9e75dff0fd942db45d5f9a1e3ae68304d4bd3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\5cf370419211339c64cdc5b79b54b324ab802b2f\output\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_5ab04acfdf62f73309e321ec221987f3029ac9e8.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Android\.android\build-cache\05fecd0de1f46258e236dbdf3d3adc62b22b95c8\output\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.0"
         sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_fc76299b815a5f52ed3897b197fd527aa08622c2.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\AndroidProject\MyWeather2\app\libs\org.apache.http.legacy.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="5320fd78dd7f154e586970d4f02befc9b58432aa">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\2\org.apache.http.legacy_7a15d273a12fedccc91129c61205c8d5e0a92eb5\classes.dex" />
     </item>
     <item
         is-multidex="false"
@@ -54,6 +198,24 @@
         revision="25.0.0"
         sha1="f824591a0016efbaeddb8300bee54832a1398cfa">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\okio-1.9.0_a02251e24530c0a4dfa8562d7a79ceb30a30f9bb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\849f369fdb1aa36436e5e5f6ca19afbacc223482\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_251c8a0713d5ddee8c32db952ed9028fc6341fe1.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\AndroidProject\MyWeather2\app\libs\AMap_Location_V3.3.0_20170118.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="299ccce875c1bbd5eb2802923ae89946e22b7ee6">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\2\AMap_Location_V3.3.0_20170118_bb34e7a99fd70372d5a2f70b7698a99c0312778b\classes.dex" />
     </item>
     <item
         is-multidex="false"
@@ -72,6 +234,51 @@
         revision="25.0.0"
         sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_5d2676edec125bab4a1e197b9397a42c0da7f1ad.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\AndroidProject\MyWeather2\app\libs\BmobSDK_3.5.3_20161116.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7dd0893cb2b1d2e4249ce6a10934e3cba2d57d0f">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\2\BmobSDK_3.5.3_20161116_4bdbbe4ebdb8ba569f992d5571608b0428adf8d9\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\8b4aa4ed17d76a7f21db28e68eecb39ed6fba202\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9a24b1b000b211eabfa13b5834c059818bc98fd5">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_aef7a656f7956dfc998a9e9f7df8f7a169a7a832.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\npc\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_c29f287870607c22397d34129399bc3d5f8c269b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\AndroidProject\MyWeather2\app\libs\org.apache.http.legacy.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="5320fd78dd7f154e586970d4f02befc9b58432aa">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\org.apache.http.legacy_7a15d273a12fedccc91129c61205c8d5e0a92eb5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\npc\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_c5548472e4716070638d0add12b625515826da32.jar" />
     </item>
     <item
         is-multidex="false"
@@ -119,6 +326,15 @@
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_259768be677be1fb84f9559f0036bc6eefa58cd8.jar" />
     </item>
     <item
+        is-multidex="true"
+        jar="D:\AndroidProject\MyWeather2\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_50702a164b7ce2862e404d6416c2fe82d963e90f\classes.dex" />
+    </item>
+    <item
         is-multidex="false"
         jar="C:\Android\.android\build-cache\fe2971f64f9435e733dcc47a66c1cf741e176280\output\jars\classes.jar"
         jumboMode="false"
@@ -126,177 +342,6 @@
         revision="25.0.0"
         sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_d4bed4936257edb0d97a830ebe0f2de2ee11212d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\855ac5ab31d4166a4414cc1488e9557521a588a4\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a2af9c72ccaa4c5c049b500ca6ea664a4ce1f7d4">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_eb635aeb4dec7c5980338d2dd6ec59e1228b8d18.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\29f247038898a219f4f755c47fa03973612e1e2d\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_0b1d2471c81bd46d79fa82f4649c74644526895a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\585be5af19cc82b06623e4f9686b940f6e062765\output\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_41d1e4b73e7f7741225019776289e274ca66014a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\db06197ebd2cfc9627d2d9e6abc1a7e0dfb562e6\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_596c361e025ff0487fb6026d0266fb7650852f16.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\585be5af19cc82b06623e4f9686b940f6e062765\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_3873cfe27f794f376927ca55d97cdf3e722b19e1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\AndroidProject\MyWeather2\app\libs\okio-1.7.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="1dc44f4cec20a64cebb68b90b4218f82ac7948b1">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\okio-1.7.0_fc822d8ed53401a6eade39b2080656194b19902f.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\npc\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.7.0\9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4\glide-3.7.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9e9eeaf9948ee4d6c3ab354e8dc14368f16994a4">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\glide-3.7.0_e929d7fed44243872ba0fd6e45d09db44f50e4c7.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\e3b18b28d33fbd7601beb4921d6e025cf28a0076\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_0352472d76e886c820223ca4ccacf5edc01a1b27.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\AndroidProject\MyWeather2\app\libs\BmobSDK_3.5.3_20161116.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="7dd0893cb2b1d2e4249ce6a10934e3cba2d57d0f">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\BmobSDK_3.5.3_20161116_4bdbbe4ebdb8ba569f992d5571608b0428adf8d9.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\849f369fdb1aa36436e5e5f6ca19afbacc223482\output\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_8df5003807ecfded2549542b9d2cda43ed877efd.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\5cf370419211339c64cdc5b79b54b324ab802b2f\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_972f292eeec44338559cc0ff1bfffef13bb06739.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\AndroidProject\MyWeather2\app\libs\rxjava-1.1.6.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2586312cd2b8a511e4c6236736f5a039fc0f2273">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\rxjava-1.1.6_3d687630c4fb7f5acabcbe360f8130b7122dab7c.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\a4c507effc2c59a8061f41dc32cd02eb61b9559f\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_34e9e75dff0fd942db45d5f9a1e3ae68304d4bd3.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\5cf370419211339c64cdc5b79b54b324ab802b2f\output\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\internal_impl-24.2.1_5ab04acfdf62f73309e321ec221987f3029ac9e8.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\849f369fdb1aa36436e5e5f6ca19afbacc223482\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_251c8a0713d5ddee8c32db952ed9028fc6341fe1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Android\.android\build-cache\8b4aa4ed17d76a7f21db28e68eecb39ed6fba202\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9a24b1b000b211eabfa13b5834c059818bc98fd5">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_aef7a656f7956dfc998a9e9f7df8f7a169a7a832.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\npc\AppData\Local\Android\sdk\extras\m2repository\com\android\support\constraint\constraint-layout-solver\1.0.2\constraint-layout-solver-1.0.2.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\constraint-layout-solver-1.0.2_c29f287870607c22397d34129399bc3d5f8c269b.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="D:\AndroidProject\MyWeather2\app\libs\org.apache.http.legacy.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5320fd78dd7f154e586970d4f02befc9b58432aa">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\org.apache.http.legacy_7a15d273a12fedccc91129c61205c8d5e0a92eb5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\npc\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
-        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_c5548472e4716070638d0add12b625515826da32.jar" />
     </item>
 
 </items>

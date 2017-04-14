@@ -65,7 +65,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
     public void onBackPressed() {
         String content = contentEd.getText().toString();
-        if (content != null && !"".equals(content)&&!oldContent.equals(content)) {
+        if (content != null && !oldContent.equals(content)) {
            editor.putBoolean("isChanged",true);
             if (!type){
                 editor.putString("name",content);

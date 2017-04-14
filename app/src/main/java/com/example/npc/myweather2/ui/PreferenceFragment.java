@@ -8,44 +8,66 @@ import android.preference.PreferenceManager;
 import com.example.npc.myweather2.R;
 
 public class PreferenceFragment extends android.preference.PreferenceFragment {
-    SharedPreferences p;
+    SharedPreferences preferences;
     SharedPreferences.OnSharedPreferenceChangeListener listener;
-
+    SharedPreferences.Editor editor;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-
-
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        editor=preferences.edit();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        //initSave();
+        initAutoBing();
 
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if ("autoBing".equals(key)) {
-                    Preference selfPic = findPreference("selfPic");
-                    if (p.getBoolean("autoBing", false)) {
-                        selfPic.setEnabled(false);
-                    } else {
-                        selfPic.setEnabled(true);
-                    }
-
+                switch(key){
+                    case "autoBing":
+                        initAutoBing();
+                        break;
+//                    case "save":
+//                        initSave();
+//                        break;
+                    default:
                 }
             }
         };
-        p.registerOnSharedPreferenceChangeListener(listener);
+        preferences.registerOnSharedPreferenceChangeListener(listener);
 
 
     }
 
     @Override
     public void onPause() {
-        p.unregisterOnSharedPreferenceChangeListener(listener);
+        preferences.unregisterOnSharedPreferenceChangeListener(listener);
         super.onPause();
+    }
+
+    public void initSave() {
+        Preference preference1 = findPreference("autoBing");
+        Preference preference2 = findPreference("selfPic");
+        if (preferences.getBoolean("save", false)) {
+            editor.putBoolean("autoBing",false);
+            editor.apply();
+            preference1.setEnabled(false);
+            preference2.setEnabled(true);
+        } else {
+            preference1.setEnabled(true);
+        }
+    }
+    public void initAutoBing(){
+        Preference preference2 = findPreference("selfPic");
+        if (preferences.getBoolean("autoBing", false)) {
+            preference2.setEnabled(false);
+        } else {
+            preference2.setEnabled(true);
+        }
     }
 }

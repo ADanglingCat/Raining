@@ -1,6 +1,8 @@
 package com.example.npc.myweather2.util;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -166,5 +168,16 @@ public class MyUtil {
             }
             return result;
         }
+    }
+    //获取连接网络类型
+    public boolean getNetworkType(){
+        ConnectivityManager manager=(ConnectivityManager)MyApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info=manager.getActiveNetworkInfo();
+        if(info!=null){
+            if(info.getType()==ConnectivityManager.TYPE_WIFI){
+                return true;
+            }
+        }
+        return false;
     }
 }

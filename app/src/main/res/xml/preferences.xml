@@ -78,13 +78,13 @@
             android:entries="@array/list_preference_alpha_titles"
             android:entryValues="@array/list_preference_alpha_values"/>
     </PreferenceCategory>
-    <!--<PreferenceCategory android:title="其他">-->
-        <!--<SwitchPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:title="自动定位"-->
-            <!--android:key="autoLocate"-->
-            <!--android:summaryOn="@string/summary_on"-->
-            <!--android:summaryOff="@string/summary_off" />-->
+    <PreferenceCategory android:title="其他">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:title="省流模式"
+            android:key="save"
+            android:summaryOn="@string/summary_on"
+            android:summaryOff="@string/summary_off" />
 
-    <!--</PreferenceCategory>-->
+    </PreferenceCategory>
 </PreferenceScreen>

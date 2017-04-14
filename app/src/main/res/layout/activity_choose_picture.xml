@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <Button
         android:id="@+id/choose_picture"
-        android:text="选取图片"
+        android:text="打开相册"
         android:textColor="#fff"
         android:layout_margin="5dp"
         android:layout_width="wrap_content"

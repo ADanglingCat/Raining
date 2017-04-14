@@ -150,10 +150,11 @@ public class ChoosePictureActivity extends BaseActivity {
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-
+            if(extra.equals("headerPath")){
+                editor.putBoolean("isUIChanged",true);
+            }
             editor.putString(extra, imagePath);
             editor.apply();
-            // MyUtil.showToast(this,"设置成功,下次启动生效");
             finish();
         } else {
             MyUtil.showToast(this, "获取图片失败");

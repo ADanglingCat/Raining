@@ -83,7 +83,7 @@
         </activity>
         <activity
             android:name=".ui.ChoosePictureActivity"
-            android:label="自定义图片"
+            android:label="选取图片"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
             <intent-filter>
                 <action android:name="com.example.myweather.CHOOSE" />
@@ -125,7 +125,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RegisterActivity"></activity>
+        <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.PasswordChangeActivity"></activity>
     </application>
 
 </manifest>

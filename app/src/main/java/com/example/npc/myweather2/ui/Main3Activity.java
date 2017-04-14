@@ -59,7 +59,7 @@ public class Main3Activity extends BaseActivity {
     private Calendar calendar;
     private int today;
     private int yesterday;
-    private SharedPreferences preference;
+    private SharedPreferences preferences;
     private ImageView userImage;
     private TextView userSign;
     private TextView userName;
@@ -85,10 +85,10 @@ public class Main3Activity extends BaseActivity {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.menuNa);
         backIm = (ImageView) findViewById(R.id.backgroundIm);
-        preference = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
         calendar = Calendar.getInstance();
         today = calendar.get(Calendar.DATE);
-        yesterday = preference.getInt("date", 0);
+        yesterday = preferences.getInt("date", 0);
 
         headerView = navigationView.getHeaderView(0);
         userSign = (TextView) headerView.findViewById(R.id.user_sign);
@@ -167,7 +167,7 @@ public class Main3Activity extends BaseActivity {
                 return true;
             }
         });
-        if (preference.getBoolean("autoUpdate", true)) {
+        if (preferences.getBoolean("autoUpdate", true)) {
             //启动自动更新
             Intent intent = new Intent(this, UpdateWeatherService.class);
             startService(intent);
@@ -178,9 +178,9 @@ public class Main3Activity extends BaseActivity {
     public void onResume() {
         super.onResume();
 
-        String headerPath = preference.getString("headerPath", null);
-        String sign = preference.getString("sign", null);
-        String name = preference.getString("name", null);
+        String headerPath = preferences.getString("headerPath", null);
+        String sign = preferences.getString("sign", getString(R.string.my_sign));
+        String name = preferences.getString("name", getString(R.string.my_name));
 
         int mainPosition = getMainPosition();
         titleCounty.setText(countyLists.get(mainPosition).getCountyName());
@@ -202,18 +202,18 @@ public class Main3Activity extends BaseActivity {
             mViewPager.setCurrentItem(position);
         }
 
-        if (preference.getBoolean("diy", false)) {
-            if (preference.getBoolean("autoBing", false)) {
+        if (preferences.getBoolean("diy", false)) {
+            if (preferences.getBoolean("autoBing", false)) {
                 setBackgroundByBing();
-            } else if (preference.getString("imagePath", null) != null) {
-                imagePath = preference.getString("imagePath", null);
+            } else if (preferences.getString("imagePath", null) != null) {
+                imagePath = preferences.getString("imagePath", null);
                 // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
                 Bitmap bitmap = getBitmap(imagePath);
                 backIm.setImageBitmap(bitmap);
             } else {
                 backIm.setImageResource(R.drawable.ic_background);
             }
-            backIm.setImageAlpha(Integer.parseInt(preference.getString("alpha", "255")));
+            backIm.setImageAlpha(Integer.parseInt(preferences.getString("alpha", "255")));
         } else {
             backIm.setImageAlpha(255);
             backIm.setImageResource(R.drawable.ic_background);
@@ -222,6 +222,12 @@ public class Main3Activity extends BaseActivity {
         if (headerPath != null) {
             Bitmap bitmap = getBitmap(headerPath);
             userImage.setImageBitmap(bitmap);
+//            if(preferences.getBoolean("isUIChanged",false)&&!preferences.getBoolean("save",false)){
+//                _User user=new _User();
+//                BmobFile bmobFile=new BmobFile(new File(headerPath));
+//                user.setUserImage(bmobFile);
+//                user.update(BmobUser.getCurrentUser(_us))
+//            }
             getColor(bitmap);
 
         } else {
@@ -274,8 +280,8 @@ public class Main3Activity extends BaseActivity {
 
     //必应每日一图设置背景
     public void setBackgroundByBing() {
-        preference = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
-        bingPic = preference.getString("bingPic", null);
+        preferences = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
+        bingPic = preferences.getString("bingPic", null);
         if (today != yesterday || bingPic == null) {
             requestBing();
         } else {
