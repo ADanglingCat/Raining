@@ -15,14 +15,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
+import com.example.npc.myweather2.model.Setting;
 import com.example.npc.myweather2.model._User;
 import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.npc.myweather2.R.id.email;
 
 public class PersonalActivity extends BaseActivity implements View.OnClickListener {
     private Button backBu;
@@ -32,6 +40,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout signLayout;
     private RelativeLayout sexLayout;
     private RelativeLayout emailLayout;
+    private RelativeLayout syncLayout;
     private CircleImageView pImage;
     private TextView pName;
     private TextView pSign;
@@ -42,7 +51,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private static final String TAG = "TAGPersonalActivity";
     private String sex;
     private boolean isChanged;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +63,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         signLayout.setOnClickListener(this);
         sexLayout.setOnClickListener(this);
         emailLayout.setOnClickListener(this);
+        syncLayout.setOnClickListener(this);
         Intent intent = getIntent();
         String login = intent.getStringExtra("login");
         if (login != null) {
@@ -62,12 +71,15 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             editor.putString("sign", (String) BmobUser.getObjectByKey("sign"));
             editor.apply();
         }
+
     }
 
     public void onResume() {
         super.onResume();
+        syncLayout.setClickable(true);
+
         isChanged = preferences.getBoolean("isChanged", false);
-        Log.d(TAG, "onResume: ");
+
         String headerPath = preferences.getString("headerPath", null);
         if (headerPath != null) {
             Bitmap bitmap = getBitmap(headerPath);
@@ -91,9 +103,10 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void initVar() {
+
         isChanged = false;
         preferences = PreferenceManager.getDefaultSharedPreferences(PersonalActivity.this);
-        editor = PreferenceManager.getDefaultSharedPreferences(PersonalActivity.this).edit();
+        editor =preferences.edit();
         backBu = (Button) findViewById(R.id.backBu_personal);
         exitBu = (Button) findViewById(R.id.exit_bu);
         imageLayout = (RelativeLayout) findViewById(R.id.image_layout);
@@ -101,6 +114,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         signLayout = (RelativeLayout) findViewById(R.id.sign_layout);
         sexLayout = (RelativeLayout) findViewById(R.id.sex_layout);
         emailLayout = (RelativeLayout) findViewById(R.id.email_layout);
+        syncLayout = (RelativeLayout) findViewById(R.id.sync_layout);
         pImage = (CircleImageView) findViewById(R.id.p_image);
         pName = (TextView) findViewById(R.id.p_name);
         pSign = (TextView) findViewById(R.id.p_sign);
@@ -115,6 +129,9 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             case R.id.email_layout:
                 intent = new Intent(PersonalActivity.this, PasswordChangeActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.sync_layout:
+                //syncSetting();
                 break;
             case R.id.backBu_personal:
                 onBackPressed();
@@ -221,6 +238,79 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);
         }
         return bitmap;
+
+    }
+    public void syncSetting(){
+        syncLayout.setClickable(false);
+        _User user=BmobUser.getCurrentUser(_User.class);
+        if(user!=null&&user.getEmailVerified()){
+            final Setting setting=new Setting();
+
+           //int alpha=preferences.getInt("alpha",200);
+            setting.setNotify(preferences.getBoolean("Notify",false))
+                    .setNotifyTime(preferences.getLong("notifyTime",0))
+                    .setAutoUpdate(preferences.getBoolean("autoUpdate",false))
+                    .setUpdateMode(preferences.getBoolean("updateMode",true))
+                    .setUpdateFre(preferences.getString("updateFre","3"))
+                    .setNightUpdate(preferences.getBoolean("nightUpdate",false))
+                    .setDiy(preferences.getBoolean("diy",false))
+                    .setAutoBing(preferences.getBoolean("autoBing",false))
+                    .setAlpha(preferences.getString("alpha","200"))
+                    .setSave(preferences.getBoolean("save",false))
+                    .setUser(user);
+            BmobQuery<Setting> query=new BmobQuery<>();
+            query.addWhereEqualTo("user",user);
+            query.findObjects(new FindListener<Setting>() {
+                @Override
+                public void done(List<Setting> list, BmobException e) {
+                   if(e==null){
+                       if(list.size()>0){
+                           setting.update(list.get(0).getObjectId(), new UpdateListener() {
+                               @Override
+                               public void done(BmobException e) {
+                                   if(e==null){
+                                       MyUtil.showToast("设置同步完成");
+                                   }else{
+                                       MyUtil.showToast("设置同步失败:"+e.getMessage());
+                                       syncLayout.setClickable(true);
+
+                                   }
+                               }
+                           });
+                       }else{
+                           setting.save(new SaveListener<String>() {
+                               @Override
+                               public void done(String s, BmobException e) {
+                                   if(e==null){
+                                       MyUtil.showToast("设置同步完成");
+                                   }else{
+                                       MyUtil.showToast("设置同步失败:"+e.getMessage());
+                                   }
+                               }
+                           });
+
+                      }
+                   }else{
+                        MyUtil.showToast("设置同步失败:"+e.getMessage());
+                       Log.e(TAG, "done: "+e );
+                        return;
+                    }
+                }
+            });
+
+        }else{
+            MyUtil.showToast("请先验证邮箱");
+            BmobUser.requestEmailVerify(String.valueOf(email), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if(e==null){
+                        MyUtil.showToast("请求验证邮件成功，请到" + email + "邮箱中进行激活。");
+                    }else{
+                        MyUtil.showToast("失败:" + e.getMessage());
+                    }
+                }
+            });
+        }
 
     }
 }

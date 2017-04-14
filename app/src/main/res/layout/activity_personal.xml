@@ -3,12 +3,11 @@
     android:id="@+id/activity_personal"
     style="@style/activityLayout">
 
-    <LinearLayout
-        style="@style/titleBar">
+    <LinearLayout style="@style/titleBar">
 
         <Button
             android:id="@+id/backBu_personal"
-            style="@style/backBu"/>
+            style="@style/backBu" />
 
         <TextView
             style="@style/title"
@@ -18,21 +17,26 @@
     <RelativeLayout
         android:id="@+id/image_layout"
         style="@style/personal_layout">
+
         <TextView
             style="@style/personal_title"
             android:text="头像" />
+
         <ImageView
             android:id="@+id/go_image"
             style="@style/personal_go" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/p_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
-           android:layout_toLeftOf="@id/go_image"
             android:layout_marginRight="8dp"
-            android:src="@drawable/ic_userimage"/>
+            android:layout_toLeftOf="@id/go_image"
+            android:src="@drawable/ic_userimage" />
     </RelativeLayout>
-    <View style="@style/line"/>
+
+    <View style="@style/line" />
+
     <RelativeLayout
         android:id="@+id/name_layout"
         style="@style/personal_layout">
@@ -44,13 +48,16 @@
         <ImageView
             android:id="@+id/go_name"
             style="@style/personal_go" />
+
         <TextView
             android:id="@+id/p_name"
             style="@style/personal_value"
             android:layout_toLeftOf="@id/go_name"
             android:text="@string/my_name" />
     </RelativeLayout>
-    <View style="@style/line"/>
+
+    <View style="@style/line" />
+
     <RelativeLayout
         android:id="@+id/sign_layout"
         style="@style/personal_layout">
@@ -62,13 +69,16 @@
         <ImageView
             android:id="@+id/go_sign"
             style="@style/personal_go" />
+
         <TextView
             android:id="@+id/p_sign"
             style="@style/personal_value"
             android:layout_toLeftOf="@id/go_sign"
             android:text="@string/my_sign" />
     </RelativeLayout>
-    <View style="@style/line"/>
+
+    <View style="@style/line" />
+
     <RelativeLayout
         android:id="@+id/sex_layout"
         style="@style/personal_layout">
@@ -80,13 +90,16 @@
         <ImageView
             android:id="@+id/go_sex"
             style="@style/personal_go" />
+
         <TextView
             android:id="@+id/p_sex"
             style="@style/personal_value"
             android:layout_toLeftOf="@id/go_sex"
             android:text="保密" />
     </RelativeLayout>
-    <View style="@style/line"/>
+
+    <View style="@style/line" />
+
     <RelativeLayout
         android:id="@+id/email_layout"
         style="@style/personal_layout">
@@ -98,15 +111,38 @@
         <ImageView
             android:id="@+id/go_email"
             style="@style/personal_go" />
+
         <TextView
             android:id="@+id/p_email"
             style="@style/personal_value"
             android:layout_toLeftOf="@id/go_email" />
     </RelativeLayout>
-    <View style="@style/mline"/>
+
+    <View style="@style/line" />
+
+    <RelativeLayout
+        android:id="@+id/sync_layout"
+        style="@style/personal_layout">
+
+        <TextView
+            android:id="@+id/sync_button"
+            style="@style/personal_title"
+            android:text="设置同步"/>
+        <ImageView
+            android:id="@+id/go_sync"
+            style="@style/personal_go" />
+
+        <TextView
+            style="@style/personal_value"
+            android:text="点击上传设置数据"
+            android:layout_toLeftOf="@id/go_sync" />
+    </RelativeLayout>
+
+    <View style="@style/mline" />
+
     <Button
         android:id="@+id/exit_bu"
-        android:textColor="#FE2E2E"
+        style="@style/MyButton"
         android:text="退出登录"
-        style="@style/MyButton"/>
+        android:textColor="#FE2E2E" />
 </LinearLayout>

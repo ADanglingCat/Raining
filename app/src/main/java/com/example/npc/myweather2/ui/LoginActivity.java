@@ -16,13 +16,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.npc.myweather2.R;
+import com.example.npc.myweather2.model.Setting;
 import com.example.npc.myweather2.model._User;
 import com.example.npc.myweather2.util.MyUtil;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static com.example.npc.myweather2.util.MyUtil.getMD5;
 
@@ -186,6 +192,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                         user.login(new SaveListener<_User>() {
                             public void done(_User u,BmobException e){
                                 if(e==null){
+                                    syncSetting();
                                     MyUtil.showToast("登陆成功...");
                                     Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
                                     intent.putExtra("login","login");
@@ -202,12 +209,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                     }
                 }
             });
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-
-           // showProgress(true);
-            //mAuthTask = new UserLoginTask(email, password);
-           // mAuthTask.execute((Void) null);
         }
     }
 
@@ -221,104 +222,51 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         return Pattern.matches(pattern, password);
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    //@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-//    private void showProgress(final boolean show) {
-//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-//        // for very easy animations. If available, use these APIs to fade-in
-//        // the progress spinner.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-//            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-//
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
-//
-//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//            mProgressView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                }
-//            });
-//        } else {
-//            // The ViewPropertyAnimator APIs are not available, so simply show
-//            // and hide the relevant UI components.
-//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//        }
-//    }
+    public void syncSetting(){
+        _User user=BmobUser.getCurrentUser(_User.class);
+        if(user!=null&&user.getEmailVerified()){
 
-//    /**
-//     * Represents an asynchronous login/registration task used to authenticate
-//     * the user.
-//     */
-//    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-//
-//        private final String mEmail;
-//        private final String mPassword;
-//        final boolean[] flag={false};
-//        UserLoginTask(String email, String password) {
-//            mEmail = email;
-//            mPassword = password;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            // TODO: attempt authentication against a network service.
-//            _User user=new _User();
-//            String p=MyUtil.getMD5(mPassword);
-//            user.setUsername(mEmail);
-//            user.setPassword(p);
-//            Log.d(TAG, "doInBackground: "+p);
-//            user.login(new SaveListener<_User>() {
-//                public void done(_User u,BmobException e){
-//                    if(e==null){
-//                        flag[0]=true;
-//                        Log.d(TAG, "成功: !!!!"+flag[0]);
-//                    }else{
-//                        flag[0]=false;
-//                        Log.e(TAG, "done: "+e);
-//                    }
-//                }
-//            });
-//            return false;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
-//            showProgress(false);
-//            Log.d(TAG, "onPostExecute: 失败"+flag[0]);
-//            if (flag[0]) {
-//                editor.putString("email", mEmail);
-//                editor.putString("password", getMD5(mPassword));
-//                editor.putBoolean("state",true);
-//                editor.apply();
-//                MyUtil.showToast("登陆成功...");
-//                Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
-//                startActivity(intent);
-//                finish();
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            mAuthTask = null;
-//            showProgress(false);
-//        }
-//    }
+            BmobQuery<Setting> query=new BmobQuery<>();
+            query.addWhereEqualTo("user",user);
+            query.findObjects(new FindListener<Setting>() {
+                @Override
+                public void done(List<Setting> list, BmobException e) {
+                    if(e==null){
+                        if(list.size()>0){
+                            Setting setting=list.get(0);
+                            editor.putBoolean("Notify",setting.getNotify())
+                                    .putBoolean("autoUpdate",setting.getAutoUpdate())
+                                    .putBoolean("updateMode",setting.getUpdateMode())
+                                    .putBoolean("nightUpdate",setting.getNightUpdate())
+                                    .putBoolean("diy",setting.getDiy())
+                                    .putBoolean("autoBing",setting.getAutoBing())
+                                    .putBoolean("save",setting.getSave())
+                                    .putLong("notifyTime",setting.getNotifyTime())
+                                    .putString("updateFre",setting.getUpdateFre())
+                                    .putString("alpha",setting.getAlpha());
+                            editor.apply();
+                            MyUtil.showToast("设置同步成功");
+                        }
+                    }else{
+                        MyUtil.showToast("设置同步失败:"+e.getMessage());
+                    }
+                }
+            });
 
+        }else{
+            MyUtil.showToast("验证邮箱后可以同步设置");
+            BmobUser.requestEmailVerify(String.valueOf(email), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if(e==null){
+                        MyUtil.showToast("请求验证邮件成功，请到" + email + "邮箱中进行激活。");
+                    }else{
+                        MyUtil.showToast("失败:" + e.getMessage());
+                    }
+                }
+            });
+        }
+
+    }
 }
 
