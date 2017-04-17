@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.npc.myweather2.service.NotifyWeatherService;
 import com.example.npc.myweather2.service.UpdateWeatherService;
 
 public class BootReceiver extends BroadcastReceiver {
@@ -13,8 +14,13 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(context);
         if (preferences.getBoolean("autoUpdate", true)) {
-            //启动自动更新
+            //启动自动更新天气
             intent = new Intent(context, UpdateWeatherService.class);
+            context.startService(intent);
+        }
+        if (preferences.getBoolean("Notify", false)) {
+            //定时通知天气
+            intent = new Intent(context,NotifyWeatherService.class);
             context.startService(intent);
         }
     }

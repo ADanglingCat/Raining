@@ -67,16 +67,6 @@ public class UpdateWeatherService extends Service {
             alarmManager.cancel(pi);
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pi);
 
-            if (preferences.getBoolean("Notify", false)) {
-                //定时通知天气
-                long notifyTime=preferences.getLong("notifyTime",0);
-                Calendar calendar=Calendar.getInstance();
-                calendar.setTimeInMillis(notifyTime);
-                alarmManager = (AlarmManager) this.getSystemService(ALARM_SERVICE);
-                Intent i = new Intent(this, NotifyWeatherService.class);
-                PendingIntent p = PendingIntent.getService(this, 0, i, 0);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, p);
-            }
         }
         return super.onStartCommand(intent, flags, startId);
     }

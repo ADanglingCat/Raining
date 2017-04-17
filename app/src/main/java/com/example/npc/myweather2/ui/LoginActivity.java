@@ -38,26 +38,10 @@ import static com.example.npc.myweather2.util.MyUtil.getMD5;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements OnClickListener {
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-//    private static final String[] DUMMY_CREDENTIALS = new String[]{
-//            "foo@example.com:helloo", "bar@example.com:worldd"
-//    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-   // private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
-    private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private Button mEmailSignInButton;
     private TextView findPWD;
@@ -73,15 +57,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         findPWD = (TextView) findViewById(R.id.find_pwd);
         register = (TextView) findViewById(R.id.register);
         mPasswordView = (EditText) findViewById(R.id.password);
-        back=(Button)findViewById(R.id.backBu_login);
+        back = (Button) findViewById(R.id.backBu_login);
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
         mEmailSignInButton.setOnClickListener(this);
         findPWD.setOnClickListener(this);
         register.setOnClickListener(this);
@@ -106,11 +87,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 
         switch (view.getId()) {
             case R.id.email_sign_in_button:
+                MyUtil.showToast("登录中...");
                 attemptLogin();
                 mEmailSignInButton.setClickable(false);
                 break;
             case R.id.backBu_login:
-
                 onBackPressed();
                 finish();
                 break;
@@ -127,8 +108,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                     intent.putExtra("email", email);
                 }
                 if (password != null && !"".equals(password)) {
-                intent.putExtra("password", password);
-            }
+                    intent.putExtra("password", password);
+                }
                 startActivity(intent);
                 break;
             default:
@@ -136,11 +117,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     }
 
     private void attemptLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
 
-        // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
@@ -174,31 +151,32 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             // form field with an error.
             focusView.requestFocus();
         } else {
-           final  _User user=new _User();
+            final _User user = new _User();
             user.setUsername(email);
             user.setPassword(getMD5(password));
 
 
             user.login(new SaveListener<_User>() {
-                public void done(_User u,BmobException e){
-                    if(e==null){
+                public void done(_User u, BmobException e) {
+                    if (e == null) {
+                        syncSetting();
                         MyUtil.showToast("登陆成功...");
                         Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
-                        intent.putExtra("login","login");
+                        intent.putExtra("login", "login");
                         startActivity(intent);
                         finish();
-                    }else{
+                    } else {
                         user.setPassword(password);
                         user.login(new SaveListener<_User>() {
-                            public void done(_User u,BmobException e){
-                                if(e==null){
+                            public void done(_User u, BmobException e) {
+                                if (e == null) {
                                     syncSetting();
                                     MyUtil.showToast("登陆成功...");
                                     Intent intent = new Intent(LoginActivity.this, PersonalActivity.class);
-                                    intent.putExtra("login","login");
+                                    intent.putExtra("login", "login");
                                     startActivity(intent);
                                     finish();
-                                }else{
+                                } else {
                                     mEmailSignInButton.setClickable(true);
                                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                                     mPasswordView.requestFocus();
@@ -222,45 +200,45 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         return Pattern.matches(pattern, password);
     }
 
-    public void syncSetting(){
-        _User user=BmobUser.getCurrentUser(_User.class);
-        if(user!=null&&user.getEmailVerified()){
+    public void syncSetting() {
+        _User user = BmobUser.getCurrentUser(_User.class);
+        if (user != null && user.getEmailVerified()) {
 
-            BmobQuery<Setting> query=new BmobQuery<>();
-            query.addWhereEqualTo("user",user);
+            BmobQuery<Setting> query = new BmobQuery<>();
+            query.addWhereEqualTo("user", user);
             query.findObjects(new FindListener<Setting>() {
                 @Override
                 public void done(List<Setting> list, BmobException e) {
-                    if(e==null){
-                        if(list.size()>0){
-                            Setting setting=list.get(0);
-                            editor.putBoolean("Notify",setting.getNotify())
-                                    .putBoolean("autoUpdate",setting.getAutoUpdate())
-                                    .putBoolean("updateMode",setting.getUpdateMode())
-                                    .putBoolean("nightUpdate",setting.getNightUpdate())
-                                    .putBoolean("diy",setting.getDiy())
-                                    .putBoolean("autoBing",setting.getAutoBing())
-                                    .putBoolean("save",setting.getSave())
-                                    .putLong("notifyTime",setting.getNotifyTime())
-                                    .putString("updateFre",setting.getUpdateFre())
-                                    .putString("alpha",setting.getAlpha());
+                    if (e == null) {
+                        if (list.size() > 0) {
+                            Setting setting = list.get(0);
+                            editor.putBoolean("Notify", setting.getNotify())
+                                    .putBoolean("autoUpdate", setting.getAutoUpdate())
+                                    .putBoolean("updateMode", setting.getUpdateMode())
+                                    .putBoolean("nightUpdate", setting.getNightUpdate())
+                                    .putBoolean("diy", setting.getDiy())
+                                    .putBoolean("autoBing", setting.getAutoBing())
+                                    .putBoolean("save", setting.getSave())
+                                    .putLong("notifyTime", setting.getNotifyTime())
+                                    .putString("updateFre", setting.getUpdateFre())
+                                    .putString("alpha", setting.getAlpha());
                             editor.apply();
                             MyUtil.showToast("设置同步成功");
                         }
-                    }else{
-                        MyUtil.showToast("设置同步失败:"+e.getMessage());
+                    } else {
+                        MyUtil.showToast("设置同步失败:" + e.getMessage());
                     }
                 }
             });
 
-        }else{
+        } else {
             MyUtil.showToast("验证邮箱后可以同步设置");
             BmobUser.requestEmailVerify(String.valueOf(email), new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
-                    if(e==null){
+                    if (e == null) {
                         MyUtil.showToast("请求验证邮件成功，请到" + email + "邮箱中进行激活。");
-                    }else{
+                    } else {
                         MyUtil.showToast("失败:" + e.getMessage());
                     }
                 }

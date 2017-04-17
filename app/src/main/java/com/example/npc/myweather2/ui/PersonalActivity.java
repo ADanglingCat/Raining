@@ -65,10 +65,12 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         emailLayout.setOnClickListener(this);
         syncLayout.setOnClickListener(this);
         Intent intent = getIntent();
+        //登陆后保存昵称和签名
         String login = intent.getStringExtra("login");
         if (login != null) {
             editor.putString("name", (String) BmobUser.getObjectByKey("name"));
             editor.putString("sign", (String) BmobUser.getObjectByKey("sign"));
+            editor.putString("sex", (String) BmobUser.getObjectByKey("sex"));
             editor.apply();
         }
 
@@ -131,7 +133,8 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.sync_layout:
-                //syncSetting();
+                MyUtil.showToast("同步中");
+                syncSetting();
                 break;
             case R.id.backBu_personal:
                 onBackPressed();
@@ -246,7 +249,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         if(user!=null&&user.getEmailVerified()){
             final Setting setting=new Setting();
 
-           //int alpha=preferences.getInt("alpha",200);
             setting.setNotify(preferences.getBoolean("Notify",false))
                     .setNotifyTime(preferences.getLong("notifyTime",0))
                     .setAutoUpdate(preferences.getBoolean("autoUpdate",false))
@@ -269,9 +271,9 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                @Override
                                public void done(BmobException e) {
                                    if(e==null){
-                                       MyUtil.showToast("设置同步完成");
+                                       MyUtil.showToast("设置上传完成");
                                    }else{
-                                       MyUtil.showToast("设置同步失败:"+e.getMessage());
+                                       MyUtil.showToast("设置上传失败:"+e.getMessage());
                                        syncLayout.setClickable(true);
 
                                    }
@@ -282,16 +284,16 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                @Override
                                public void done(String s, BmobException e) {
                                    if(e==null){
-                                       MyUtil.showToast("设置同步完成");
+                                       MyUtil.showToast("设置上传完成");
                                    }else{
-                                       MyUtil.showToast("设置同步失败:"+e.getMessage());
+                                       MyUtil.showToast("设置上传失败:"+e.getMessage());
                                    }
                                }
                            });
 
                       }
                    }else{
-                        MyUtil.showToast("设置同步失败:"+e.getMessage());
+                        MyUtil.showToast("设置上传失败:"+e.getMessage());
                        Log.e(TAG, "done: "+e );
                         return;
                     }

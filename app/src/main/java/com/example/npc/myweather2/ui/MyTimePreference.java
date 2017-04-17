@@ -1,7 +1,5 @@
 package com.example.npc.myweather2.ui;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,7 +7,6 @@ import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -18,8 +15,6 @@ import com.example.npc.myweather2.service.NotifyWeatherService;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by npc on 3-20 0020.
@@ -51,10 +46,8 @@ public class MyTimePreference extends DialogPreference {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             if (preferences.getBoolean("Notify", false)) {
                 //定时通知天气
-                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
                 Intent i = new Intent(getContext(), NotifyWeatherService.class);
-                PendingIntent p = PendingIntent.getService(getContext(), 0, i, 0);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, p);
+                getContext().startService(i);
             }
 
         }

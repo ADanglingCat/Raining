@@ -8,8 +8,9 @@ import android.preference.PreferenceManager;
 import com.example.npc.myweather2.R;
 
 public class PreferenceFragment extends android.preference.PreferenceFragment {
-    SharedPreferences preferences;
-    SharedPreferences.OnSharedPreferenceChangeListener listener;
+    private SharedPreferences preferences;
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
+    private static final String TAG = "TAGPreferenceFragment";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +29,10 @@ public class PreferenceFragment extends android.preference.PreferenceFragment {
 
                 switch(key){
                     case "autoBing":
-                        initAutoBing();
+                       initAutoBing();
                         break;
                     default:
+                        break;
                 }
             }
         };

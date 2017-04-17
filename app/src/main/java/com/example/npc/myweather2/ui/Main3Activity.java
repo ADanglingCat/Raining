@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.model.CountyList;
 import com.example.npc.myweather2.service.UpdateWeatherService;
@@ -34,6 +35,7 @@ import com.example.npc.myweather2.util.PagerAdapter;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -208,8 +210,13 @@ public class Main3Activity extends BaseActivity {
             } else if (preferences.getString("imagePath", null) != null) {
                 imagePath = preferences.getString("imagePath", null);
                 // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                Bitmap bitmap = getBitmap(imagePath);
-                backIm.setImageBitmap(bitmap);
+               // Bitmap bitmap = getBitmap(imagePath);
+                File file=new File(imagePath);
+                Glide.with(this)
+                        .load(file)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(backIm);
+                //backIm.setImageBitmap(bitmap);
             } else {
                 backIm.setImageResource(R.drawable.ic_background);
             }
@@ -220,8 +227,13 @@ public class Main3Activity extends BaseActivity {
         }
 
         if (headerPath != null) {
+            File file=new File(headerPath);
+            Glide.with(this)
+                    .load(file)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(userImage);
             Bitmap bitmap = getBitmap(headerPath);
-            userImage.setImageBitmap(bitmap);
+            //userImage.setImageBitmap(bitmap);
 //            if(preferences.getBoolean("isUIChanged",false)&&!preferences.getBoolean("save",false)){
 //                _User user=new _User();
 //                BmobFile bmobFile=new BmobFile(new File(headerPath));
@@ -326,18 +338,19 @@ public class Main3Activity extends BaseActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(path);
 
-        if (bitmap != null) {
-            int bheight = bitmap.getHeight();
-            int bwidth = bitmap.getWidth();
-            if (bheight > 4096 || bwidth > 4096) {
+       // if (bitmap != null) {
+            //int bheight = bitmap.getHeight();
+           // int bwidth = bitmap.getWidth();
+           // if (bheight > 4096 || bwidth > 4096) {
 
-                bheight = (int) (bitmap.getHeight() * 0.9);
-                bwidth = (int) (bitmap.getWidth() * 0.9);
-            }
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
-        } else {
+           //     bheight = (int) (bitmap.getHeight() * 0.9);
+           //     bwidth = (int) (bitmap.getWidth() * 0.9);
+          //  }
+           // bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
+      //  } else {
+        if(bitmap==null)
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);
-        }
+      //  }
         return bitmap;
 
     }

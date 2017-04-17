@@ -1,5 +1,6 @@
 package com.example.npc.myweather2.service;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,6 +8,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -52,6 +54,20 @@ public class NotifyWeatherService extends Service {
         String weatherInfo;
         DailyForecast dailyForecast;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(NotifyWeatherService.this);
+        long time=preferences.getLong("notifyTime", 0);
+        Calendar c=Calendar.getInstance();
+        c.setTimeInMillis(time);
+        if (preferences.getBoolean("Notify", false)) {
+            //定时通知天气
+            AlarmManager alarmManager = (AlarmManager) NotifyWeatherService.this.getSystemService(ALARM_SERVICE);
+            Intent i = new Intent(NotifyWeatherService.this, NotifyWeatherService.class);
+            PendingIntent p = PendingIntent.getService(NotifyWeatherService.this, 0, i, 0);
+            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),p);
+            }else{
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, p);
+            }
+        }
         if (lists != null) {
             for (CountyList list : lists) {
                 if (list.isMainCity()) {
@@ -79,10 +95,8 @@ public class NotifyWeatherService extends Service {
                             //现在的时间
                             int currentHour= calendar.get(Calendar.HOUR_OF_DAY);
                             int currentMinute= calendar.get(Calendar.MINUTE);
-                           long time=preferences.getLong("notifyTime", 0);
-                            calendar.setTimeInMillis(time);
-                            int hour= calendar.get(Calendar.HOUR_OF_DAY);
-                            int minute= calendar.get(Calendar.MINUTE);
+                            int hour= c.get(Calendar.HOUR_OF_DAY);
+                            int minute= c.get(Calendar.MINUTE);
                             if (currentHour==hour&&currentMinute>=minute) {
                                 notificationManager.notify(1, notification);
                             }
