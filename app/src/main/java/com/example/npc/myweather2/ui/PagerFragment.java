@@ -39,7 +39,7 @@ import okhttp3.Response;
  * Created by npc on 3-29 0029.
  */
 
-public class PagerFragment extends Fragment {
+public class PagerFragment extends Fragment{
     public DrawerLayout drawerLayout;
     public SwipeRefreshLayout swipeRefresh;
     private ScrollView weatherLayout;
@@ -80,10 +80,13 @@ public class PagerFragment extends Fragment {
     private int today;
     private int yesterday;
     private String weatherString;
+    private static final String TAG = "TAGPagerFragment";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_pager, container, false);
+
             voiceWeather = "";
             voiceBu = (Button) rootView.findViewById(R.id.VoiceBu);
             resources = getActivity().getResources();
@@ -121,6 +124,7 @@ public class PagerFragment extends Fragment {
             swipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh);
             swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
             prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+            weatherId = getArguments().getString("weatherId");
             weatherString = prefs.getString("weather" + weatherId, null);
 
         }
@@ -129,7 +133,8 @@ public class PagerFragment extends Fragment {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        weatherId = getArguments().getString("weatherId");
+
+
         Calendar calendar = Calendar.getInstance();
         today = calendar.get(Calendar.DATE);
         //每天第一次打开自动刷新天气
@@ -137,7 +142,6 @@ public class PagerFragment extends Fragment {
         if (today != yesterday || weatherString == null) {
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
-
         } else {
             // 有缓存时直接解析天气数据
             Weather weather = MyUtil.handleWeatherResponse(weatherString);

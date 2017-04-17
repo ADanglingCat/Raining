@@ -16,11 +16,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.graphics.Palette;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -39,14 +42,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import master.flame.danmaku.controller.DrawHandler;
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
+import master.flame.danmaku.danmaku.model.DanmakuTimer;
+import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.Danmakus;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.ui.widget.DanmakuView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class Main3Activity extends BaseActivity {
+public class Main3Activity extends BaseActivity implements View.OnClickListener {
+    boolean flag;
     private PagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private List<CountyList> countyLists;
@@ -66,8 +79,23 @@ public class Main3Activity extends BaseActivity {
     private TextView userSign;
     private TextView userName;
     private View headerView;
+    private Button openBu;
+    private Button closeBu;
+    private Button sendBu;
+    private EditText editText;
+    private LinearLayout operationLayout;
+    private DanmakuView danmakuView;
+    private DanmakuContext danmakuContext;
+    private BaseDanmakuParser parser = new BaseDanmakuParser() {
+        @Override
+        protected IDanmakus parse() {
+            return new Danmakus();
+        }
+    };
+
     public static TextToSpeech tts;
     private static final String TAG = "TAGMain3Activity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,37 +107,15 @@ public class Main3Activity extends BaseActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main3);
+        initVar();
         initTTS();
-        menuBu = (Button) findViewById(R.id.menuBu);
-        titleCounty = (TextView) findViewById(R.id.titleCity);
-        countyLists = DataSupport.findAll(CountyList.class);
-        fragmentList = new ArrayList<>();
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.menuNa);
-        backIm = (ImageView) findViewById(R.id.backgroundIm);
-        preferences = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
-        calendar = Calendar.getInstance();
-        today = calendar.get(Calendar.DATE);
-        yesterday = preferences.getInt("date", 0);
 
-        headerView = navigationView.getHeaderView(0);
-        userSign = (TextView) headerView.findViewById(R.id.user_sign);
-        userName = (TextView) headerView.findViewById(R.id.user_name);
-        userImage = (ImageView) headerView.findViewById(R.id.user_image);
-        menuBu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });
-        userImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.example.myweather.PERSONAL");
-                startActivity(intent);
-                drawer.closeDrawers();
-            }
-        });
+
+        menuBu.setOnClickListener(this);
+        userImage.setOnClickListener(this);
+        openBu.setOnClickListener(this);
+        closeBu.setOnClickListener(this);
+        sendBu.setOnClickListener(this);
 
         for (CountyList countyList : countyLists) {
             Fragment fragment = new PagerFragment();
@@ -179,6 +185,43 @@ public class Main3Activity extends BaseActivity {
 
     public void onResume() {
         super.onResume();
+        flag=preferences.getBoolean("danmaku",false);
+        if(flag){
+            openBu.setVisibility(View.VISIBLE);
+            closeBu.setVisibility(View.VISIBLE);
+            danmakuView.setCallback(new DrawHandler.Callback() {
+                @Override
+                public void prepared() {
+                    danmakuView.start();
+                    generateSomeDanmaku();
+                }
+
+                @Override
+                public void updateTimer(DanmakuTimer timer) {
+
+                }
+
+                @Override
+                public void danmakuShown(BaseDanmaku danmaku) {
+
+                }
+
+                @Override
+                public void drawingFinished() {
+                    danmakuView.seekTo(0L);
+                }
+            });
+            danmakuView.prepare(parser, danmakuContext);
+            if (danmakuView != null && danmakuView.isPrepared() && danmakuView.isPaused()) {
+                danmakuView.resume();
+            }
+        }else{
+            openBu.setVisibility(View.GONE);
+            closeBu.setVisibility(View.GONE);
+            if (danmakuView != null ) {
+                danmakuView.release();
+            }
+        }
 
         String headerPath = preferences.getString("headerPath", null);
         String sign = preferences.getString("sign", getString(R.string.my_sign));
@@ -210,8 +253,8 @@ public class Main3Activity extends BaseActivity {
             } else if (preferences.getString("imagePath", null) != null) {
                 imagePath = preferences.getString("imagePath", null);
                 // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-               // Bitmap bitmap = getBitmap(imagePath);
-                File file=new File(imagePath);
+                // Bitmap bitmap = getBitmap(imagePath);
+                File file = new File(imagePath);
                 Glide.with(this)
                         .load(file)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -227,7 +270,7 @@ public class Main3Activity extends BaseActivity {
         }
 
         if (headerPath != null) {
-            File file=new File(headerPath);
+            File file = new File(headerPath);
             Glide.with(this)
                     .load(file)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -256,16 +299,62 @@ public class Main3Activity extends BaseActivity {
 
     }
 
+    /**
+     * 向弹幕View中添加一条弹幕
+     *
+     * @param content    弹幕的具体内容
+     * @param withBorder 弹幕是否有边框
+     */
+    private void addDanmaku(String content, boolean withBorder) {
+        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+        danmaku.text = content;
+        danmaku.padding = 5;
+        danmaku.textSize = sp2px(20);
+        danmaku.textColor = Color.BLUE;
+        danmaku.setTime(danmakuView.getCurrentTime());
+        if (withBorder) {
+            danmaku.borderColor = Color.GREEN;
+        }
+        danmakuView.addDanmaku(danmaku);
+    }
+
+    /**
+     * 随机生成一些弹幕内容以供测试
+     */
+    private void generateSomeDanmaku() {
+        addDanmaku("hello1", false);
+        addDanmaku("hello2", false);
+        addDanmaku("hello3", false);
+        addDanmaku("hello4", false);
+        addDanmaku("hell5o", false);
+        addDanmaku("hello6", true);
+    }
+
+    /**
+     * sp转px的方法。
+     */
+    public int sp2px(float spValue) {
+        final float fontScale = getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
         stopTTS();
+        if (danmakuView != null && danmakuView.isPrepared()) {
+            danmakuView.pause();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         destroyTTS();
+        if (danmakuView != null) {
+            danmakuView.release();
+            danmakuView = null;
+        }
     }
 
     public void onBackPressed() {
@@ -338,19 +427,19 @@ public class Main3Activity extends BaseActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(path);
 
-       // if (bitmap != null) {
-            //int bheight = bitmap.getHeight();
-           // int bwidth = bitmap.getWidth();
-           // if (bheight > 4096 || bwidth > 4096) {
+        // if (bitmap != null) {
+        //int bheight = bitmap.getHeight();
+        // int bwidth = bitmap.getWidth();
+        // if (bheight > 4096 || bwidth > 4096) {
 
-           //     bheight = (int) (bitmap.getHeight() * 0.9);
-           //     bwidth = (int) (bitmap.getWidth() * 0.9);
-          //  }
-           // bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
-      //  } else {
-        if(bitmap==null)
+        //     bheight = (int) (bitmap.getHeight() * 0.9);
+        //     bwidth = (int) (bitmap.getWidth() * 0.9);
+        //  }
+        // bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
+        //  } else {
+        if (bitmap == null)
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);
-      //  }
+        //  }
         return bitmap;
 
     }
@@ -374,33 +463,111 @@ public class Main3Activity extends BaseActivity {
             }
         });
     }
+
     public void initTTS() {
         tts = new TextToSpeech(Main3Activity.this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                   tts.setLanguage(Locale.CHINA);
+                    tts.setLanguage(Locale.CHINA);
                 }
             }
         });
     }
-    public void stopTTS(){
-        if (tts != null&& tts.isSpeaking()) {
+
+    public void stopTTS() {
+        if (tts != null && tts.isSpeaking()) {
             tts.stop();
         }
     }
-    public void destroyTTS(){
+
+    public void destroyTTS() {
         if (tts != null) {
             tts.stop();
             tts.shutdown();
 
         }
     }
-    public static TextToSpeech getTTS(){
-        if(tts!=null){
+
+    public static TextToSpeech getTTS() {
+        if (tts != null) {
             return tts;
-        }else{
+        } else {
             return null;
         }
+    }
+
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.open_button:
+                if(operationLayout.getVisibility()==View.INVISIBLE){
+                    operationLayout.setVisibility(View.VISIBLE);
+                }else{
+                    operationLayout.setVisibility(View.INVISIBLE);
+                }
+                break;
+            case R.id.close_button:
+                if(danmakuView.isShown()){
+                    operationLayout.setVisibility(View.INVISIBLE);
+                    openBu.setVisibility(View.INVISIBLE);
+                    danmakuView.hideAndPauseDrawTask();
+                }else{
+                    openBu.setVisibility(View.VISIBLE);
+                    danmakuView.showAndResumeDrawTask(0L);
+                }
+                break;
+            case R.id.send:
+                operationLayout.setVisibility(View.INVISIBLE);
+                if(editText.getText().toString()!=null) {
+                    if(!"".equals(editText.getText().toString())) {
+                        addDanmaku(editText.getText().toString()+"(" + titleCounty.getText().toString() + ")", true);
+                    }
+                }
+                editText.setText("");
+                break;
+            case R.id.user_image:
+                Intent intent = new Intent("com.example.myweather.PERSONAL");
+                startActivity(intent);
+                drawer.closeDrawers();
+                break;
+            case R.id.menuBu:
+                drawer.openDrawer(GravityCompat.START);
+            default:
+        }
+    }
+    public void initVar(){
+
+        operationLayout = (LinearLayout) findViewById(R.id.operation_layout);
+        openBu = (Button) findViewById(R.id.open_button);
+        closeBu = (Button) findViewById(R.id.close_button);
+        sendBu = (Button) findViewById(R.id.send);
+        editText = (EditText) findViewById(R.id.edit_text);
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(37)});
+
+        danmakuView = (DanmakuView) findViewById(R.id.danmaku_view);
+        danmakuContext = new DanmakuContext().create();
+        HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<>();
+        overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
+        overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_TOP, true);
+        danmakuContext.preventOverlapping(overlappingEnablePair);
+        danmakuContext.setScrollSpeedFactor(1.1f);
+        danmakuView.setDrawingCacheEnabled(true);
+        menuBu = (Button) findViewById(R.id.menuBu);
+        titleCounty = (TextView) findViewById(R.id.titleCity);
+        countyLists = DataSupport.findAll(CountyList.class);
+        fragmentList = new ArrayList<>();
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.menuNa);
+        backIm = (ImageView) findViewById(R.id.backgroundIm);
+        preferences = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
+        calendar = Calendar.getInstance();
+        today = calendar.get(Calendar.DATE);
+        yesterday = preferences.getInt("date", 0);
+
+        headerView = navigationView.getHeaderView(0);
+        userSign = (TextView) headerView.findViewById(R.id.user_sign);
+        userName = (TextView) headerView.findViewById(R.id.user_name);
+        userImage = (ImageView) headerView.findViewById(R.id.user_image);
     }
 }

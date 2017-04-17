@@ -14,7 +14,6 @@ public class _User extends BmobUser{
     private String name;//昵称
     private String sign;//签名
     private String sex;//性别
-    //private String email;//邮箱
 
     public BmobFile getUserImage() {
         return userImage;

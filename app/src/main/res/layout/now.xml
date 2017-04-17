@@ -2,67 +2,121 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-       <!--#0063B1android:layout_margin="15dp"-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp">
-        <TextView
-            android:id="@+id/condTx"
 
-            android:textColor="@color/colorFont"
-            style="@style/now_big_text"
-            android:text="@string/unknown"/>
-        <Button
-            android:id="@+id/VoiceBu"
-            android:layout_marginLeft="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_volume"/>
+            <TextView
+                android:id="@+id/condTx"
+
+                style="@style/now_big_text"
+                android:text="@string/unknown"
+                android:textColor="@color/colorFont" />
+
+            <Button
+                android:id="@+id/VoiceBu"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/ic_volume" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/flTx"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="8dp"
             style="@style/now_small_text"
-            android:text="@string/unknown"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/unknown" />
+
         <TextView
             android:id="@+id/aqiTx"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="8dp"
             style="@style/now_small_text"
-            android:text="@string/unknown"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/unknown" />
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tmpTx"
             style="@style/now_big_text"
-            android:text="@string/unknown"/>
+            android:text="@string/unknown" />
 
         <TextView
             android:id="@+id/astroTx"
 
-            android:layout_marginTop="10dp"
             style="@style/now_small_text"
-            android:text="@string/unknown"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/unknown" />
 
         <TextView
             android:id="@+id/windTx"
 
-            android:layout_marginTop="10dp"
             style="@style/now_small_text"
-            android:text="@string/unknown"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/unknown" />
     </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/button_layout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_below="@id/right"-->
+        <!--android:layout_alignParentRight="true">-->
+
+        <!--<Button-->
+            <!--android:id="@+id/close_button"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:background="@drawable/ic_close" />-->
+
+        <!--<Button-->
+            <!--android:id="@+id/open_button"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:background="@drawable/ic_comments" />-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/operation_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_below="@id/button_layout"-->
+        <!--android:visibility="gone">-->
+
+        <!--<EditText-->
+            <!--android:id="@+id/edit_text"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@null"-->
+            <!--android:textColor="@color/colorFont"-->
+            <!--android:maxLines="3"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/send"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@null"-->
+            <!--android:text="发射!" />-->
+    <!--</LinearLayout>-->
 
 
 </RelativeLayout>

@@ -59,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             switch (view.getId()) {
                 case R.id.register_button:
                     confirmPressed();
+
                     break;
                 case R.id.backBu_register:
                     finish();
@@ -108,12 +109,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             if (cancel) {
                 focusView.requestFocus();
             } else {
+                registerBu.setClickable(false);
                 _User user=new _User();
                 user.setUsername(email);
                 String p=MyUtil.getMD5(passwordF);
                 user.setPassword(p);
                 Log.d(TAG, "confirmPressed: passwordF::"+p);
                 user.setEmail(email);
+                MyUtil.showToast("注册中...");
                 user.signUp(new SaveListener<_User>(){
                     public void done(_User u, BmobException e){
                         if(e==null){
@@ -122,6 +125,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             startActivity(intent);
                             finish();
                         }else{
+                            MyUtil.showToast("注册失败:"+e.getMessage());
+                            registerBu.setClickable(true);
                             Log.e(TAG, "done: "+e);
                         }
                     }
@@ -141,10 +146,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return Pattern.matches(pattern, password);
         }
 
-        private boolean isCodeValid(String code) {
-            String pattern = "\\d{4}";
-            return Pattern.matches(pattern, code);
-        }
         public void onBackPressed(){
             super.onBackPressed();
         }

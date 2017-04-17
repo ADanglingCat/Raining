@@ -87,9 +87,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 
         switch (view.getId()) {
             case R.id.email_sign_in_button:
-                MyUtil.showToast("登录中...");
+
                 attemptLogin();
-                mEmailSignInButton.setClickable(false);
                 break;
             case R.id.backBu_login:
                 onBackPressed();
@@ -101,6 +100,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                     intent.putExtra("email", email);
                 }
                 startActivity(intent);
+                finish();
                 break;
             case R.id.register:
                 intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -111,6 +111,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                     intent.putExtra("password", password);
                 }
                 startActivity(intent);
+                finish();
                 break;
             default:
         }
@@ -154,8 +155,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             final _User user = new _User();
             user.setUsername(email);
             user.setPassword(getMD5(password));
-
-
+            MyUtil.showToast("登录中...");
+            mEmailSignInButton.setClickable(false);
             user.login(new SaveListener<_User>() {
                 public void done(_User u, BmobException e) {
                     if (e == null) {
@@ -214,6 +215,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                             Setting setting = list.get(0);
                             editor.putBoolean("Notify", setting.getNotify())
                                     .putBoolean("autoUpdate", setting.getAutoUpdate())
+                                    .putBoolean("danmaku", setting.getDanmaku())
                                     .putBoolean("updateMode", setting.getUpdateMode())
                                     .putBoolean("nightUpdate", setting.getNightUpdate())
                                     .putBoolean("diy", setting.getDiy())

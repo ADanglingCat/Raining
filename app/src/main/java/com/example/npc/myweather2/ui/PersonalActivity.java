@@ -3,8 +3,6 @@ package com.example.npc.myweather2.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -14,12 +12,15 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.model.Setting;
 import com.example.npc.myweather2.model._User;
 import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
+import java.io.File;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -84,8 +85,13 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
 
         String headerPath = preferences.getString("headerPath", null);
         if (headerPath != null) {
-            Bitmap bitmap = getBitmap(headerPath);
-            pImage.setImageBitmap(bitmap);
+           // Bitmap bitmap = getBitmap(headerPath);
+           // pImage.setImageBitmap(bitmap);
+            File file=new File(headerPath);
+            Glide.with(this)
+                    .load(file)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(pImage);
         } else {
             pImage.setImageResource(R.drawable.ic_userimage);
         }
@@ -93,15 +99,23 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         String sign = preferences.getString("sign", (String) BmobUser.getObjectByKey("sign"));
         String email = (String) BmobUser.getObjectByKey("email");
         sex = preferences.getString("sex", (String) BmobUser.getObjectByKey("sex"));
-        pName.setText(name);
-        if (sign.length() > 14) {
-            sign = sign.substring(0, 14) + "...";
+        if(name!=null){
+            pName.setText(name);
         }
-        pSign.setText(sign);
+        if(sign!=null){
+            if (sign.length() > 14) {
+                sign = sign.substring(0, 14) + "...";
+            }
+            pSign.setText(sign);
+        }
+        if(sex!=null){
+            pSex.setText(sex);
+        }
+
         if (email != null) {
             pEmail.setText(email);
         }
-        pSex.setText(sex);
+
     }
 
     public void initVar() {
@@ -133,7 +147,8 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.sync_layout:
-                MyUtil.showToast("同步中");
+                MyUtil.showToast("同步中...");
+                syncLayout.setClickable(false);
                 syncSetting();
                 break;
             case R.id.backBu_personal:
@@ -223,96 +238,102 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         finish();
     }
 
-    //图片处理
-    public Bitmap getBitmap(String path) {
-
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
-
-        if (bitmap != null) {
-            int bheight = bitmap.getHeight();
-            int bwidth = bitmap.getWidth();
-            if (bheight > 4096 || bwidth > 4096) {
-
-                bheight = (int) (bitmap.getHeight() * 0.9);
-                bwidth = (int) (bitmap.getWidth() * 0.9);
-            }
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
-        } else {
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);
-        }
-        return bitmap;
-
-    }
+//    //图片处理
+//    public Bitmap getBitmap(String path) {
+//
+//        Bitmap bitmap = BitmapFactory.decodeFile(path);
+//
+//       // if (bitmap != null) {
+//         //   int bheight = bitmap.getHeight();
+//         //   int bwidth = bitmap.getWidth();
+//         //   if (bheight > 4096 || bwidth > 4096) {
+//
+//        //        bheight = (int) (bitmap.getHeight() * 0.9);
+//        //        bwidth = (int) (bitmap.getWidth() * 0.9);
+//        //    }
+//        //    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
+//      //  } else {
+//        if(bitmap==null)
+//            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);
+//       // }
+//        return bitmap;
+//
+//    }
     public void syncSetting(){
-        syncLayout.setClickable(false);
-        _User user=BmobUser.getCurrentUser(_User.class);
-        if(user!=null&&user.getEmailVerified()){
-            final Setting setting=new Setting();
+           _User user=BmobUser.getCurrentUser(_User.class);
+        if(user!=null){
+            if(user.getEmailVerified()==null){
+                user.setEmailVerified(true);
+            }
+            if(user.getEmailVerified()){
+                final Setting setting=new Setting();
+                setting.setNotify(preferences.getBoolean("Notify",false))
+                        .setDanmaku(preferences.getBoolean("danmaku",false))
+                        .setNotifyTime(preferences.getLong("notifyTime",0))
+                        .setAutoUpdate(preferences.getBoolean("autoUpdate",false))
+                        .setUpdateMode(preferences.getBoolean("updateMode",true))
+                        .setUpdateFre(preferences.getString("updateFre","3"))
+                        .setNightUpdate(preferences.getBoolean("nightUpdate",false))
+                        .setDiy(preferences.getBoolean("diy",false))
+                        .setAutoBing(preferences.getBoolean("autoBing",false))
+                        .setAlpha(preferences.getString("alpha","200"))
+                        .setSave(preferences.getBoolean("save",false))
+                        .setUser(user);
+                BmobQuery<Setting> query=new BmobQuery<>();
+                query.addWhereEqualTo("user",user);
+                query.findObjects(new FindListener<Setting>() {
+                    @Override
+                    public void done(List<Setting> list, BmobException e) {
+                        if(e==null){
+                            if(list.size()>0){
+                                setting.update(list.get(0).getObjectId(), new UpdateListener() {
+                                    @Override
+                                    public void done(BmobException e) {
+                                        if(e==null){
+                                            MyUtil.showToast("设置上传完成");
+                                        }else{
+                                            MyUtil.showToast("设置上传失败:"+e.getMessage());
+                                            syncLayout.setClickable(true);
 
-            setting.setNotify(preferences.getBoolean("Notify",false))
-                    .setNotifyTime(preferences.getLong("notifyTime",0))
-                    .setAutoUpdate(preferences.getBoolean("autoUpdate",false))
-                    .setUpdateMode(preferences.getBoolean("updateMode",true))
-                    .setUpdateFre(preferences.getString("updateFre","3"))
-                    .setNightUpdate(preferences.getBoolean("nightUpdate",false))
-                    .setDiy(preferences.getBoolean("diy",false))
-                    .setAutoBing(preferences.getBoolean("autoBing",false))
-                    .setAlpha(preferences.getString("alpha","200"))
-                    .setSave(preferences.getBoolean("save",false))
-                    .setUser(user);
-            BmobQuery<Setting> query=new BmobQuery<>();
-            query.addWhereEqualTo("user",user);
-            query.findObjects(new FindListener<Setting>() {
-                @Override
-                public void done(List<Setting> list, BmobException e) {
-                   if(e==null){
-                       if(list.size()>0){
-                           setting.update(list.get(0).getObjectId(), new UpdateListener() {
-                               @Override
-                               public void done(BmobException e) {
-                                   if(e==null){
-                                       MyUtil.showToast("设置上传完成");
-                                   }else{
-                                       MyUtil.showToast("设置上传失败:"+e.getMessage());
-                                       syncLayout.setClickable(true);
+                                        }
+                                    }
+                                });
+                            }else{
+                                setting.save(new SaveListener<String>() {
+                                    @Override
+                                    public void done(String s, BmobException e) {
+                                        if(e==null){
+                                            MyUtil.showToast("设置上传完成");
+                                        }else{
+                                            MyUtil.showToast("设置上传失败:"+e.getMessage());
+                                        }
+                                    }
+                                });
 
-                                   }
-                               }
-                           });
-                       }else{
-                           setting.save(new SaveListener<String>() {
-                               @Override
-                               public void done(String s, BmobException e) {
-                                   if(e==null){
-                                       MyUtil.showToast("设置上传完成");
-                                   }else{
-                                       MyUtil.showToast("设置上传失败:"+e.getMessage());
-                                   }
-                               }
-                           });
-
-                      }
-                   }else{
-                        MyUtil.showToast("设置上传失败:"+e.getMessage());
-                       Log.e(TAG, "done: "+e );
-                        return;
+                            }
+                        }else{
+                            MyUtil.showToast("设置上传失败:"+e.getMessage());
+                            Log.e(TAG, "done: "+e );
+                            return;
+                        }
                     }
-                }
-            });
-
+                });
+            }else{
+                MyUtil.showToast("请先验证邮箱");
+                BmobUser.requestEmailVerify(String.valueOf(email), new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        if(e==null){
+                            MyUtil.showToast("请求验证邮件成功，请到" + email + "邮箱中进行激活。");
+                        }else{
+                            MyUtil.showToast("失败:" + e.getMessage());
+                        }
+                    }
+                });
+            }
         }else{
-            MyUtil.showToast("请先验证邮箱");
-            BmobUser.requestEmailVerify(String.valueOf(email), new UpdateListener() {
-                @Override
-                public void done(BmobException e) {
-                    if(e==null){
-                        MyUtil.showToast("请求验证邮件成功，请到" + email + "邮箱中进行激活。");
-                    }else{
-                        MyUtil.showToast("失败:" + e.getMessage());
-                    }
-                }
-            });
+            MyUtil.showToast("出现错误,请重新登录");
         }
-
+        syncLayout.setClickable(true);
     }
 }
