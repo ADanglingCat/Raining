@@ -152,7 +152,7 @@ public class PagerFragment extends Fragment{
             @Override
             public void onRefresh() {
                 requestWeather(weatherId);
-
+               MyUtil.getDanMaku();
             }
         });
 //语音播报按钮点击事件

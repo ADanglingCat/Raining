@@ -80,16 +80,20 @@
         <item>女的♀</item>
         <item>保密ி</item>
     </string-array>
-    <string-array name="list_preference_sex_titles">
-        <item>男</item>
-        <item>女</item>
-        <item>保密</item>
+    <string-array name="personal_danmu_list">
+        <item>@string/summary_on</item>
+        <item>@string/summary_off</item>
     </string-array>
-    <string-array name="list_preference_sex_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
+    <!--<string-array name="list_preference_sex_titles">-->
+        <!--<item>男</item>-->
+        <!--<item>女</item>-->
+        <!--<item>保密</item>-->
+    <!--</string-array>-->
+    <!--<string-array name="list_preference_sex_values">-->
+        <!--<item>0</item>-->
+        <!--<item>1</item>-->
+        <!--<item>2</item>-->
+    <!--</string-array>-->
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->

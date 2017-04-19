@@ -7,7 +7,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="1537917b9882e2a63e47aec9e66070db371c0cec">
+        sha1="55bab2053911be3f6796408ce6b9ec76d1b039ad">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_0e19a9ebdda9267f59c0c22e842acfe474f4c918\classes.dex" />
     </item>
     <item
@@ -63,6 +63,15 @@
         revision="25.0.0"
         sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
         <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\pre-dexed\debug\classes_3873cfe27f794f376927ca55d97cdf3e722b19e1.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Android\.android\build-cache\e5189ff28d31270feea80259d6314823d56035f3\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="dc8c263c95aa04c99df488e3c8ee55cc0206fa63">
+        <dex dex="D:\AndroidProject\MyWeather2\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_00883ea2fbb228b1bfdbacc7f87a7c266fff6d3c\classes.dex" />
     </item>
     <item
         is-multidex="false"

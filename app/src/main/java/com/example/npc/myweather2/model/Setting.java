@@ -18,16 +18,6 @@ public class Setting extends BmobObject {
     private Boolean autoBing;
     private String alpha;
     private Boolean save;
-    private Boolean danmaku;
-
-    public Boolean getDanmaku() {
-        return danmaku;
-    }
-
-    public Setting setDanmaku(Boolean danmaku) {
-        this.danmaku = danmaku;
-        return this;
-    }
 
     public _User getUser() {
         return user;

@@ -40,6 +40,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout nameLayout;
     private RelativeLayout signLayout;
     private RelativeLayout sexLayout;
+    private RelativeLayout danmuLayout;
     private RelativeLayout emailLayout;
     private RelativeLayout syncLayout;
     private CircleImageView pImage;
@@ -47,10 +48,12 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     private TextView pSign;
     private TextView pEmail;
     private TextView pSex;
+    private TextView pDanmu;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private static final String TAG = "TAGPersonalActivity";
     private String sex;
+    private boolean danmu;
     private boolean isChanged;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         nameLayout.setOnClickListener(this);
         signLayout.setOnClickListener(this);
         sexLayout.setOnClickListener(this);
+       danmuLayout.setOnClickListener(this);
         emailLayout.setOnClickListener(this);
         syncLayout.setOnClickListener(this);
         Intent intent = getIntent();
@@ -99,6 +103,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         String sign = preferences.getString("sign", (String) BmobUser.getObjectByKey("sign"));
         String email = (String) BmobUser.getObjectByKey("email");
         sex = preferences.getString("sex", (String) BmobUser.getObjectByKey("sex"));
+        danmu = preferences.getBoolean("danmu",false);
         if(name!=null){
             pName.setText(name);
         }
@@ -111,7 +116,12 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         if(sex!=null){
             pSex.setText(sex);
         }
+        if(danmu){
+            pDanmu.setText(getString(R.string.summary_on));
+        }else{
+            pDanmu.setText(getString(R.string.summary_off));
 
+        }
         if (email != null) {
             pEmail.setText(email);
         }
@@ -129,6 +139,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         nameLayout = (RelativeLayout) findViewById(R.id.name_layout);
         signLayout = (RelativeLayout) findViewById(R.id.sign_layout);
         sexLayout = (RelativeLayout) findViewById(R.id.sex_layout);
+        danmuLayout = (RelativeLayout) findViewById(R.id.danmu_layout);
         emailLayout = (RelativeLayout) findViewById(R.id.email_layout);
         syncLayout = (RelativeLayout) findViewById(R.id.sync_layout);
         pImage = (CircleImageView) findViewById(R.id.p_image);
@@ -136,6 +147,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         pSign = (TextView) findViewById(R.id.p_sign);
         pEmail = (TextView) findViewById(R.id.p_email);
         pSex = (TextView) findViewById(R.id.p_sex);
+        pDanmu = (TextView) findViewById(R.id.p_danmu);
     }
 
     @Override
@@ -160,6 +172,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 editor.remove("name");
                 editor.remove("sign");
                 editor.remove("sex");
+                editor.remove("danmu");
                 editor.apply();
                 BmobUser.logOut();
                 finish();
@@ -190,7 +203,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                         break;
                                     case 1:
                                         pSex.setText("女");
-
                                         break;
                                     case 2:
                                         pSex.setText("保密");
@@ -201,6 +213,29 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                             }
                         });
                 builder.create().show();
+                break;
+            case R.id.danmu_layout:
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(PersonalActivity.this)
+                        .setItems(R.array.personal_danmu_list, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        pDanmu.setText(getString(R.string.summary_on));
+                                        danmu=true;
+                                        break;
+                                    case 1:
+                                        pDanmu.setText(getString(R.string.summary_off));
+                                        danmu=false;
+                                        break;
+                                    default:
+                                        pDanmu.setText(getString(R.string.summary_off));
+                                        danmu=false;
+                                        break;
+                                }
+                            }
+                        });
+                builder1.create().show();
 
                 break;
         }
@@ -233,6 +268,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 }
             });
         }
+        editor.putBoolean("danmu",danmu);
         editor.apply();
         super.onBackPressed();
         finish();
@@ -268,7 +304,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
             if(user.getEmailVerified()){
                 final Setting setting=new Setting();
                 setting.setNotify(preferences.getBoolean("Notify",false))
-                        .setDanmaku(preferences.getBoolean("danmaku",false))
                         .setNotifyTime(preferences.getLong("notifyTime",0))
                         .setAutoUpdate(preferences.getBoolean("autoUpdate",false))
                         .setUpdateMode(preferences.getBoolean("updateMode",true))
@@ -293,7 +328,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                             MyUtil.showToast("设置上传完成");
                                         }else{
                                             MyUtil.showToast("设置上传失败:"+e.getMessage());
-                                            syncLayout.setClickable(true);
+
 
                                         }
                                     }
@@ -306,6 +341,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                                             MyUtil.showToast("设置上传完成");
                                         }else{
                                             MyUtil.showToast("设置上传失败:"+e.getMessage());
+
                                         }
                                     }
                                 });
@@ -313,7 +349,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                             }
                         }else{
                             MyUtil.showToast("设置上传失败:"+e.getMessage());
-                            Log.e(TAG, "done: "+e );
+                            Log.e(TAG, "done: "+e.getMessage() );
                             return;
                         }
                     }

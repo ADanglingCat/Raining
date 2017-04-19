@@ -85,11 +85,11 @@
             android:key="save"
             android:summaryOn="@string/summary_on"
             android:summaryOff="@string/summary_off" />
-        <SwitchPreference
-            android:defaultValue="false"
-            android:title="弹幕"
-            android:key="danmaku"
-            android:summaryOn="@string/summary_on"
-            android:summaryOff="@string/summary_off" />
+        <!--<SwitchPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:title="弹幕"-->
+            <!--android:key="danmaku"-->
+            <!--android:summaryOn="@string/summary_on"-->
+            <!--android:summaryOff="@string/summary_off" />-->
     </PreferenceCategory>
 </PreferenceScreen>

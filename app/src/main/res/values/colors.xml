@@ -14,4 +14,7 @@
     <color name="colorImage">#5F80B5</color>
     <color name="colorHeaderBackground">#0B2442</color>
     <color name="colorLink">#0059D0</color>
+    <color name="girlColor">#FA58F4</color>
+    <color name="boyColor">#2E9AFE</color>
+
 </resources>

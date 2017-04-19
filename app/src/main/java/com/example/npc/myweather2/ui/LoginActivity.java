@@ -215,7 +215,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                             Setting setting = list.get(0);
                             editor.putBoolean("Notify", setting.getNotify())
                                     .putBoolean("autoUpdate", setting.getAutoUpdate())
-                                    .putBoolean("danmaku", setting.getDanmaku())
                                     .putBoolean("updateMode", setting.getUpdateMode())
                                     .putBoolean("nightUpdate", setting.getNightUpdate())
                                     .putBoolean("diy", setting.getDiy())

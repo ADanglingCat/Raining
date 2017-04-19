@@ -1,10 +1,11 @@
 <litepal>
     <dbname value="myWeather"/>
-    <version value="3"/>
+    <version value="6"/>
     <list>
         <mapping class="com.example.npc.myweather2.model.Province"/>
         <mapping class="com.example.npc.myweather2.model.City"/>
         <mapping class="com.example.npc.myweather2.model.County"/>
         <mapping class="com.example.npc.myweather2.model.CountyList"/>
+        <mapping class="com.example.npc.myweather2.model.MyDanmaku"/>
     </list>
 </litepal>

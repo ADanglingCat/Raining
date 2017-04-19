@@ -99,6 +99,26 @@
     </RelativeLayout>
 
     <View style="@style/line" />
+    <RelativeLayout
+        android:id="@+id/danmu_layout"
+        style="@style/personal_layout">
+
+        <TextView
+            style="@style/personal_title"
+            android:text="弹幕" />
+
+        <ImageView
+            android:id="@+id/go_danmu"
+            style="@style/personal_go" />
+
+        <TextView
+            android:id="@+id/p_danmu"
+            style="@style/personal_value"
+            android:layout_toLeftOf="@id/go_danmu"
+            android:text="@string/summary_off" />
+    </RelativeLayout>
+
+    <View style="@style/line" />
 
     <RelativeLayout
         android:id="@+id/email_layout"
