@@ -2,7 +2,6 @@ package com.example.npc.myweather2.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.EditText;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.model._User;
+import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
 import java.util.regex.Pattern;
@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseActivity implements View.OnClickListener{
         private EditText emailEd;
         private String email;
         private String passwordF;

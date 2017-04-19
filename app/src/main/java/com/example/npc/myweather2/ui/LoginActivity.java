@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.model.Setting;
 import com.example.npc.myweather2.model._User;
+import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 
 import java.util.List;
@@ -37,7 +37,7 @@ import static com.example.npc.myweather2.util.MyUtil.getMD5;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements OnClickListener {
+public class LoginActivity extends BaseActivity implements OnClickListener {
 
     // UI references.
     private AutoCompleteTextView mEmailView;

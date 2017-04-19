@@ -198,7 +198,6 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
 
     public void onResume() {
         super.onResume();
-
         user = BmobUser.getCurrentUser(_User.class);
         if (user == null) {
             user = new _User();
@@ -210,7 +209,9 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
         } else {
             sex = false;
         }
+
         if (flag) {
+
             openBu.setVisibility(View.VISIBLE);
 
             if (danmakuView != null && danmakuView.isPrepared() && danmakuView.isPaused()) {
@@ -328,8 +329,6 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
 //                }
 //            });
 
-        } else {
-            MyUtil.showToast("发射失败...");
         }
 
     }
@@ -638,30 +637,34 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                 .setScrollSpeedFactor(1.1f)
                 .setMaximumLines(maxLinesPair)
                 .setDuplicateMergingEnabled(true);
-        danmakuView.setDrawingCacheEnabled(true);
-        danmakuView.setCallback(new DrawHandler.Callback() {
-            @Override
-            public void prepared() {
-                danmakuView.start();
-                generateSomeDanmaku();
-            }
+        try {
+            danmakuView.setDrawingCacheEnabled(true);
+            danmakuView.setCallback(new DrawHandler.Callback() {
+                @Override
+                public void prepared() {
+                    danmakuView.start();
+                    generateSomeDanmaku();
+                }
 
-            @Override
-            public void updateTimer(DanmakuTimer timer) {
+                @Override
+                public void updateTimer(DanmakuTimer timer) {
 
-            }
+                }
 
-            @Override
-            public void danmakuShown(BaseDanmaku danmaku) {
+                @Override
+                public void danmakuShown(BaseDanmaku danmaku) {
 
-            }
+                }
 
-            @Override
-            public void drawingFinished() {
-                danmakuView.seekTo(0L);
-            }
-        });
-        danmakuView.prepare(parser, danmakuContext);
+                @Override
+                public void drawingFinished() {
+                    danmakuView.seekTo(0L);
+                }
+            });
+            danmakuView.prepare(parser, danmakuContext);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public BaseDanmaku createDanmaku() {
