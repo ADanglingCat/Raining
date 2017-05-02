@@ -44,15 +44,21 @@ import org.litepal.crud.DataSupport;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
@@ -66,10 +72,10 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static com.example.npc.myweather2.util.MyUtil.getDanMaku;
 import static org.litepal.crud.DataSupport.findAll;
 
 public class Main3Activity extends BaseActivity implements View.OnClickListener {
+    private String name;
     private boolean flag;//弹幕开关
     private boolean sex;
     private SharedPreferences.Editor editor;
@@ -199,6 +205,8 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
     public void onResume() {
         super.onResume();
         user = BmobUser.getCurrentUser(_User.class);
+        name = preferences.getString("name", getString(R.string.my_name));
+
         if (user == null) {
             user = new _User();
             user.setName(getString(R.string.my_name)).setSex("女");
@@ -220,13 +228,13 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
             }
         } else {
             openBu.setVisibility(View.GONE);
-            danmakuView.pause();
             danmakuView.hide();
+            danmakuView.pause();
+
         }
 
         String headerPath = preferences.getString("headerPath", null);
         String sign = preferences.getString("sign", getString(R.string.my_sign));
-        String name = preferences.getString("name", getString(R.string.my_name));
 
         int mainPosition = getMainPosition();
         titleCounty.setText(countyLists.get(mainPosition).getCountyName());
@@ -314,7 +322,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
             }
             danmaku.text = content;
             if (color) {
-                danmaku.textColor = Color.BLACK;
+                danmaku.textColor = Color.CYAN;
             } else {
                 danmaku.textColor = Color.MAGENTA;
             }
@@ -338,7 +346,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
         getDanMaku();
         danMuList = DataSupport.findAll(MyDanmaku.class);
         if (danMuList.size() > 0) {
-            Log.d(TAG, "generateSomeDanmaku: "+danMuList.size());
+            Log.d(TAG, "generateSomeDanmaku: " + danMuList.size());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -349,32 +357,17 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
 //                        if (i == new Random().nextInt(6)) {
 //                            Log.d(TAG, "run: i"+i);
 //                            i = 0;
-                            try {
-                                Thread.sleep(new Random().nextInt(2*1000));
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                        try {
+                            Thread.sleep(new Random().nextInt(2 * 1000));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         //}
 
                     }
                 }
             }).start();
         }
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while(true) {
-//                    int time = new Random().nextInt(300);
-//                    String content = "" + time + time;
-//                    addDanmaku(content, false,false);
-//                    try {
-//                        Thread.sleep(time);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }).start();
     }
 
     /**
@@ -390,6 +383,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
         super.onPause();
         stopTTS();
         if (danmakuView != null && danmakuView.isPrepared()) {
+            danmakuView.hide();
             danmakuView.pause();
         }
     }
@@ -561,7 +555,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                 operationLayout.setVisibility(View.GONE);
                 if (editText.getText().toString() != null) {
                     if (!"".equals(editText.getText().toString())) {
-                        String content = user.getName() + "(" + titleCounty.getText().toString() + ")" + ":" + editText.getText().toString();
+                        String content = name + "(" + titleCounty.getText().toString() + ")" + ":" + editText.getText().toString();
                         addDanmaku(content, true, sex);
                         DanMu danmu = new DanMu(content, user, sex);
                         danmu.save(new SaveListener<String>() {
@@ -591,11 +585,6 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
 
     public void initVar() {
 
-//        user= BmobUser.getCurrentUser(_User.class);
-//        if(user==null){
-//            user=new _User();
-//            user.setName(getString(R.string.my_name)).setSex("女");
-//        }
         operationLayout = (LinearLayout) findViewById(R.id.operation_layout);
         openBu = (Button) findViewById(R.id.open_button);
         sendBu = (Button) findViewById(R.id.send);
@@ -614,7 +603,6 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
         backIm = (ImageView) findViewById(R.id.backgroundIm);
         preferences = PreferenceManager.getDefaultSharedPreferences(Main3Activity.this);
         editor = preferences.edit();
-
         calendar = Calendar.getInstance();
         today = calendar.get(Calendar.DATE);
         yesterday = preferences.getInt("date", 0);
@@ -684,5 +672,38 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
         return null;
     }
 
+    public void getDanMaku(){
 
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        calendar.set(Calendar.HOUR_OF_DAY, 1);
+        Date date = calendar.getTime();
+        try {
+            date = sdf.parse(sdf.format(date));
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
+
+        BmobQuery<DanMu> query = new BmobQuery<>();
+        query.addWhereGreaterThanOrEqualTo("createdAt", new BmobDate(date))
+                .order("createAt")
+                .addQueryKeys("user,content,isMine,color");
+        query.findObjects(new FindListener<DanMu>() {
+            @Override
+            public void done(List<DanMu> list, BmobException e) {
+                if (e == null) {
+                    DataSupport.deleteAll(MyDanmaku.class);
+                    if (list.size() > 0) {
+                        for (DanMu danMu : list) {
+                            MyDanmaku myDanmaku = new MyDanmaku(danMu);
+                            myDanmaku.save();
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "done: " + e.getMessage());
+                }
+
+            }
+        });
+    }
 }

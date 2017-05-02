@@ -246,6 +246,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         if (!content.equals(sex)) {
             isChanged = true;
             editor.putString("sex", content);
+            editor.apply();
         } else {
             isChanged = preferences.getBoolean("isChanged", false);
         }
@@ -259,9 +260,11 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 public void done(BmobException e) {
                     if (e == null) {
                         editor.putBoolean("isChanged", false);
+                        editor.apply();
                         MyUtil.showToast("资料已同步");
                     } else {
                         editor.putBoolean("isChanged",true);
+                        editor.apply();
                         MyUtil.showToast("资料同步失败");
                         Log.e(TAG, "done: " + e);
                     }

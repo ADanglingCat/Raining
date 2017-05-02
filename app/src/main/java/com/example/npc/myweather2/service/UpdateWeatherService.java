@@ -12,8 +12,6 @@ import android.preference.PreferenceManager;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.gson.Weather;
 import com.example.npc.myweather2.model.CountyList;
-import com.example.npc.myweather2.model.DanMu;
-import com.example.npc.myweather2.model.MyDanmaku;
 import com.example.npc.myweather2.util.MyUtil;
 
 import org.litepal.crud.DataSupport;
@@ -22,9 +20,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -64,13 +59,17 @@ public class UpdateWeatherService extends Service {
 
             }
             //定时更新天气
-            String updateFre=preferences.getString("updateFre","3");
+          boolean autoUpdate=preferences.getBoolean("autoUpdate",false);
             AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
-            long triggerAtTime= SystemClock.elapsedRealtime()+Integer.parseInt(updateFre)*60*60*1000;
             Intent intent1=new Intent(this,UpdateWeatherService.class);
             PendingIntent pi=PendingIntent.getService(UpdateWeatherService.this,0,intent1,0);
-            alarmManager.cancel(pi);
-            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pi);
+            if(autoUpdate){
+                String updateFre=preferences.getString("updateFre","3");
+                long triggerAtTime= SystemClock.elapsedRealtime()+Integer.parseInt(updateFre)*60*60*1000;
+                alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pi);
+            }else{
+                alarmManager.cancel(pi);
+            }
 
         }
 

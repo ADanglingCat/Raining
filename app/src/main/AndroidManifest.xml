@@ -36,15 +36,6 @@
 
     <!-- 更改设置 -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
-    <!-- 3.2.0版本增加 -->
-    <!-- <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" /> -->
-    <!-- 3.2.0版本增加 -->
-    <!-- <uses-permission android:name="android.permission.BLUETOOTH" /> -->
     <application
         android:name=".util.MyApplication"
         android:allowBackup="true"

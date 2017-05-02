@@ -1,8 +1,6 @@
 package com.example.npc.myweather2.util;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -133,25 +131,6 @@ public class MyUtil {
         }
         return null;
     }
-    public static boolean handleCountyResponse(String response){
-        if(!TextUtils.isEmpty(response)){
-            try{
-                JSONArray provinces=new JSONArray(response);
-                for(int i=0;i<provinces.length();i++){
-                    JSONObject provinceObject=provinces.getJSONObject(i);
-                    Province province=new Province();
-                    province.setProvinceName(provinceObject.getString("name"));
-                    province.setProvinceCode(provinceObject.getInt("id"));
-                    province.save();
-                }
-                return true;
-            }catch (JSONException e){
-                e.printStackTrace();
-            }
-
-        }
-        return false;
-    }
     public static String myMD5(String mess) {
         MessageDigest md5;
         try {
@@ -183,48 +162,16 @@ public class MyUtil {
             return result;
         }
     }
-    //获取连接网络类型
-    public boolean getNetworkType(){
-        ConnectivityManager manager=(ConnectivityManager)MyApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info=manager.getActiveNetworkInfo();
-        if(info!=null){
-            if(info.getType()==ConnectivityManager.TYPE_WIFI){
-                return true;
-            }
-        }
-        return false;
-    }
-    public static void getDanMaku() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        calendar.set(Calendar.HOUR_OF_DAY, 1);
-        Date date = calendar.getTime();
-        try {
-            date = sdf.parse(sdf.format(date));
-        } catch (ParseException pe) {
-            pe.printStackTrace();
-        }
+//    //获取连接网络类型
+//    public boolean getNetworkType(){
+//        ConnectivityManager manager=(ConnectivityManager)MyApplication.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo info=manager.getActiveNetworkInfo();
+//        if(info!=null){
+//            if(info.getType()==ConnectivityManager.TYPE_WIFI){
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
-        BmobQuery<DanMu> query = new BmobQuery<>();
-        query.addWhereGreaterThanOrEqualTo("createdAt", new BmobDate(date))
-                .order("createAt")
-                .addQueryKeys("user,content,isMine,color");
-        query.findObjects(new FindListener<DanMu>() {
-            @Override
-            public void done(List<DanMu> list, BmobException e) {
-                if (e == null) {
-                    DataSupport.deleteAll(MyDanmaku.class);
-                    if (list.size() > 0) {
-                        for (DanMu danMu : list) {
-                            MyDanmaku myDanmaku = new MyDanmaku(danMu);
-                            myDanmaku.save();
-                        }
-                    }
-                } else {
-                    Log.d(TAG, "done: " + e.getMessage());
-                }
-
-            }
-        });
-    }
 }

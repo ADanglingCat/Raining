@@ -122,6 +122,7 @@ public class AreaChooseActivity extends BaseActivity {
                 } else if (selectedLevel == LEVEL_COUNTY) {
                     selectedCounty = countyList.get(position);
                     saveCounty(selectedCounty.getWeatherId(), selectedCounty.getCountyName());
+
                     goToAreaManager();
                 }
             }
@@ -176,6 +177,9 @@ public class AreaChooseActivity extends BaseActivity {
         List<CountyList> countyLists = DataSupport.where("weatherId=?", weatherId).find(CountyList.class);
         if (countyLists.size() <= 0) {
             CountyList countyList = new CountyList(weatherId, countyName);
+            if(isFirst){
+                countyList.setMainCity(true);
+            }
             countyList.save();
         }
     }
@@ -428,7 +432,6 @@ public class AreaChooseActivity extends BaseActivity {
         } else if (selectedLevel == LEVEL_CITY) {
             queryProvinces();
         } else {
-
             Intent intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
             startActivity(intent);
             finish();
@@ -440,7 +443,7 @@ public class AreaChooseActivity extends BaseActivity {
     public void goToAreaManager() {
         Intent intent;
         intent = new Intent(AreaChooseActivity.this, AreaManagerActivity.class);
-        intent.putExtra("isFirst", isFirst);
+       // intent.putExtra("isFirst", isFirst);
         startActivity(intent);
         finish();
     }

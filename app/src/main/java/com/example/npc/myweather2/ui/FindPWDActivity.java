@@ -81,7 +81,7 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
                 public void done(BmobException e) {
                     if(e==null){
                         MyUtil.showToast("请到邮箱进行密码重置操作");
-                        Intent intent = new Intent(FindPWDActivity.this, PersonalActivity.class);
+                        Intent intent = new Intent(FindPWDActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }else{

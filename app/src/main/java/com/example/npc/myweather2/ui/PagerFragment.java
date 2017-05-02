@@ -152,7 +152,7 @@ public class PagerFragment extends Fragment{
             @Override
             public void onRefresh() {
                 requestWeather(weatherId);
-               MyUtil.getDanMaku();
+                //Main3Activity.getDanMaku();
             }
         });
 //语音播报按钮点击事件
@@ -324,9 +324,6 @@ public class PagerFragment extends Fragment{
                             break;
                         case 2:
                             dateText.setText("明天");
-                            break;
-                        case 4:
-                            dateText.setText("昨天");
                             break;
                         default:
                             dateText.setText(forecast.date.substring(5));

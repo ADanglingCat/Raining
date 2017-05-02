@@ -121,6 +121,7 @@
     <string name="suggestion">生活建议</string>
     <string name="weatherAddress">https://free-api.heweather.com/v5/weather?city=</string>
     <string name="weatherKey">key=d1169cf0b6fa4bc9a43253890b582a5b</string>
+    <!--<string name="weatherKey">key=bc0418b57b2d4918819d3974ac1285d9</string>-->
     <string name="areaAddress">http://guolin.tech/api/china/</string>
     <string name="countyAddress">https://api.heweather.com/v5/search?city=</string>
     <string name="bingPicture">http://guolin.tech/api/bing_pic</string>

@@ -11,6 +11,10 @@
             style="@style/title"
             android:text="关于我们" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/colorLine"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,7 +47,7 @@
             android:layout_gravity="center_horizontal"
             android:textSize="12sp"
             android:layout_marginTop="12dp"
-            android:text="当前版本:1.0.0"/>
+            android:text="当前版本:1.0"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

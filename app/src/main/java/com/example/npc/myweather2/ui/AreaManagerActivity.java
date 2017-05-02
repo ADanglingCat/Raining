@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -26,8 +25,8 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
     private ListView listView;
     private FloatingActionButton addCityBu;
     private List<CountyList> countyCollect;
-    private Intent intent;
-    private boolean flag;
+    //private Intent intent;
+   // private boolean flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +36,8 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
         backBu.setOnClickListener(this);
         addCityBu.setOnClickListener(this);
         countyCollect = DataSupport.findAll(CountyList.class);
-        intent = getIntent();
-        flag = intent.getBooleanExtra("isFirst", false);
+        //intent = getIntent();
+        //flag = intent.getBooleanExtra("isFirst", false);
         final AreaManageAdapter adapter = new AreaManageAdapter(this, R.layout.area_manager_item, countyCollect);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -63,12 +62,11 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
                                         countyList1.updateAll();
                                         countyList.setMainCity(true);
                                         countyList.save();
-                                        Log.d("TAG", "default: " + countyList.getWeatherId());
                                         break;
                                     case 2:
-                                        if (countyList.isMainCity()) {
-                                            flag = true;
-                                        }
+//                                        if (countyList.isMainCity()) {
+//                                            flag = true;
+//                                        }
                                         countyList.delete();
 
                                         countyCollect.remove(position);
@@ -112,15 +110,16 @@ public class AreaManagerActivity extends BaseActivity implements View.OnClickLis
     public void onBackPressed() {
         Intent intent1;
         countyCollect = DataSupport.findAll(CountyList.class);
-        //Log.d("TAG", "onBackPressed: "+flag);
-        if (countyCollect.size() <= 0) {
-            ActivityCollector.removeAll();
-        } else if (flag) {
+//        if (countyCollect.size() <= 0) {
+//            intent1 = new Intent(AreaManagerActivity.this, AreaChooseActivity.class);
+//            startActivity(intent1);
+//        } else {
+        if (countyCollect.size() > 0) {
             intent1 = new Intent(AreaManagerActivity.this, Main3Activity.class);
             startActivity(intent1);
-        } else {
-            super.onBackPressed();
+            finish();
         }
+        ActivityCollector.removeAll();
         finish();
     }
 }

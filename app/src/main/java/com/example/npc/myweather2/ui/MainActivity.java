@@ -31,22 +31,22 @@ public class MainActivity extends BaseActivity {
         List<CountyList> countyLists = DataSupport.findAll(CountyList.class);
         Intent intent;
         if (countyLists.size() > 0) {
-            boolean flag = true;
-            String weatherId = "";
-            for (CountyList countyList : countyLists) {
-                if (countyList.isMainCity()) {
-                    flag = false;
-                    weatherId = countyList.getWeatherId();
-                    break;
-                }
-            }
-            if (flag) {
-                countyLists.get(0).setMainCity(true);
-                countyLists.get(0).save();
-                weatherId = countyLists.get(0).getWeatherId();
-            }
+//            boolean flag = true;
+//            String weatherId = "";
+//            for (CountyList countyList : countyLists) {
+//                if (countyList.isMainCity()) {
+//                    flag = false;
+//                    weatherId = countyList.getWeatherId();
+//                    break;
+//                }
+//            }
+//            if (flag) {
+//                countyLists.get(0).setMainCity(true);
+//                countyLists.get(0).save();
+//                weatherId = countyLists.get(0).getWeatherId();
+//            }
             intent = new Intent(this, Main3Activity.class);
-            intent.putExtra("weatherId", weatherId);
+            //intent.putExtra("weatherId", weatherId);
 
         } else {
             PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
