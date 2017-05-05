@@ -1,6 +1,5 @@
 package com.example.npc.myweather2.service;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,10 +7,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.gson.DailyForecast;
@@ -29,6 +28,7 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
 
 public class NotifyWeatherService extends Service {
     private List<CountyList> lists;
@@ -57,17 +57,6 @@ public class NotifyWeatherService extends Service {
         long time=preferences.getLong("notifyTime", 0);
         Calendar c=Calendar.getInstance();
         c.setTimeInMillis(time);
-        if (preferences.getBoolean("Notify", false)) {
-            //定时通知天气
-            AlarmManager alarmManager = (AlarmManager) NotifyWeatherService.this.getSystemService(ALARM_SERVICE);
-            Intent i = new Intent(NotifyWeatherService.this, NotifyWeatherService.class);
-            PendingIntent p = PendingIntent.getService(NotifyWeatherService.this, 0, i, 0);
-            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),p);
-            }else{
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY, p);
-            }
-        }
         if (lists != null) {
             for (CountyList list : lists) {
                 if (list.isMainCity()) {
@@ -90,18 +79,19 @@ public class NotifyWeatherService extends Service {
                                     .setSmallIcon(R.drawable.ic_notify)
                                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notify))
                                     .build();
-
                             Calendar calendar = Calendar.getInstance();
+                            calendar.setTimeInMillis(System.currentTimeMillis());
                             //现在的时间
                             int currentHour= calendar.get(Calendar.HOUR_OF_DAY);
                             int currentMinute= calendar.get(Calendar.MINUTE);
+                            //设定的时间
                             int hour= c.get(Calendar.HOUR_OF_DAY);
                             int minute= c.get(Calendar.MINUTE);
+                            Log.d(TAG, "onStartCommand: currentMinute："+currentMinute+"::minute:"+minute);
                             if (currentHour==hour&&currentMinute>=minute) {
                                 notificationManager.notify(1, notification);
                             }
                             break;
-
                         }
 
                     }

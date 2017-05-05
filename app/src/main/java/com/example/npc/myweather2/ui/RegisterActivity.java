@@ -146,7 +146,4 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             return Pattern.matches(pattern, password);
         }
 
-        public void onBackPressed(){
-            super.onBackPressed();
-        }
     }

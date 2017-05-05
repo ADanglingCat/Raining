@@ -34,7 +34,7 @@
             android:defaultValue="true"
             android:title="更新模式"
             android:key="updateMode"
-            android:summaryOn="当前城市"
+            android:summaryOn="默认城市"
             android:summaryOff="所有城市"/>
         <ListPreference android:title="更新频率"
             android:dependency="autoUpdate"

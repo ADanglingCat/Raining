@@ -9,7 +9,6 @@ import java.util.List;
  */
 
 public class Weather {
-    //public Alarm alarm;
     public String status;
     public Aqi aqi;
     public Basic basic;

@@ -354,15 +354,11 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                     for (MyDanmaku danmaku : danMuList) {
                         i++;
                         addDanmaku(danmaku.getContent(), false, danmaku.isColor());
-//                        if (i == new Random().nextInt(6)) {
-//                            Log.d(TAG, "run: i"+i);
-//                            i = 0;
                         try {
                             Thread.sleep(new Random().nextInt(2 * 1000));
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        //}
 
                     }
                 }

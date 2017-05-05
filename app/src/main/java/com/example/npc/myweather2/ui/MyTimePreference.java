@@ -1,5 +1,7 @@
 package com.example.npc.myweather2.ui;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +18,8 @@ import com.example.npc.myweather2.service.NotifyWeatherService;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.content.Context.ALARM_SERVICE;
+
 /**
  * Created by npc on 3-20 0020.
  */
@@ -23,7 +27,7 @@ import java.util.Date;
 public class MyTimePreference extends DialogPreference {
     private long currentTime;
     private TimePicker timePicker;
-
+    private static final String TAG = "TAGMyTimePreference";
     public MyTimePreference(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         setDialogLayoutResource(R.layout.timepicker_dialog);
@@ -37,19 +41,18 @@ public class MyTimePreference extends DialogPreference {
         if (positiveResult) {
             Calendar calendar = Calendar.getInstance();
             //Date date1=calendar.getTime();//现在的时间
-            calendar.set(Calendar.HOUR_OF_DAY,timePicker.getCurrentHour());
-            calendar.set(Calendar.MINUTE,timePicker.getCurrentMinute());
+            calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+            calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
             currentTime = (calendar.getTime()).getTime();
-            SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
-            editor.putLong("notifyTime",currentTime);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+            editor.putLong("notifyTime", currentTime);
             editor.apply();
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-            if (preferences.getBoolean("Notify", false)) {
-                //定时通知天气
-                Intent i = new Intent(getContext(), NotifyWeatherService.class);
-                getContext().startService(i);
-            }
-
+            //定时通知天气
+            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(ALARM_SERVICE);
+            Intent i = new Intent(getContext(), NotifyWeatherService.class);
+            PendingIntent p = PendingIntent.getService(getContext(), 0, i, 0);
+            alarmManager.cancel(p);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, p);
         }
     }
 

@@ -100,7 +100,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                     intent.putExtra("email", email);
                 }
                 startActivity(intent);
-                finish();
                 break;
             case R.id.register:
                 intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -111,7 +110,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                     intent.putExtra("password", password);
                 }
                 startActivity(intent);
-                finish();
                 break;
             default:
         }
