@@ -121,7 +121,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     public void done(_User u, BmobException e){
                         if(e==null){
                             MyUtil.showToast("注册成功,请及时验证邮箱");
-                            Intent intent = new Intent(RegisterActivity.this, PersonalActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), PersonalActivity.class);
                             startActivity(intent);
                             finish();
                         }else{

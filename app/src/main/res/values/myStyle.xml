@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--<style name="welcome" parent="Base.Theme.AppCompat.Light">-->
+        <!--<item name="android:windowBackground">@drawable/ic_background</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+    <!--</style>-->
     <style name="activityLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>

@@ -38,7 +38,7 @@ public class UpdateWeatherService extends Service {
     @Override
     public void onCreate() {
         lists= DataSupport.findAll(CountyList.class);
-        preferences=PreferenceManager.getDefaultSharedPreferences(this);
+        preferences=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         super.onCreate();
     }
 
@@ -61,8 +61,8 @@ public class UpdateWeatherService extends Service {
             //定时更新天气
           boolean autoUpdate=preferences.getBoolean("autoUpdate",false);
             AlarmManager alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
-            Intent intent1=new Intent(this,UpdateWeatherService.class);
-            PendingIntent pi=PendingIntent.getService(UpdateWeatherService.this,0,intent1,0);
+            Intent intent1=new Intent(getApplicationContext(),UpdateWeatherService.class);
+            PendingIntent pi=PendingIntent.getService(getApplicationContext(),0,intent1,0);
             if(autoUpdate){
                 String updateFre=preferences.getString("updateFre","3");
                 long triggerAtTime= SystemClock.elapsedRealtime()+Integer.parseInt(updateFre)*60*60*1000;
@@ -95,7 +95,7 @@ public class UpdateWeatherService extends Service {
                 final String responseText = response.body().string();
                 final Weather weather = MyUtil.handleWeatherResponse(responseText);
                         if (weather != null && "ok".equals(weather.status)) {
-                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(UpdateWeatherService.this).edit();
+                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                             editor.putString("weather" + weatherId, responseText);
                             editor.apply();
                         }

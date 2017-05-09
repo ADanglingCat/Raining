@@ -76,7 +76,7 @@ public class ChoosePictureActivity extends BaseActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openAlbum();
                 } else {
-                    MyUtil.showToast(this, "请授予权限");
+                    MyUtil.showToast("请授予权限");
                 }
                 break;
             default:
@@ -157,7 +157,7 @@ public class ChoosePictureActivity extends BaseActivity {
             editor.apply();
             finish();
         } else {
-            MyUtil.showToast(this, "获取图片失败");
+            MyUtil.showToast("获取图片失败");
         }
     }
 

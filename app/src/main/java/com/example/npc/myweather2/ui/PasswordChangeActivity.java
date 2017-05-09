@@ -108,7 +108,7 @@ public class PasswordChangeActivity extends BaseActivity implements View.OnClick
                 public void done(BmobException e) {
                     if(e==null){
                         MyUtil.showToast("密码修改成功");
-                        Intent intent = new Intent(PasswordChangeActivity.this, PersonalActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), PersonalActivity.class);
                         startActivity(intent);
                         finish();
                     }else{

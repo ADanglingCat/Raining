@@ -92,7 +92,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
            // Bitmap bitmap = getBitmap(headerPath);
            // pImage.setImageBitmap(bitmap);
             File file=new File(headerPath);
-            Glide.with(this)
+            Glide.with(getApplicationContext())
                     .load(file)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(pImage);
@@ -155,7 +155,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         Intent intent;
         switch (view.getId()) {
             case R.id.email_layout:
-                intent = new Intent(PersonalActivity.this, PasswordChangeActivity.class);
+                intent = new Intent(getApplicationContext(), PasswordChangeActivity.class);
                 startActivity(intent);
                 break;
             case R.id.sync_layout:
@@ -167,7 +167,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 onBackPressed();
                 break;
             case R.id.exit_bu:
-                intent = new Intent(PersonalActivity.this, LoginActivity.class);
+                intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 editor.remove("name");
                 editor.remove("sign");
@@ -178,7 +178,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.image_layout:
-                intent = new Intent(PersonalActivity.this, ChoosePictureActivity.class);
+                intent = new Intent(getApplicationContext(), ChoosePictureActivity.class);
                 intent.putExtra("headerPath", "headerPath");
                 startActivity(intent);
                 break;
@@ -188,7 +188,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.sign_layout:
-                intent = new Intent(PersonalActivity.this, EditActivity.class);
+                intent = new Intent(getApplicationContext(), EditActivity.class);
                 intent.putExtra("isSign", true);
                 startActivity(intent);
                 break;

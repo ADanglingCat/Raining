@@ -180,7 +180,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                         startActivity(intent);
                         break;
                     case R.id.updateMe:
-                        MyUtil.showToast(Main3Activity.this, "没有新版本");
+                        MyUtil.showToast( "没有新版本");
                         break;
                     case R.id.aboutMe:
                         intent = new Intent(Main3Activity.this, AboutUsActivity.class);
@@ -217,7 +217,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
         } else {
             sex = false;
         }
-
+        //弹幕
         if (flag) {
 
             openBu.setVisibility(View.VISIBLE);
@@ -350,9 +350,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    int i = 0;
                     for (MyDanmaku danmaku : danMuList) {
-                        i++;
                         addDanmaku(danmaku.getContent(), false, danmaku.isColor());
                         try {
                             Thread.sleep(new Random().nextInt(2 * 1000));
@@ -395,7 +393,11 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
     }
 
     public void onBackPressed() {
-        ActivityCollector.removeAll();
+//        if(operationLayout.VISIBLE==View.GONE){
+            ActivityCollector.removeAll();
+//        }else{
+//            operationLayout.setVisibility(View.GONE);
+//        }
         //android.os.Process.killProcess(android.os.Process.myPid());
     }
 
@@ -436,7 +438,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        MyUtil.showToast(Main3Activity.this, "获取图片失败");
+                        MyUtil.showToast("获取图片失败");
                     }
                 });
             }
@@ -536,6 +538,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         InputMethodManager manager = (InputMethodManager) Main3Activity.this.getSystemService(INPUT_METHOD_SERVICE);
         switch (view.getId()) {
+            //弹幕评论按钮
             case R.id.open_button:
                 if (operationLayout.getVisibility() == View.GONE) {
                     operationLayout.setVisibility(View.VISIBLE);

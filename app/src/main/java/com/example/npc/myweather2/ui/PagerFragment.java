@@ -160,7 +160,7 @@ public class PagerFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 if(tts==null){
-                    MyUtil.showToast(getContext(), "暂时无法播报天气");
+                    MyUtil.showToast("暂时无法播报天气");
                 } else if (Build.VERSION.SDK_INT >= 21) {
                     if (tts.isSpeaking()) {
                         tts.stop();
@@ -168,7 +168,7 @@ public class PagerFragment extends Fragment{
                         tts.speak(voiceWeather, TextToSpeech.QUEUE_FLUSH, null, "speech");
                     }
                 } else {
-                    MyUtil.showToast(getContext(), "不支持的机型");
+                    MyUtil.showToast("不支持的机型");
                 }
 
             }
@@ -201,7 +201,7 @@ public class PagerFragment extends Fragment{
                                 editor.apply();
                                 showWeatherInfo(weather);
                             } else {
-                                MyUtil.showToast(getContext(), "获取天气信息失败,请稍后再试");
+                                MyUtil.showToast("获取天气信息失败,请稍后再试");
                             }
                             swipeRefresh.setRefreshing(false);
                         }
@@ -217,7 +217,7 @@ public class PagerFragment extends Fragment{
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        MyUtil.showToast(getContext(), "获取天气信息失败,请稍后再试");
+                        MyUtil.showToast( "获取天气信息失败,请稍后再试");
                         swipeRefresh.setRefreshing(false);
                     }
                 });

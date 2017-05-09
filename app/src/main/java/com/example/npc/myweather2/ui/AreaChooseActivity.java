@@ -258,7 +258,7 @@ public class AreaChooseActivity extends BaseActivity {
             }
         } else {
 
-            MyUtil.showToast(AreaChooseActivity.this, "地区不存在,请重新输入");
+            MyUtil.showToast("地区不存在,请重新输入");
             searchResult.setVisibility(View.GONE);
             //searchView搜索框数据清空
         }

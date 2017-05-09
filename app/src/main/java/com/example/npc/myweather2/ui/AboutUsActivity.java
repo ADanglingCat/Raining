@@ -154,6 +154,6 @@ public class AboutUsActivity extends BaseActivity implements View.OnClickListene
     public void textCopy(String text) {
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         clipboardManager.setPrimaryClip(ClipData.newPlainText(null, text));
-        MyUtil.showToast(AboutUsActivity.this, text + " 已复制到剪切板");
+        MyUtil.showToast( text + " 已复制到剪切板");
     }
 }
