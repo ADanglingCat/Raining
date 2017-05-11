@@ -32,15 +32,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.model.CountyList;
 import com.example.npc.myweather2.model.DanMu;
-import com.example.npc.myweather2.model.MyDanmaku;
 import com.example.npc.myweather2.model._User;
 import com.example.npc.myweather2.service.UpdateWeatherService;
 import com.example.npc.myweather2.util.ActivityCollector;
 import com.example.npc.myweather2.util.BaseActivity;
 import com.example.npc.myweather2.util.MyUtil;
 import com.example.npc.myweather2.util.PagerAdapter;
-
-import org.litepal.crud.DataSupport;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -105,7 +103,6 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
     private DanmakuView danmakuView;
     private DanmakuContext danmakuContext;
     private _User user;
-    private List<MyDanmaku> danMuList;
     private BaseDanmakuParser parser = new BaseDanmakuParser() {
         @Override
         protected IDanmakus parse() {
@@ -115,7 +112,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
 
     public static TextToSpeech tts;
     private static final String TAG = "TAGMain3Activity";
-
+private Thread thread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -261,14 +258,11 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                 setBackgroundByBing();
             } else if (preferences.getString("imagePath", null) != null) {
                 imagePath = preferences.getString("imagePath", null);
-                // Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-                // Bitmap bitmap = getBitmap(imagePath);
                 File file = new File(imagePath);
                 Glide.with(this)
                         .load(file)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .into(backIm);
-                //backIm.setImageBitmap(bitmap);
             } else {
                 backIm.setImageResource(R.drawable.ic_background);
             }
@@ -285,13 +279,7 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(userImage);
             Bitmap bitmap = getBitmap(headerPath);
-            //userImage.setImageBitmap(bitmap);
-//            if(preferences.getBoolean("isUIChanged",false)&&!preferences.getBoolean("save",false)){
-//                _User user=new _User();
-//                BmobFile bmobFile=new BmobFile(new File(headerPath));
-//                user.setUserImage(bmobFile);
-//                user.update(BmobUser.getCurrentUser(_us))
-//            }
+
             getColor(bitmap);
 
         } else {
@@ -327,42 +315,13 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                 danmaku.textColor = Color.MAGENTA;
             }
             danmakuView.addDanmaku(danmaku);
-            //DanMu danmu=new DanMu(content, user,true);
-//            danmu.save(new SaveListener<String>() {
-//                @Override
-//                public void done(String s, BmobException e) {
-//                    if(e!=null){
-//                        Log.d(TAG, "done: "+e.getMessage());
-//                    }
-//                }
-//            });
+
 
         }
 
     }
 
-    //将下载的弹幕显示出来
-    private void generateSomeDanmaku() {
-        getDanMaku();
-        danMuList = DataSupport.findAll(MyDanmaku.class);
-        if (danMuList.size() > 0) {
-            Log.d(TAG, "generateSomeDanmaku: " + danMuList.size());
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (MyDanmaku danmaku : danMuList) {
-                        addDanmaku(danmaku.getContent(), false, danmaku.isColor());
-                        try {
-                            Thread.sleep(new Random().nextInt(2 * 1000));
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
 
-                    }
-                }
-            }).start();
-        }
-    }
 
     /**
      * sp转px的方法。
@@ -386,19 +345,21 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
     protected void onDestroy() {
         super.onDestroy();
         destroyTTS();
+        if(thread!=null){
+            thread.interrupt();
+
+            thread=null;
+        }
         if (danmakuView != null) {
             danmakuView.release();
             danmakuView = null;
         }
+
     }
 
     public void onBackPressed() {
-//        if(operationLayout.VISIBLE==View.GONE){
-            ActivityCollector.removeAll();
-//        }else{
-//            operationLayout.setVisibility(View.GONE);
-//        }
-        //android.os.Process.killProcess(android.os.Process.myPid());
+        ActivityCollector.removeAll();
+        //android.os.Process.killProcess(Process.myPid());
     }
 
     //获取默认城市
@@ -464,20 +425,8 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
     public Bitmap getBitmap(String path) {
 
         Bitmap bitmap = BitmapFactory.decodeFile(path);
-
-        // if (bitmap != null) {
-        //int bheight = bitmap.getHeight();
-        // int bwidth = bitmap.getWidth();
-        // if (bheight > 4096 || bwidth > 4096) {
-
-        //     bheight = (int) (bitmap.getHeight() * 0.9);
-        //     bwidth = (int) (bitmap.getWidth() * 0.9);
-        //  }
-        // bitmap = Bitmap.createBitmap(bitmap, 0, 0, bwidth, bheight);
-        //  } else {
         if (bitmap == null)
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_userimage);
-        //  }
         return bitmap;
 
     }
@@ -591,7 +540,6 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(37)});
 
         danmakuView = (DanmakuView) findViewById(R.id.danmaku_view);
-        danMuList = new ArrayList<>();
 
         menuBu = (Button) findViewById(R.id.menuBu);
         titleCounty = (TextView) findViewById(R.id.titleCity);
@@ -630,7 +578,8 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void prepared() {
                     danmakuView.start();
-                    generateSomeDanmaku();
+                    //generateSomeDanmaku();
+                    getDanMaku();
                 }
 
                 @Override
@@ -665,8 +614,6 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
             return danmaku;
         } catch (NullPointerException e) {
             e.printStackTrace();
-
-            initDanmaku();
         }
         return null;
     }
@@ -689,14 +636,26 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
                 .addQueryKeys("user,content,isMine,color");
         query.findObjects(new FindListener<DanMu>() {
             @Override
-            public void done(List<DanMu> list, BmobException e) {
+            public void done(final List<DanMu> list, BmobException e) {
                 if (e == null) {
-                    DataSupport.deleteAll(MyDanmaku.class);
                     if (list.size() > 0) {
-                        for (DanMu danMu : list) {
-                            MyDanmaku myDanmaku = new MyDanmaku(danMu);
-                            myDanmaku.save();
-                        }
+                        thread=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Iterator<DanMu>  it=list.iterator();
+                                while (it.hasNext()){
+                                    DanMu danMu=it.next();
+                                    addDanmaku(danMu.getContent(), false,  danMu.getColor());
+                                    try {
+                                        Thread.sleep(new Random().nextInt(2 * 1000));
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                            }
+                        });
+                        thread.start();
                     }
                 } else {
                     Log.d(TAG, "done: " + e.getMessage());
