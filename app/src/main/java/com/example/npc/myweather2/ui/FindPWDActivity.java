@@ -51,7 +51,6 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
                 resetPassword();
                 break;
             case R.id.backBu_find:
-                finish();
                 onBackPressed();
                 break;
             default:
@@ -97,6 +96,12 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
     private boolean isEmailValid(String email) {
         String pattern = "\\w{1,30}@\\w+\\.\\w+";
         return Pattern.matches(pattern, email);
+    }
+    @Override
+    public void onBackPressed(){
+        Intent intent=new Intent(FindPWDActivity.this,LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

@@ -62,7 +62,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                     break;
                 case R.id.backBu_register:
-                    finish();
                     onBackPressed();
                     break;
                 default:
@@ -145,5 +144,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             String pattern = "\\w{6,20}";
             return Pattern.matches(pattern, password);
         }
+    @Override
+    public void onBackPressed(){
+        Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     }

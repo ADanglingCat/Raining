@@ -87,8 +87,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
         switch (view.getId()) {
             case R.id.email_sign_in_button:
-
                 attemptLogin();
+                //finish() in "attemptLogin()"
                 break;
             case R.id.backBu_login:
                 onBackPressed();
@@ -100,6 +100,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                     intent.putExtra("email", email);
                 }
                 startActivity(intent);
+                finish();
                 break;
             case R.id.register:
                 intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -110,6 +111,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                     intent.putExtra("password", password);
                 }
                 startActivity(intent);
+                finish();
                 break;
             default:
         }
@@ -245,5 +247,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         }
 
     }
+
 }
 

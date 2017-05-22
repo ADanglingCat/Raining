@@ -1,5 +1,6 @@
 package com.example.npc.myweather2.model;
 
+import org.litepal.annotation.Column;
 import org.litepal.crud.DataSupport;
 
 /**
@@ -9,6 +10,7 @@ import org.litepal.crud.DataSupport;
 public class County extends DataSupport {
     private int id;
     private String countyName;
+    @Column(unique = true)
     private String weatherId;
     private int cityId;
 

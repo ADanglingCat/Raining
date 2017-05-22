@@ -2,34 +2,21 @@ package com.example.npc.myweather2.util;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.npc.myweather2.gson.Weather;
 import com.example.npc.myweather2.model.City;
 import com.example.npc.myweather2.model.County;
-import com.example.npc.myweather2.model.DanMu;
-import com.example.npc.myweather2.model.MyDanmaku;
 import com.example.npc.myweather2.model.Province;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.litepal.crud.DataSupport;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.datatype.BmobDate;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -72,7 +59,12 @@ public class MyUtil {
                     Province province=new Province();
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProvinceCode(provinceObject.getInt("id"));
-                    province.save();
+                    try {
+                        province.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        continue;
+                    }
                 }
                 return true;
             }catch (JSONException e){
@@ -92,7 +84,12 @@ public class MyUtil {
                     city.setCityName(cityObject.getString("name"));
                     city.setCityCode(cityObject.getInt("id"));
                     city.setProvinceId(provinceId);
-                    city.save();
+                    try {
+                        city.save();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        continue;
+                    }
                 }
                 return true;
             }catch(JSONException e) {
@@ -111,7 +108,11 @@ public class MyUtil {
                     county.setCountyName(countyObject.getString("name"));
                     county.setWeatherId(countyObject.getString("weather_id"));
                     county.setCityId(cityId);
-                    county.save();
+                    try {
+                        county.save();
+                    } catch (Exception e) {
+                        continue;
+                    }
                 }
                 return true;
             }catch(JSONException e){
