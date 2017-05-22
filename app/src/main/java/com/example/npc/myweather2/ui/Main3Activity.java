@@ -358,7 +358,12 @@ private Thread thread;
     }
 
     public void onBackPressed() {
-        ActivityCollector.removeAll();
+        if (operationLayout.getVisibility() == View.VISIBLE) {
+            operationLayout.setVisibility(View.GONE);
+        }else{
+
+            ActivityCollector.removeAll();
+        }
         //android.os.Process.killProcess(Process.myPid());
     }
 
