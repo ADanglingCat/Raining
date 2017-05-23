@@ -112,7 +112,8 @@ public class Main3Activity extends BaseActivity implements View.OnClickListener 
 
     public static TextToSpeech tts;
     private static final String TAG = "TAGMain3Activity";
-private Thread thread;
+    private Thread thread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,7 +178,7 @@ private Thread thread;
                         startActivity(intent);
                         break;
                     case R.id.updateMe:
-                        MyUtil.showToast( "没有新版本");
+                        MyUtil.showToast("没有新版本");
                         break;
                     case R.id.aboutMe:
                         intent = new Intent(Main3Activity.this, AboutUsActivity.class);
@@ -322,7 +323,6 @@ private Thread thread;
     }
 
 
-
     /**
      * sp转px的方法。
      */
@@ -345,10 +345,10 @@ private Thread thread;
     protected void onDestroy() {
         super.onDestroy();
         destroyTTS();
-        if(thread!=null){
+        if (thread != null) {
             thread.interrupt();
 
-            thread=null;
+            thread = null;
         }
         if (danmakuView != null) {
             danmakuView.release();
@@ -360,7 +360,7 @@ private Thread thread;
     public void onBackPressed() {
         if (operationLayout.getVisibility() == View.VISIBLE) {
             operationLayout.setVisibility(View.GONE);
-        }else{
+        } else {
 
             ActivityCollector.removeAll();
         }
@@ -623,7 +623,7 @@ private Thread thread;
         return null;
     }
 
-    public void getDanMaku(){
+    public void getDanMaku() {
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -644,13 +644,13 @@ private Thread thread;
             public void done(final List<DanMu> list, BmobException e) {
                 if (e == null) {
                     if (list.size() > 0) {
-                        thread=new Thread(new Runnable() {
+                        thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                Iterator<DanMu>  it=list.iterator();
-                                while (it.hasNext()){
-                                    DanMu danMu=it.next();
-                                    addDanmaku(danMu.getContent(), false,  danMu.getColor());
+                                Iterator<DanMu> it = list.iterator();
+                                while (it.hasNext()) {
+                                    DanMu danMu = it.next();
+                                    addDanmaku(danMu.getContent(), false, danMu.getColor());
                                     try {
                                         Thread.sleep(new Random().nextInt(2 * 1000));
                                     } catch (InterruptedException e) {

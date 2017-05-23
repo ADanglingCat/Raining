@@ -85,14 +85,14 @@
         <item>@string/summary_off</item>
     </string-array>
     <!--<string-array name="list_preference_sex_titles">-->
-        <!--<item>男</item>-->
-        <!--<item>女</item>-->
-        <!--<item>保密</item>-->
+    <!--<item>男</item>-->
+    <!--<item>女</item>-->
+    <!--<item>保密</item>-->
     <!--</string-array>-->
     <!--<string-array name="list_preference_sex_values">-->
-        <!--<item>0</item>-->
-        <!--<item>1</item>-->
-        <!--<item>2</item>-->
+    <!--<item>0</item>-->
+    <!--<item>1</item>-->
+    <!--<item>2</item>-->
     <!--</string-array>-->
     <string name="pref_title_system_sync_settings">System sync settings</string>
 

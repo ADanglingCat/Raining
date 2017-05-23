@@ -113,7 +113,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 user.setUsername(email);
                 String p=MyUtil.getMD5(passwordF);
                 user.setPassword(p);
-                Log.d(TAG, "confirmPressed: passwordF::"+p);
                 user.setEmail(email);
                 MyUtil.showToast("注册中...");
                 user.signUp(new SaveListener<_User>(){

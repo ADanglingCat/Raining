@@ -36,6 +36,7 @@
 
     <!-- 更改设置 -->
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
     <application
         android:name=".util.MyApplication"
         android:allowBackup="true"
@@ -53,8 +54,7 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name"
-            >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,8 +64,9 @@
         <activity android:name=".ui.AboutUsActivity" />
         <activity android:name=".ui.LicenseActivity" />
         <activity android:name=".ui.AreaManagerActivity" />
-        <activity android:name=".ui.AreaChooseActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".ui.AreaChooseActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".ui.SettingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
@@ -84,7 +85,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".util.BaseActivity" />
-        <activity android:name=".ui.Main3Activity"/>
+        <activity android:name=".ui.Main3Activity" />
 
         <service
             android:name=".service.UpdateWeatherService"
@@ -110,6 +111,8 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".ui.EditActivity" />
         <activity android:name=".ui.FindPWDActivity" />
+        <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.PasswordChangeActivity" />
         <activity android:name=".ui.CheckStateActivity">
             <intent-filter>
                 <action android:name="com.example.myweather.PERSONAL" />
@@ -117,8 +120,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.PasswordChangeActivity"></activity>
     </application>
 
 </manifest>

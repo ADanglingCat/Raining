@@ -106,4 +106,14 @@ public class UpdateWeatherService extends Service {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+        if(preferences.getBoolean("autoUpdate",false)){
+            Intent intent=new Intent(UpdateWeatherService.this,UpdateWeatherService.class);
+            startService(intent);
+        }else{
+            super.onDestroy();
+        }
+    }
 }

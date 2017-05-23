@@ -34,6 +34,8 @@ public class NotifyWeatherService extends Service {
     private List<CountyList> lists;
     private Weather weather;
     private static final String TAG = "TAGNotifyWeatherService";
+    SharedPreferences preferences;
+
     public NotifyWeatherService() {
     }
 
@@ -45,7 +47,9 @@ public class NotifyWeatherService extends Service {
     @Override
     public void onCreate() {
         lists = DataSupport.findAll(CountyList.class);
+        preferences = PreferenceManager.getDefaultSharedPreferences(NotifyWeatherService.this);
         super.onCreate();
+        Log.d(TAG, "onCreate: ");
     }
 
     @Override
@@ -53,7 +57,6 @@ public class NotifyWeatherService extends Service {
         String countyName;
         String weatherInfo;
         DailyForecast dailyForecast;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(NotifyWeatherService.this);
         long time=preferences.getLong("notifyTime", 0);
         Calendar c=Calendar.getInstance();
         c.setTimeInMillis(time);
@@ -101,6 +104,7 @@ public class NotifyWeatherService extends Service {
             }
 
         }
+        Log.d(TAG, "onStartCommand: ");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -126,5 +130,16 @@ public class NotifyWeatherService extends Service {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        if(preferences.getBoolean("Notify",false)){
+            Intent intent=new Intent(NotifyWeatherService.this,NotifyWeatherService.class);
+            startService(intent);
+        }else{
+            super.onDestroy();
+        }
     }
 }

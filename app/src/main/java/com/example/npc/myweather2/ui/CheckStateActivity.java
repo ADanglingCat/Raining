@@ -7,7 +7,7 @@ import com.example.npc.myweather2.model._User;
 import com.example.npc.myweather2.util.BaseActivity;
 
 import cn.bmob.v3.BmobUser;
-
+//如果用户已登录就跳转到个人中心，否则跳转到登录界面
 public class CheckStateActivity extends BaseActivity {
 
     @Override
@@ -17,8 +17,6 @@ public class CheckStateActivity extends BaseActivity {
     }
     public void onResume(){
         super.onResume();
-       // SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
-       // boolean state=preferences.getBoolean("state",false);
         _User user= BmobUser.getCurrentUser(_User.class);
         Intent intent;
         if(user!=null){
