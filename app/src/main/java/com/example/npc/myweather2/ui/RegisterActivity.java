@@ -3,7 +3,6 @@ package com.example.npc.myweather2.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -109,12 +108,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 focusView.requestFocus();
             } else {
                 registerBu.setClickable(false);
+                registerBu.setText("注册中...");
                 _User user=new _User();
                 user.setUsername(email);
                 String p=MyUtil.getMD5(passwordF);
                 user.setPassword(p);
                 user.setEmail(email);
-                MyUtil.showToast("注册中...");
+                //Toast.makeText(this, "注册中...", Toast.LENGTH_LONG).show();
+//                MyUtil.showToast("注册中...");
                 user.signUp(new SaveListener<_User>(){
                     public void done(_User u, BmobException e){
                         if(e==null){
@@ -123,9 +124,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             startActivity(intent);
                             finish();
                         }else{
-                            MyUtil.showToast("注册失败:"+e.getMessage());
+                            MyUtil.showToast("注册失败:"+e);
+                            registerBu.setText("确认");
                             registerBu.setClickable(true);
-                            Log.e(TAG, "done: "+e);
+
                         }
                     }
                 });

@@ -172,7 +172,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 editor.remove("name");
                 editor.remove("sign");
                 editor.remove("sex");
-                editor.remove("danmu");
+                editor.remove("danmu");//弹幕开关
                 editor.apply();
                 BmobUser.logOut();
                 finish();

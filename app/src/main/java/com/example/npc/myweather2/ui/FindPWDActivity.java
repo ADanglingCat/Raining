@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.npc.myweather2.R;
 import com.example.npc.myweather2.util.BaseActivity;
@@ -75,15 +76,20 @@ public class FindPWDActivity extends BaseActivity implements View.OnClickListene
         if (cancel) {
             focusView.requestFocus();
         } else {
+            findBu.setClickable(false);
+            findBu.setText("请稍后");
             BmobUser.resetPasswordByEmail(email, new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
                     if(e==null){
-                        MyUtil.showToast("请到邮箱进行密码重置操作");
+                        Toast.makeText(FindPWDActivity.this, "请到邮箱进行密码重置操作", Toast.LENGTH_LONG).show();
+                        //MyUtil.showToast("请到邮箱进行密码重置操作");
                         Intent intent = new Intent(FindPWDActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }else{
+                        findBu.setClickable(true);
+                        findBu.setText("确认");
                         MyUtil.showToast(e.getMessage());
                     }
                 }

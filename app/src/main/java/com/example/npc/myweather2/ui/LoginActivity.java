@@ -155,7 +155,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             final _User user = new _User();
             user.setUsername(email);
             user.setPassword(getMD5(password));
-            MyUtil.showToast("登录中...");
+            mEmailSignInButton.setText("登录中...");
+            //Toast.makeText(this, "登录中...", Toast.LENGTH_LONG).show();
+//            MyUtil.showToast("登录中...");
             mEmailSignInButton.setClickable(false);
             user.login(new SaveListener<_User>() {
                 public void done(_User u, BmobException e) {
@@ -179,6 +181,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                     finish();
                                 } else {
                                     mEmailSignInButton.setClickable(true);
+                                    mEmailSignInButton.setText("登录");
                                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                                     mPasswordView.requestFocus();
                                 }

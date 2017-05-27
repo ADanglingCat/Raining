@@ -66,8 +66,12 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
     public void onBackPressed() {
         String content = contentEd.getText().toString();
-        if (content == null) {
-            content = "";
+        if (content == null||"".equals(content)) {
+            if(!type){
+                content=getResources().getString(R.string.my_name);
+            }else{
+                content=getResources().getString(R.string.my_sign);
+            }
         }
         if (oldContent == null) {
             oldContent = "";
